@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2014 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- Testing DSC with value "1" and no style information -->
+<StlXml>
+    <HEAD>
+        <GSI>
+            <CPN>850</CPN>
+            <DFC>STL25.01</DFC>
+            <DSC>1</DSC>
+            <CCT>00</CCT>
+            <LC>09</LC>
+            <OPT/>
+            <OET/>
+            <TPT/>
+            <TET/>
+            <TN/>
+            <TCD/>
+            <SLR>String length 16</SLR>
+            <CD>991231</CD>
+            <RD>991231</RD>
+            <RN>0</RN>
+            <TNB>1</TNB>
+            <TNS>1</TNS>
+            <TNG>1</TNG>
+            <MNC>40</MNC>
+            <MNR>23</MNR>
+            <TCS>1</TCS>
+            <TCP>00000000</TCP>
+            <TCF>00000000</TCF>
+            <TND>1</TND>
+            <DSN>1</DSN>
+            <CO>AAA</CO>
+            <PUB/>
+            <EN/>
+            <ECD/>
+        </GSI>
+    </HEAD>
+    <BODY>
+        <TTICONTAINER>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>1</SN>
+                <EBN>ff</EBN>
+                <CS>00</CS>
+                <TCI>00000000</TCI>
+                <TCO>00000200</TCO>
+                <VP>1</VP>
+                <JC>00</JC>
+                <CF>00</CF>
+                <TF>
+                    <DoubleHeight/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <StartBox/>
+                    <StartBox/>^<space/>!<space/>"<space/>§<space/>
+                    <space/>%<space/>&amp;<space/>/<space/>(<space/>)<space/>=<space/>?<space/>
+                    <space/>
+                    <space/>*<space/>'<EndBox/>
+                    <EndBox/>
+                    <newline/>
+                    <newline/>
+                    <DoubleHeight/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <StartBox/>
+                    <StartBox/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>&lt;<space/>&gt;<space/>°<space/>;<space/>:<space/>-<space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <EndBox/>
+                    <EndBox/>
+                </TF>
+            </TTI>
+        </TTICONTAINER>
+    </BODY>
+</StlXml>
