@@ -1472,7 +1472,7 @@ limitations under the License.
                     <xsl:with-param name="oldforeground" select="$oldforeground"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="(name(following-sibling::node()[1]) != $oldforeground) and string-length(normalize-space($buffer)) != 0">
+            <xsl:when test="(name(following-sibling::node()[1]) != $oldforeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0)">
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
