@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing the Disk Format Code with value "STL25.01" -->
+<!-- Testing StartBox element mapping with three StartBox elements and with referencing a style with the appropriate background and foreground color-->
 <StlXml>
     <HEAD>
         <GSI>
@@ -63,18 +63,7 @@ limitations under the License.
                 <JC>02</JC>
                 <CF>00</CF>
                 <TF>
-                    <StartBox/>
-                    <space/>
-               <space/>
-               <space/>
-               <space/>
-               <space/>Test<space/>Subtitle<space/>
-               <space/>
-               <space/>
-               <space/>
-               <space/>
-               <space/>
-                    <EndBox/>
+                    <StartBox/>Test<space/>Text<space/><EndBox/><space/><space/><StartBox/>Test<space/>Text<space/><EndBox/><StartBox/>Test<space/>Text<space/><EndBox/><space/><newline/>
                 </TF>
             </TTI>
         </TTICONTAINER>

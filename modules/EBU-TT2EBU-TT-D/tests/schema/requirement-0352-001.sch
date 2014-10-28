@@ -32,8 +32,8 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="tt:tt/tt:head/tt:styling/tt:style[@xml:id = 'singleHeightLeft']">
-            <assert test="@tts:fontSize = '80%'">
-                Expected value: "80%" Value from test: "<value-of select="@tts:fontSize"/>"
+            <assert test="@tts:fontSize = '100%'">
+                Expected value: "100%" Value from test: "<value-of select="@tts:fontSize"/>"
             </assert> 
         </rule>
     </pattern>            

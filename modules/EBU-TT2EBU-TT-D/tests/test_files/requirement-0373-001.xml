@@ -23,7 +23,6 @@ limitations under the License.
        xmlns:ebutts="urn:ebu:tt:style"
        xmlns:ebuttm="urn:ebu:tt:metadata"
        xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
-       xsi:schemaLocation="http://www.w3.org/ns/ttml ../../../../resources/ebu-tt/ebu-tt-part-1/ebutt.xsd"
        ttp:timeBase="smpte"
        ttp:markerMode="discontinuous"
        ttp:frameRate="25"
