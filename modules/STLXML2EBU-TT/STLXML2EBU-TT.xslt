@@ -268,9 +268,7 @@ limitations under the License.
             <tt:style xml:id="singleHeightLeft" tts:fontSize="1c 1c" tts:textAlign="start"/>
             <tt:style xml:id="singleHeightCenter" tts:fontSize="1c 1c" tts:textAlign="center"/>
             <tt:style xml:id="singleHeightRight" tts:fontSize="1c 1c" tts:textAlign="end"/>
-            <tt:style xml:id="doubleHeightLeft" tts:fontSize="1c 2c" tts:textAlign="start"/>
-            <tt:style xml:id="doubleHeightCenter" tts:fontSize="1c 2c" tts:textAlign="center"/>
-            <tt:style xml:id="doubleHeightRight" tts:fontSize="1c 2c" tts:textAlign="end"/>
+            <tt:style xml:id="doubleHeight" tts:fontSize="1c 2c"/>
         </tt:styling>
         <tt:layout>
             <!--@ Create tt:region element defining the defaultRegion -->
@@ -509,7 +507,7 @@ limitations under the License.
         <!--@ Create tt:body and tt:div elements, match the first child -->
         <tt:body>
             <tt:div
-                style="{'defaultStyle'}">
+                style="defaultStyle">
                 <xsl:apply-templates select="TTICONTAINER/TTI[1]">
                     <!--** Tunnel parameters needed for value calculation of decending elements -->
                     <xsl:with-param name="frameRate" select="$frameRate"/>
@@ -859,7 +857,7 @@ limitations under the License.
         <tt:p
             xml:id="{concat('sub', $SN)}"
             style="{$style}"
-            region="{'defaultRegion'}"
+            region="defaultRegion"
             begin="{$begin}"
             end="{$end}">
             <xsl:apply-templates select="child::*[1]">
@@ -942,20 +940,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1111,20 +1097,8 @@ limitations under the License.
             <xsl:variable name="style">
                 <xsl:choose>
                     <!--** JC 00 equals to unchanged representation -->
-                    <xsl:when test="$JC = '00' and $doubleHeight">
-                        <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                    </xsl:when>
-                    <!--** JC 01 equals to left-justified text -->
-                    <xsl:when test="$JC = '01' and $doubleHeight">
-                        <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                    </xsl:when>
-                    <!--** JC 02 equals to centered text -->
-                    <xsl:when test="$JC = '02' and $doubleHeight">
-                        <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                    </xsl:when>
-                    <!--** JC 03 equals to right-justified text -->
-                    <xsl:when test="$JC = '03' and $doubleHeight">
-                        <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                    <xsl:when test="$doubleHeight">
+                        <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1215,20 +1189,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1334,20 +1296,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1413,20 +1363,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1438,7 +1376,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
@@ -1476,20 +1414,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($oldforeground, 'On', $background)"/>
@@ -1582,20 +1508,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1607,7 +1521,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
@@ -1662,20 +1576,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($oldforeground, 'On', $background)"/>
@@ -1726,20 +1628,8 @@ limitations under the License.
                 <xsl:variable name="style">
                     <xsl:choose>
                         <!--** JC 00 equals to unchanged representation -->
-                        <xsl:when test="$JC = '00' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 01 equals to left-justified text -->
-                        <xsl:when test="$JC = '01' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightLeft')"/>
-                        </xsl:when>
-                        <!--** JC 02 equals to centered text -->
-                        <xsl:when test="$JC = '02' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightCenter')"/>
-                        </xsl:when>
-                        <!--** JC 03 equals to right-justified text -->
-                        <xsl:when test="$JC = '03' and $doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeightRight')"/>
+                        <xsl:when test="$doubleHeight">
+                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="concat($foreground, 'On', $background)"/>
@@ -1751,7 +1641,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
