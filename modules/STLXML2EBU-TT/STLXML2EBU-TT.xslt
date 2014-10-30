@@ -80,9 +80,9 @@ limitations under the License.
                     ttp:timeBase="{$timeCodeFormat}"
                     ttp:frameRate="{$frameRate}"
                     ttp:frameRateMultiplier="{$frameRateMultiplier}"
-                    ttp:markerMode="{'discontinuous'}"
-                    ttp:dropMode="{'nonDrop'}"
-                    ttp:cellResolution="{'50 30'}"
+                    ttp:markerMode="discontinuous"
+                    ttp:dropMode="nonDrop"
+                    ttp:cellResolution="50 30"
                     xml:lang="{$language}">
                     <xsl:apply-templates select="HEAD">
                         <!--** Tunnel parameter needed for value calculation of decendaning elements -->
@@ -97,7 +97,7 @@ limitations under the License.
             <xsl:when test="$timeCodeFormat = 'media'">
                 <tt:tt
                     ttp:timeBase="{$timeCodeFormat}"
-                    ttp:cellResolution="{'50 30'}"
+                    ttp:cellResolution="50 30"
                     xml:lang="{$language}">
                     <xsl:apply-templates select="HEAD">
                         <!--** Tunnel parameter needed for value calculation of decendaning elements -->
@@ -599,8 +599,9 @@ limitations under the License.
         <xsl:variable name="beginseconds" select="substring($begin, 5, 2)"/>
         <xsl:variable name="beginframes" select="substring($begin, 7, 2)"/>
         <xsl:choose>
-            <!--@ When timeCodeFormat 'media' is set, it has to be calculated from STLXML file's smpte timeCodeFormat -->
-            <xsl:when test="$timeCodeFormat = 'media'">
+            <!--@ When timeCodeFormat 'media' is set, it has to be calculated from STLXML file's smpte timeCodeFormat.
+                If timeCodeFormat 'smpte' is used, the values can be copied, subdividing with ':' is necessary -->
+            <xsl:when test="$timeCodeFormat = 'media' or 'smpte'">
                 <xsl:choose>
                     <!--@ Check validity for 25 frames -->
                     <xsl:when test="string-length(normalize-space($begin)) = 8 and
@@ -625,33 +626,6 @@ limitations under the License.
                         </xsl:message>
                     </xsl:otherwise>
                 </xsl:choose>                    
-            </xsl:when>
-            <!--@ If timeCodeFormat 'smpte' is used, the values can be copied, subdividing with ':' is necessary -->
-            <xsl:when test="$timeCodeFormat = 'smpte'">                    
-                <xsl:choose>
-                    <!--@ Check validity for 25 frames -->
-                    <xsl:when test="string-length($begin) = 8 and
-                        number($beginhours) &gt;= 0 and number($beginhours) &lt; 24 and
-                        number($beginminutes) &gt;= 0 and number($beginminutes) &lt; 60 and
-                        number($beginseconds) &gt;= 0 and number($beginseconds) &lt; 60 and
-                        number($beginframes) &gt;= 0 and number($beginframes) &lt; 25 and 
-                        $frameRate = '25'">
-                        <xsl:call-template name="timestampConversion">
-                            <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
-                            <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$beginframes"/>
-                            <xsl:with-param name="seconds" select="$beginseconds"/>
-                            <xsl:with-param name="minutes" select="$beginminutes"/>
-                            <xsl:with-param name="hours" select="$beginhours"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <!--@ Interrupt when the given value isn't correct for 25 frames -->
-                    <xsl:otherwise>
-                        <xsl:message terminate="yes">
-                            TCI is always set in valid smpte time with format hhmmssff. This implementation only supports 25 frames
-                        </xsl:message>
-                    </xsl:otherwise>
-                </xsl:choose>
             </xsl:when>
             <!--@ Interrupt if timeCodeFormat is set to neither 'media' nor 'smpte'-->
             <xsl:otherwise>
@@ -796,7 +770,7 @@ limitations under the License.
             </xsl:choose>
         </xsl:variable>
         <xsl:choose>
-            <!--@ If timebase is media, concatenate the frames to the calculated values -->
+            <!--@ If timebase is media, convert the frames to milliseconds and concatenate afterwards -->
             <xsl:when test="$timeCodeFormat = 'media'">
                 <xsl:variable name="mediaframes" select="(number($frames) div number($frameRate))*1000 mod 1000"/>
                 <xsl:variable name="outputfraction">
@@ -814,7 +788,7 @@ limitations under the License.
                 </xsl:variable>
                 <xsl:value-of select="concat($outputhours, ':', $outputminutes, ':', $outputseconds, '.', $outputfraction)"/>
             </xsl:when>
-            <!--@ If timebase is smpte, convert the frames to milliseconds and concatenate afterwards -->
+            <!--@ If timebase is smpte, concatenate the frames to the calculated values -->
             <xsl:when test="$timeCodeFormat = 'smpte'">
                 <xsl:value-of select="concat($outputhours, ':', $outputminutes, ':', $outputseconds, ':', $frames)"/>                
             </xsl:when>
@@ -939,7 +913,6 @@ limitations under the License.
             <xsl:when test="string-length($buffer) != 0 and $boxStarted = true()">
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -953,7 +926,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                             <xsl:apply-templates select="following-sibling::node()[1]">
                                 <!--** Tunnel parameters needed for value calculation of following elements; use empty buffer
@@ -1096,7 +1069,6 @@ limitations under the License.
         <xsl:if test="string-length($buffer) &gt; 0">
             <xsl:variable name="style">
                 <xsl:choose>
-                    <!--** JC 00 equals to unchanged representation -->
                     <xsl:when test="$doubleHeight">
                         <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                     </xsl:when>
@@ -1110,7 +1082,7 @@ limitations under the License.
                 <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                     <tt:span
                         stype="{$style}"
-                        xml:space="{'preserve'}">
+                        xml:space="preserve">
                         <xsl:value-of select="$buffer"/>
                     </tt:span>
                 </xsl:when>
@@ -1188,7 +1160,6 @@ limitations under the License.
             <xsl:when test="string-length(normalize-space($buffer)) &gt; 0 or ($JCspacetrimming = 'false' and string-length($buffer) &gt; 0 and $JC = '00')">
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -1202,7 +1173,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
@@ -1295,7 +1266,7 @@ limitations under the License.
             <xsl:otherwise>
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
+
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -1309,7 +1280,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
@@ -1346,7 +1317,7 @@ limitations under the License.
     </xsl:template>
     
     <xsl:template match="NewBackground">
-        <!--** Sets the current background color to the current foreground color (AlphaWhiteOnAlphaBlack -> AlphaWhiteOnAlphaWhite) -->
+        <!--** Sets the new background color to the current foreground color (AlphaWhiteOnAlphaBlack -> AlphaWhiteOnAlphaWhite) -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
@@ -1362,7 +1333,6 @@ limitations under the License.
             <xsl:when test="($foreground != $background) and string-length(normalize-space($buffer)) != 0">
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -1413,7 +1383,6 @@ limitations under the License.
             <xsl:when test="(name(following-sibling::node()[1]) != $oldforeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0)">
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -1427,7 +1396,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
@@ -1507,7 +1476,6 @@ limitations under the License.
             <xsl:when test="name(following-sibling::*[1]) = 'NewBackground' and string-length($buffer) &gt; 0 and $background != name(.)">
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -1575,7 +1543,6 @@ limitations under the License.
                 <!--@ Match following sibling node with the foreground set to the current element's name -->
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
@@ -1589,7 +1556,7 @@ limitations under the License.
                     <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                         <tt:span
                             style="{$style}"
-                            xml:space="{'preserve'}">
+                            xml:space="preserve">
                             <xsl:value-of select="$buffer"/>
                         </tt:span>
                     </xsl:when>
@@ -1627,7 +1594,6 @@ limitations under the License.
             <xsl:when test="not(name(following-sibling::*[1]) = 'NewBackground') and (string-length(normalize-space($buffer)) != 0) and not(name(.) = $oldforeground and $background = $oldbackground) and $foreground != name(.)">
                 <xsl:variable name="style">
                     <xsl:choose>
-                        <!--** JC 00 equals to unchanged representation -->
                         <xsl:when test="$doubleHeight">
                             <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
                         </xsl:when>
