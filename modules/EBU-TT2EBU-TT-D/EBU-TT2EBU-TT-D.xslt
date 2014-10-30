@@ -48,7 +48,7 @@ limitations under the License.
         </xsl:variable>
         <xsl:variable name="legacytimeBase" select="@ttp:timeBase"/>
         <tt:tt
-            ttp:timeBase="{'media'}"
+            ttp:timeBase="media"
             xml:lang="{@xml:lang}">
             <xsl:attribute name="ttp:cellResolution">
                 <xsl:choose>
@@ -150,7 +150,7 @@ limitations under the License.
             </xsl:if>
             <!--@ Convert cell based fontSize to percentage based if the attribute is set -->
             <xsl:if test="@tts:fontSize != ''">
-                <xsl:attribute name="{'tts:fontSize'}">
+                <xsl:attribute name="tts:fontSize">
                     <xsl:apply-templates select="@tts:fontSize"/>
                 </xsl:attribute>
             </xsl:if>
@@ -231,21 +231,21 @@ limitations under the License.
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <xsl:attribute name="{'tts:padding'}">
+            <xsl:attribute name="tts:padding">
                 <xsl:value-of select="'0%'"/>
             </xsl:attribute>
             <xsl:if test="@style != ''">
-                <xsl:attribute name="{'style'}">
+                <xsl:attribute name="style">
                     <xsl:value-of select="@style"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@tts:displayAlign != ''">
-                <xsl:attribute name="{'tts:displayAlign'}">
+                <xsl:attribute name="tts:displayAlign">
                     <xsl:value-of select="@tts:displayAlign"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@tts:writingMode != ''">
-                <xsl:attribute name="{'tts:writingMode'}">
+                <xsl:attribute name="tts:writingMode">
                     <xsl:value-of select="@tts:writingMode"/>
                 </xsl:attribute>
             </xsl:if>
@@ -732,23 +732,23 @@ limitations under the License.
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@style != ''">
-                <xsl:attribute name="{'style'}">
+                <xsl:attribute name="style">
                     <xsl:value-of select="@style"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@ttm:role != ''">
-                <xsl:attribute name="{'ttm:role'}">
+                <xsl:attribute name="ttm:role">
                     <xsl:value-of select="@ttm:role"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@ttm:agent != ''">
-                <xsl:attribute name="{'ttm:agent'}">
+                <xsl:attribute name="ttm:agent">
                     <xsl:value-of select="@ttm:agent"/>
                 </xsl:attribute>
             </xsl:if>
             <!--@ Convert value of the begin attribute if it's set -->
             <xsl:if test="@begin != ''">
-                <xsl:attribute name="{'begin'}">
+                <xsl:attribute name="begin">
                     <xsl:apply-templates select="@begin">
                         <xsl:with-param name="legacytimeBase" select="$legacytimeBase" />
                         <xsl:with-param name="frameRate" select="$frameRate" />
@@ -757,7 +757,7 @@ limitations under the License.
             </xsl:if>
             <!--@ Convert value of the end attribute if it's set -->
             <xsl:if test="@end != ''">
-                <xsl:attribute name="{'end'}">
+                <xsl:attribute name="end">
                     <xsl:apply-templates select="@end">
                         <xsl:with-param name="legacytimeBase" select="$legacytimeBase" />
                         <xsl:with-param name="frameRate" select="$frameRate" />
