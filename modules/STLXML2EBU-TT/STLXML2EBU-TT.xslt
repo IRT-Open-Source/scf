@@ -1078,10 +1078,10 @@ limitations under the License.
                 </xsl:choose>
             </xsl:variable>
             <xsl:choose>
-                <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
+                <!--** If JC is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
                 <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
                     <tt:span
-                        stype="{$style}"
+                        style="{$style}"
                         xml:space="preserve">
                         <xsl:value-of select="$buffer"/>
                     </tt:span>
@@ -1089,14 +1089,14 @@ limitations under the License.
                 <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                 <xsl:when test="$spanCreated">
                     <tt:span
-                        stype="{$style}">
+                        style="{$style}">
                         <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
                     </tt:span>
                 </xsl:when>
                 <!--** Otherwise write the normalized content of the buffer -->
                 <xsl:otherwise>
                     <tt:span
-                        stype="{$style}">
+                        style="{$style}">
                         <xsl:value-of select="normalize-space($buffer)"/>
                     </tt:span>
                 </xsl:otherwise>
