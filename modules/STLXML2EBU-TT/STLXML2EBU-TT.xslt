@@ -30,10 +30,115 @@ limitations under the License.
     <xsl:param name="timeCodeFormat" select="'smpte'"/>
     <!--** Indicates how to process TTI blocks with its Justification Code set to 00; 'true' trims leading spaces, 'false' preserves leading spaces -->
     <xsl:param name="JCspacetrimming" select="'true'"/>
+    <!--** Provides the tt:style elements the mapped color is located in -->
+    <xsl:param name="styleTemplates">
+        <tt:styling>
+            <tt:style xml:id="BlackOnRed" tts:color="black" tts:backgroundColor="red"/>
+            <tt:style xml:id="BlackOnGreen" tts:color="black" tts:backgroundColor="lime"/>
+            <tt:style xml:id="BlackOnYellow" tts:color="black" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="BlackOnBlue" tts:color="black" tts:backgroundColor="blue"/>
+            <tt:style xml:id="BlackOnMagenta" tts:color="black" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="BlackOnCyan" tts:color="black" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="BlackOnWhite" tts:color="black" tts:backgroundColor="white"/>
+            <tt:style xml:id="BlackOnBlack" tts:color="black" tts:backgroundColor="black"/>
+            <tt:style xml:id="RedOnRed" tts:color="red" tts:backgroundColor="red"/>
+            <tt:style xml:id="RedOnGreen" tts:color="red" tts:backgroundColor="lime"/>
+            <tt:style xml:id="RedOnYellow" tts:color="red" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="RedOnBlue" tts:color="red" tts:backgroundColor="blue"/>
+            <tt:style xml:id="RedOnMagenta" tts:color="red" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="RedOnCyan" tts:color="red" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="RedOnWhite" tts:color="red" tts:backgroundColor="white"/>
+            <tt:style xml:id="RedOnBlack" tts:color="red" tts:backgroundColor="black"/>
+            <tt:style xml:id="GreenOnRed" tts:color="lime" tts:backgroundColor="red"/>
+            <tt:style xml:id="GreenOnGreen" tts:color="lime" tts:backgroundColor="lime"/>
+            <tt:style xml:id="GreenOnYellow" tts:color="lime" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="GreenOnBlue" tts:color="lime" tts:backgroundColor="blue"/>
+            <tt:style xml:id="GreenOnMagenta" tts:color="lime" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="GreenOnCyan" tts:color="lime" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="GreenOnWhite" tts:color="lime" tts:backgroundColor="white"/>
+            <tt:style xml:id="GreenOnBlack" tts:color="lime" tts:backgroundColor="black"/>
+            <tt:style xml:id="YellowOnRed" tts:color="yellow" tts:backgroundColor="red"/>
+            <tt:style xml:id="YellowOnGreen" tts:color="yellow" tts:backgroundColor="lime"/>
+            <tt:style xml:id="YellowOnYellow" tts:color="yellow" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="YellowOnBlue" tts:color="yellow" tts:backgroundColor="blue"/>
+            <tt:style xml:id="YellowOnMagenta" tts:color="yellow" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="YellowOnCyan" tts:color="yellow" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="YellowOnWhite" tts:color="yellow" tts:backgroundColor="white"/>
+            <tt:style xml:id="YellowOnBlack" tts:color="yellow" tts:backgroundColor="black"/>
+            <tt:style xml:id="BlueOnRed" tts:color="blue" tts:backgroundColor="red"/>
+            <tt:style xml:id="BlueOnGreen" tts:color="blue" tts:backgroundColor="lime"/>
+            <tt:style xml:id="BlueOnYellow" tts:color="blue" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="BlueOnBlue" tts:color="blue" tts:backgroundColor="blue"/>
+            <tt:style xml:id="BlueOnMagenta" tts:color="blue" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="BlueOnCyan" tts:color="blue" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="BlueOnWhite" tts:color="blue" tts:backgroundColor="white"/>
+            <tt:style xml:id="BlueOnBlack" tts:color="blue" tts:backgroundColor="black"/>
+            <tt:style xml:id="MagentaOnRed" tts:color="magenta" tts:backgroundColor="red"/>
+            <tt:style xml:id="MagentaOnGreen" tts:color="magenta" tts:backgroundColor="lime"/>
+            <tt:style xml:id="MagentaOnYellow" tts:color="magenta" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="MagentaOnBlue" tts:color="magenta" tts:backgroundColor="blue"/>
+            <tt:style xml:id="MagentaOnMagenta" tts:color="magenta" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="MagentaOnCyan" tts:color="magenta" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="MagentaOnWhite" tts:color="magenta" tts:backgroundColor="white"/>
+            <tt:style xml:id="MagentaOnBlack" tts:color="magenta" tts:backgroundColor="black"/>
+            <tt:style xml:id="CyanOnRed" tts:color="cyan" tts:backgroundColor="red"/>
+            <tt:style xml:id="CyanOnGreen" tts:color="cyan" tts:backgroundColor="lime"/>
+            <tt:style xml:id="CyanOnYellow" tts:color="cyan" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="CyanOnBlue" tts:color="cyan" tts:backgroundColor="blue"/>
+            <tt:style xml:id="CyanOnMagenta" tts:color="cyan" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="CyanOnCyan" tts:color="cyan" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="CyanOnWhite" tts:color="cyan" tts:backgroundColor="white"/>
+            <tt:style xml:id="CyanOnBlack" tts:color="cyan" tts:backgroundColor="black"/>
+            <tt:style xml:id="WhiteOnRed" tts:color="white" tts:backgroundColor="red"/>
+            <tt:style xml:id="WhiteOnGreen" tts:color="white" tts:backgroundColor="lime"/>
+            <tt:style xml:id="WhiteOnYellow" tts:color="white" tts:backgroundColor="yellow"/>
+            <tt:style xml:id="WhiteOnBlue" tts:color="white" tts:backgroundColor="blue"/>
+            <tt:style xml:id="WhiteOnMagenta" tts:color="white" tts:backgroundColor="magenta"/>
+            <tt:style xml:id="WhiteOnCyan" tts:color="white" tts:backgroundColor="cyan"/>
+            <tt:style xml:id="WhiteOnWhite" tts:color="white" tts:backgroundColor="white"/>
+            <tt:style xml:id="WhiteOnBlack" tts:color="white" tts:backgroundColor="black"/>
+        </tt:styling>
+    </xsl:param>
+    <!--** Provides the information regarding the mapping of the various STL Control Codes to a named color -->
+    <xsl:param name="colorMappings">
+        <colorMappings>
+            <colorMapping>
+                <stlControlCode>AlphaBlack</stlControlCode>
+                <ttmlNamedColor>black</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaRed</stlControlCode>
+                <ttmlNamedColor>red</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaGreen</stlControlCode>
+                <ttmlNamedColor>lime</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaYellow</stlControlCode>
+                <ttmlNamedColor>yellow</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaBlue</stlControlCode>
+                <ttmlNamedColor>blue</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaMagenta</stlControlCode>
+                <ttmlNamedColor>magenta</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaCyan</stlControlCode>
+                <ttmlNamedColor>cyan</ttmlNamedColor>
+            </colorMapping>
+            <colorMapping>
+                <stlControlCode>AlphaWhite</stlControlCode>
+                <ttmlNamedColor>white</ttmlNamedColor>
+            </colorMapping>
+        </colorMappings>
+    </xsl:param>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-    
     <xsl:template match="StlXml">
         <!--@ Interrupt if the STLXML file's time codes are not validated, i.e. TCS is set to '0' -->
         <xsl:if test="HEAD/GSI/TCS = '0'">
@@ -162,6 +267,13 @@ limitations under the License.
     <xsl:template match="GSI">
         <!--** Container for Metadata information for all the document's subtitles. Steps: -->
         <xsl:param name="frameRate"/>
+        <!--<xsl:variable name="test">
+            <xsl:call-template name="getStyle">
+                <xsl:with-param name="background" select="'AlphaBlue'"/>
+                <xsl:with-param name="foreground" select="'AlphaYellow'"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:value-of select="$test"/>-->
         <tt:metadata>
             <ebuttm:documentMetadata>
                 <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
@@ -201,70 +313,7 @@ limitations under the License.
                 tts:fontSize="1c 1c"
                 tts:lineHeight="normal"/>
             <!--@ Create all others supported styles -->
-            <tt:style xml:id="AlphaBlackOnAlphaRed" tts:color="black" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaBlackOnAlphaGreen" tts:color="black" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaBlackOnAlphaYellow" tts:color="black" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaBlackOnAlphaBlue" tts:color="black" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaBlackOnAlphaMagenta" tts:color="black" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaBlackOnAlphaCyan" tts:color="black" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaBlackOnAlphaWhite" tts:color="black" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaBlackOnAlphaBlack" tts:color="black" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaRedOnAlphaRed" tts:color="red" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaRedOnAlphaGreen" tts:color="red" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaRedOnAlphaYellow" tts:color="red" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaRedOnAlphaBlue" tts:color="red" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaRedOnAlphaMagenta" tts:color="red" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaRedOnAlphaCyan" tts:color="red" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaRedOnAlphaWhite" tts:color="red" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaRedOnAlphaBlack" tts:color="red" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaGreenOnAlphaRed" tts:color="lime" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaGreenOnAlphaGreen" tts:color="lime" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaGreenOnAlphaYellow" tts:color="lime" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaGreenOnAlphaBlue" tts:color="lime" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaGreenOnAlphaMagenta" tts:color="lime" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaGreenOnAlphaCyan" tts:color="lime" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaGreenOnAlphaWhite" tts:color="lime" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaGreenOnAlphaBlack" tts:color="lime" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaYellowOnAlphaRed" tts:color="yellow" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaYellowOnAlphaGreen" tts:color="yellow" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaYellowOnAlphaYellow" tts:color="yellow" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaYellowOnAlphaBlue" tts:color="yellow" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaYellowOnAlphaMagenta" tts:color="yellow" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaYellowOnAlphaCyan" tts:color="yellow" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaYellowOnAlphaWhite" tts:color="yellow" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaYellowOnAlphaBlack" tts:color="yellow" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaBlueOnAlphaRed" tts:color="blue" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaBlueOnAlphaGreen" tts:color="blue" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaBlueOnAlphaYellow" tts:color="blue" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaBlueOnAlphaBlue" tts:color="blue" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaBlueOnAlphaMagenta" tts:color="blue" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaBlueOnAlphaCyan" tts:color="blue" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaBlueOnAlphaWhite" tts:color="blue" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaBlueOnAlphaBlack" tts:color="blue" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaRed" tts:color="magenta" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaGreen" tts:color="magenta" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaYellow" tts:color="magenta" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaBlue" tts:color="magenta" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaMagenta" tts:color="magenta" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaCyan" tts:color="magenta" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaWhite" tts:color="magenta" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaMagentaOnAlphaBlack" tts:color="magenta" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaCyanOnAlphaRed" tts:color="cyan" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaCyanOnAlphaGreen" tts:color="cyan" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaCyanOnAlphaYellow" tts:color="cyan" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaCyanOnAlphaBlue" tts:color="cyan" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaCyanOnAlphaMagenta" tts:color="cyan" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaCyanOnAlphaCyan" tts:color="cyan" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaCyanOnAlphaWhite" tts:color="cyan" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaCyanOnAlphaBlack" tts:color="cyan" tts:backgroundColor="black"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaRed" tts:color="white" tts:backgroundColor="red"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaGreen" tts:color="white" tts:backgroundColor="lime"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaYellow" tts:color="white" tts:backgroundColor="yellow"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaBlue" tts:color="white" tts:backgroundColor="blue"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaMagenta" tts:color="white" tts:backgroundColor="magenta"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaCyan" tts:color="white" tts:backgroundColor="cyan"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaWhite" tts:color="white" tts:backgroundColor="white"/>
-            <tt:style xml:id="AlphaWhiteOnAlphaBlack" tts:color="white" tts:backgroundColor="black"/>
+            <xsl:copy-of select="$styleTemplates/tt:styling/tt:style"/>
             <tt:style xml:id="singleHeightLeft" tts:fontSize="1c 1c" tts:textAlign="start"/>
             <tt:style xml:id="singleHeightCenter" tts:fontSize="1c 1c" tts:textAlign="center"/>
             <tt:style xml:id="singleHeightRight" tts:fontSize="1c 1c" tts:textAlign="end"/>
@@ -911,13 +960,20 @@ limitations under the License.
             </xsl:when>
             <!--@ If the buffer has content and a Box was already started, create a tt:span element -->
             <xsl:when test="string-length($buffer) != 0 and $boxStarted = true()">
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$foreground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1067,13 +1123,20 @@ limitations under the License.
         <!--@ If the buffer is not empty, write it. However, this should not occur as it is assumed that every logical line ends with an EndBox element
             that writes the buffer -->
         <xsl:if test="string-length($buffer) &gt; 0">
+            <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+            <xsl:variable name="colorStyle">
+                <xsl:call-template name="getStyle">
+                    <xsl:with-param name="background" select="$background"/>
+                    <xsl:with-param name="foreground" select="$foreground"/>
+                </xsl:call-template>
+            </xsl:variable>
             <xsl:variable name="style">
                 <xsl:choose>
                     <xsl:when test="$doubleHeight">
-                        <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                        <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                        <xsl:value-of select="$colorStyle"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
@@ -1158,13 +1221,20 @@ limitations under the License.
         <xsl:choose>
             <!--@ If the buffer is not empty, write its content in a tt:span -->
             <xsl:when test="string-length(normalize-space($buffer)) &gt; 0 or ($JCspacetrimming = 'false' and string-length($buffer) &gt; 0 and $JC = '00')">
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$foreground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1264,14 +1334,20 @@ limitations under the License.
             <!--@ If the current background is not already black, write the buffer with the current styling and pass on 'AlphaBlack' as new
                 currently used background color -->
             <xsl:otherwise>
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$foreground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
-
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1331,13 +1407,20 @@ limitations under the License.
             <!--@ If background and foreground don't have the same color, write a new tt:span with the currently used 
                 styling and pass on the params with the correct buffer -->
             <xsl:when test="($foreground != $background) and string-length(normalize-space($buffer)) != 0">
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$foreground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1380,14 +1463,21 @@ limitations under the License.
                     <xsl:with-param name="oldforeground" select="$oldforeground"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="(name(following-sibling::node()[1]) != $oldforeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0)">
+            <xsl:when test="(name(following-sibling::node()[1]) != $oldforeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0) and $background != $oldbackground and $foreground != $oldforeground">
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$oldforeground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($oldforeground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1474,13 +1564,20 @@ limitations under the License.
                 to the current element, write a tt:span element with the current styling and pass on the current Color-element 
                 as new foreground with the correct buffer -->
             <xsl:when test="name(following-sibling::*[1]) = 'NewBackground' and string-length($buffer) &gt; 0 and $background != name(.)">
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$foreground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1541,13 +1638,20 @@ limitations under the License.
             </xsl:when>
             <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and string-length(normalize-space($buffer)) != 0 and ($background = $oldbackground and $oldforeground != name(.))">
                 <!--@ Match following sibling node with the foreground set to the current element's name -->
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$oldforeground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($oldforeground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($oldforeground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1592,13 +1696,20 @@ limitations under the License.
                 the current background is not the old background and the following element is not a NewBackground element, 
                 write a tt:span element with the current styling and pass on this element's color as new foreground with the correct buffer -->
             <xsl:when test="not(name(following-sibling::*[1]) = 'NewBackground') and (string-length(normalize-space($buffer)) != 0) and not(name(.) = $oldforeground and $background = $oldbackground) and $foreground != name(.)">
+                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+                <xsl:variable name="colorStyle">
+                    <xsl:call-template name="getStyle">
+                        <xsl:with-param name="background" select="$background"/>
+                        <xsl:with-param name="foreground" select="$foreground"/>
+                    </xsl:call-template>
+                </xsl:variable>
                 <xsl:variable name="style">
                     <xsl:choose>
                         <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($foreground, 'On', $background, ' ', 'doubleHeight')"/>
+                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="concat($foreground, 'On', $background)"/>
+                            <xsl:value-of select="$colorStyle"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -1661,6 +1772,53 @@ limitations under the License.
                         </xsl:choose>
                     </xsl:with-param>
                 </xsl:apply-templates>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template name="getColor">
+        <!--** Gets the ttmlNamedColor for the respective stlControlCode if the necessary information is given. Steps: -->
+        <xsl:param name="stlControlCode"/>
+        <xsl:choose>
+            <!--@ Terminate when there's no ttmlNamedColor given for the respective stlControlCode -->
+            <xsl:when test="not($colorMappings/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
+                <xsl:message terminate="yes">
+                    There is no ttmlNamedColor element given for the stlControlCode <xsl:value-of select="$stlControlCode"/>.
+                </xsl:message>
+            </xsl:when>
+            <!--@ Return ttmlNamedColor otherwise -->
+            <xsl:otherwise>
+                <xsl:value-of select="$colorMappings/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template name="getStyle">
+        <!--** Gets the xml:id of the style that references the provided fore- and background if the necessary information is given. Steps: -->
+        <xsl:param name="foreground"/>
+        <xsl:param name="background"/>
+        <!--@ Get named color from the provided stlControlCode for the foreground -->
+        <xsl:variable name="foreground_ttml">
+            <xsl:call-template name="getColor">
+                <xsl:with-param name="stlControlCode" select="$foreground"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <!--@ Get named color from the provided stlControlCode for the background -->
+        <xsl:variable name="background_ttml">
+            <xsl:call-template name="getColor">
+                <xsl:with-param name="stlControlCode" select="$background"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:choose>
+            <!--@ Terminate if there's no xml:id attribute belonging to a style with the respective settings for fore- and background -->
+            <xsl:when test="not($styleTemplates/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
+                <xsl:message terminate="yes">
+                    No tt:style was found with foreground: <xsl:value-of select="$foreground_ttml"/> and background: <xsl:value-of select="$background_ttml"/>.
+                </xsl:message>
+            </xsl:when>
+            <!--@ Return the xml:id attribute's value otherwise -->
+            <xsl:otherwise>
+                <xsl:value-of select="$styleTemplates/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>        
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

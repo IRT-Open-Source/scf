@@ -37,8 +37,8 @@ limitations under the License.
             </assert>
         </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[2]">
-            <assert test="@style = 'AlphaMagentaOnAlphaBlack'">
-                Expected value: "AlphaMagentaOnAlphaBlack" Value from test: "<value-of select="@style"/>"
+            <assert test="@style = 'MagentaOnBlack'">
+                Expected value: "MagentaOnBlack" Value from test: "<value-of select="@style"/>"
             </assert>
         </rule>
     </pattern>            
