@@ -27,7 +27,7 @@ limitations under the License.
     <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
     <xsl:param name="offsetInSeconds" select="0"/>
     <!--** Format that shall be used for the Time Code; supported by this transformation are 'smpte' and 'media' -->
-    <xsl:param name="timeCodeFormat" select="'smpte'"/>
+    <xsl:param name="timeBase" select="'smpte'"/>
     <!--** Indicates how to process TTI blocks with its Justification Code set to 00; 'true' trims leading spaces, 'false' preserves leading spaces -->
     <xsl:param name="JCspacetrimming" select="'true'"/>
     <!--** Provides the tt:style elements the mapped color is located in -->
@@ -180,9 +180,9 @@ limitations under the License.
         </xsl:variable>
         <xsl:choose>
             <!--** frameRate, frameRateMultiplier, markerMode and dropMode are only relevant for 'smpte' timeBase -->
-            <xsl:when test="$timeCodeFormat = 'smpte'">
+            <xsl:when test="$timeBase = 'smpte'">
                 <tt:tt
-                    ttp:timeBase="{$timeCodeFormat}"
+                    ttp:timeBase="{$timeBase}"
                     ttp:frameRate="{$frameRate}"
                     ttp:frameRateMultiplier="{$frameRateMultiplier}"
                     ttp:markerMode="discontinuous"
@@ -199,9 +199,9 @@ limitations under the License.
                     </xsl:apply-templates>
                 </tt:tt>
             </xsl:when>
-            <xsl:when test="$timeCodeFormat = 'media'">
+            <xsl:when test="$timeBase = 'media'">
                 <tt:tt
-                    ttp:timeBase="{$timeCodeFormat}"
+                    ttp:timeBase="{$timeBase}"
                     ttp:cellResolution="50 30"
                     xml:lang="{$language}">
                     <xsl:apply-templates select="HEAD">
@@ -573,7 +573,7 @@ limitations under the License.
             <xsl:apply-templates select="TCI">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
-                <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
+                <xsl:with-param name="timeCodeFormat" select="$timeBase"/>
             </xsl:apply-templates>
         </xsl:variable>
         <!--@ Convert content of TCO element into the desired time code format (media or smpte) using the given frame rate -->
@@ -581,7 +581,7 @@ limitations under the License.
             <xsl:apply-templates select="TCO">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
-                <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
+                <xsl:with-param name="timeCodeFormat" select="$timeBase"/>
             </xsl:apply-templates>
         </xsl:variable>
         <xsl:apply-templates select="EBN"/> 

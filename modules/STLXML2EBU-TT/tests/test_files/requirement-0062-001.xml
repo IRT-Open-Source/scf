@@ -21,7 +21,7 @@ limitations under the License.
         <metadata xmlns:scfm="http://www.irt.de/scf/metadata">
             <scfm:parameters>
                 <scfm:parameter>
-                    <scfm:name>timeCodeFormat</scfm:name>
+                    <scfm:name>timeBase</scfm:name>
                     <scfm:value>media</scfm:value>
                 </scfm:parameter>
             </scfm:parameters>
