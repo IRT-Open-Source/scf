@@ -320,9 +320,9 @@ limitations under the License.
             <tt:style xml:id="doubleHeight" tts:fontSize="1c 2c"/>
         </tt:styling>
         <tt:layout>
-            <!--@ Create tt:region element defining the defaultRegion -->
+            <!--@ Create tt:region element defining the bottomAligned region -->
             <tt:region 
-                xml:id="defaultRegion" 
+                xml:id="bottomAligned" 
                 tts:displayAlign="after" 
                 tts:padding="0c" 
                 tts:writingMode="lrtb" 
@@ -880,7 +880,7 @@ limitations under the License.
         <tt:p
             xml:id="{concat('sub', $SN)}"
             style="{$style}"
-            region="defaultRegion"
+            region="bottomAligned"
             begin="{$begin}"
             end="{$end}">
             <xsl:apply-templates select="child::*[1]">

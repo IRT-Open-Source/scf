@@ -55,8 +55,8 @@ limitations under the License.
             </assert>
         </rule>
         <rule context="tt:tt/tt:head/tt:layout/tt:region">
-            <assert test="@xml:id='defaultRegion'">
-                Expected value: "defaultRegion" Value from test: "<value-of select="@xml:id"/>"
+            <assert test="@xml:id='bottomAligned'">
+                Expected value: "bottomAligned" Value from test: "<value-of select="@xml:id"/>"
             </assert>
             <assert test="@tts:displayAlign='after'">
                 Expected value: "after" Value from test: "<value-of select="@tts:displayAlign"/>"
