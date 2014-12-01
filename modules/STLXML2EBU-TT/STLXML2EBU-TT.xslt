@@ -314,9 +314,9 @@ limitations under the License.
                 tts:lineHeight="normal"/>
             <!--@ Create all others supported styles -->
             <xsl:copy-of select="$styleTemplates/tt:styling/tt:style"/>
-            <tt:style xml:id="singleHeightLeft" tts:fontSize="1c 1c" tts:textAlign="start"/>
-            <tt:style xml:id="singleHeightCenter" tts:fontSize="1c 1c" tts:textAlign="center"/>
-            <tt:style xml:id="singleHeightRight" tts:fontSize="1c 1c" tts:textAlign="end"/>
+            <tt:style xml:id="textAlignLeft" tts:textAlign="start"/>
+            <tt:style xml:id="textAlignCenter" tts:textAlign="center"/>
+            <tt:style xml:id="textAlignRight" tts:textAlign="end"/>
             <tt:style xml:id="doubleHeight" tts:fontSize="1c 2c"/>
         </tt:styling>
         <tt:layout>
@@ -861,19 +861,19 @@ limitations under the License.
             <xsl:choose>
                 <!--** JC 00 equals to unchanged representation -->
                 <xsl:when test="$JC = '00'">
-                    <xsl:value-of select="'singleHeightCenter'"/>
+                    <xsl:value-of select="'textAlignCenter'"/>
                 </xsl:when>
                 <!--** JC 01 equals to left-justified text -->
                 <xsl:when test="$JC = '01'">
-                    <xsl:value-of select="'singleHeightLeft'"/>
+                    <xsl:value-of select="'textAlignLeft'"/>
                 </xsl:when>
                 <!--** JC 02 equals to centered text -->
                 <xsl:when test="$JC = '02'">
-                    <xsl:value-of select="'singleHeightCenter'"/>
+                    <xsl:value-of select="'textAlignCenter'"/>
                 </xsl:when>
                 <!--** JC 03 equals to right-justified text -->
                 <xsl:when test="$JC = '03'">
-                    <xsl:value-of select="'singleHeightRight'"/>
+                    <xsl:value-of select="'textAlignRight'"/>
                 </xsl:when>
             </xsl:choose>
         </xsl:variable>
