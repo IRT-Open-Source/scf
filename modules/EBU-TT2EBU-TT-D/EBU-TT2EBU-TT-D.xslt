@@ -637,16 +637,18 @@ limitations under the License.
         <xsl:param name="frames"/>
         <xsl:param name="legacyTimeBase"/>
         <xsl:param name="frameRate"/>
-        <!--@ Calculate hours, minutes and seconds depending on the given offset parameter -->
-        <xsl:variable name="mediahours" select="number($hours) - floor($offsetInSeconds div 3600)"/>
-        <xsl:variable name="mediaminutes" select="number($minutes) - floor(($offsetInSeconds mod 3600) div 60)"/>
-        <xsl:variable name="mediaseconds" select="number($seconds) - floor(($offsetInSeconds mod 3600) mod 60)"/>
+        <!--@ Calculate the value in seconds of the current timestamp -->
+        <xsl:variable name="stampValueInSeconds" select="$seconds + $minutes * 60 + $hours * 3600"/>
         <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
-        <xsl:if test="$mediahours &lt; 0 or $mediaminutes &lt; 0 or $mediaseconds &lt; 0">
+        <xsl:if test="$offsetInSeconds &gt; $stampValueInSeconds">
             <xsl:message terminate="yes">
-                The chosen offset would result in a negative timestamp for an end value.
+                The chosen offset would result in a negative timestamp. stamp: <xsl:value-of select="concat($hours, $minutes, $seconds, $frames)"/> 
             </xsl:message>
         </xsl:if>
+        <!--@ Calculate hours, minutes and seconds depending on the given offset parameter -->
+        <xsl:variable name="mediahours" select="floor(($stampValueInSeconds - $offsetInSeconds) div 3600)"/>
+        <xsl:variable name="mediaminutes" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) div 60)"/>
+        <xsl:variable name="mediaseconds" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) mod 60)"/>
         <!--@ Add leading zeros if necessary -->
         <xsl:variable name="outputhours">
             <xsl:choose>
