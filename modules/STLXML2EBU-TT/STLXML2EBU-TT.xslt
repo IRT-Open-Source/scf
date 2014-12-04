@@ -28,8 +28,6 @@ limitations under the License.
     <xsl:param name="offsetInSeconds" select="0"/>
     <!--** Format that shall be used for the Time Code; supported by this transformation are 'smpte' and 'media' -->
     <xsl:param name="timeBase" select="'smpte'"/>
-    <!--** Indicates how to process TTI blocks with its Justification Code set to 00; 'true' trims leading spaces, 'false' preserves leading spaces -->
-    <xsl:param name="JCspacetrimming" select="'true'"/>
     <!--** Provides the tt:style elements the mapped color is located in -->
     <xsl:param name="styleTemplates">
         <tt:styling>
@@ -889,7 +887,6 @@ limitations under the License.
                 <xsl:with-param name="buffer" select="''"/>
                 <xsl:with-param name="foreground" select="'AlphaWhite'"/>
                 <xsl:with-param name="background" select="'AlphaBlack'"/>
-                <xsl:with-param name="JC" select="$JC"/>
                 <xsl:with-param name="spanCreated" select="false()"/>
                 <xsl:with-param name="oldbackground" select="'AlphaBlack'"/>
                 <xsl:with-param name="oldforeground" select="'AlphaWhite'"/>
@@ -937,7 +934,6 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
@@ -951,7 +947,6 @@ limitations under the License.
                     <xsl:with-param name="background" select="$background"/>
                     <xsl:with-param name="buffer" select="$buffer"/>
                     <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -978,27 +973,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                            <xsl:apply-templates select="following-sibling::node()[1]">
-                                <!--** Tunnel parameters needed for value calculation of following elements; use empty buffer
-                                    as the current buffer has already been written -->
-                                <xsl:with-param name="foreground" select="$foreground"/>
-                                <xsl:with-param name="background" select="$background"/>
-                                <xsl:with-param name="buffer" select="''"/>
-                                <xsl:with-param name="boxStarted" select="true()"/>
-                                <xsl:with-param name="JC" select="$JC"/>
-                                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                                <xsl:with-param name="spanCreated" select="true()"/>
-                                <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                                <xsl:with-param name="oldforeground" select="$oldforeground"/>
-                            </xsl:apply-templates>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1011,7 +985,6 @@ limitations under the License.
                                 <xsl:with-param name="background" select="$background"/>
                                 <xsl:with-param name="buffer" select="''"/>
                                 <xsl:with-param name="boxStarted" select="true()"/>
-                                <xsl:with-param name="JC" select="$JC"/>
                                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                                 <xsl:with-param name="spanCreated" select="true()"/>
                                 <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1031,7 +1004,6 @@ limitations under the License.
                                 <xsl:with-param name="background" select="$background"/>
                                 <xsl:with-param name="buffer" select="''"/>
                                 <xsl:with-param name="boxStarted" select="true()"/>
-                                <xsl:with-param name="JC" select="$JC"/>
                                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                                 <xsl:with-param name="spanCreated" select="true()"/>
                                 <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1050,7 +1022,6 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="boxStarted" select="false()"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
@@ -1063,7 +1034,6 @@ limitations under the License.
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="buffer" select="$bufferadded"/>
-            <xsl:with-param name="JC" select="$JC"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1077,7 +1047,6 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
@@ -1091,7 +1060,6 @@ limitations under the License.
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
-            <xsl:with-param name="JC" select="$JC"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1115,7 +1083,6 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
@@ -1141,14 +1108,6 @@ limitations under the License.
                 </xsl:choose>
             </xsl:variable>
             <xsl:choose>
-                <!--** If JC is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                    <tt:span
-                        style="{$style}"
-                        xml:space="preserve">
-                        <xsl:value-of select="$buffer"/>
-                    </tt:span>
-                </xsl:when>
                 <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                 <xsl:when test="$spanCreated">
                     <tt:span
@@ -1174,7 +1133,6 @@ limitations under the License.
             <xsl:with-param name="background" select="'AlphaBlack'"/>
             <xsl:with-param name="boxStarted" select="false()"/>
             <xsl:with-param name="buffer" select="''"/>
-            <xsl:with-param name="JC" select="$JC"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="false()"/>
             <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1188,7 +1146,6 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight" select="true()"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
@@ -1199,7 +1156,6 @@ limitations under the License.
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="buffer" select="$buffer"/>
-            <xsl:with-param name="JC" select="$JC"/>
             <xsl:with-param name="doubleHeight" select="true()"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1213,14 +1169,13 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
         <xsl:param name="oldbackground"/>
         <xsl:choose>
             <!--@ If the buffer is not empty, write its content in a tt:span -->
-            <xsl:when test="string-length(normalize-space($buffer)) &gt; 0 or ($JCspacetrimming = 'false' and string-length($buffer) &gt; 0 and $JC = '00')">
+            <xsl:when test="string-length(normalize-space($buffer)) &gt; 0">
                 <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
                 <xsl:variable name="colorStyle">
                     <xsl:call-template name="getStyle">
@@ -1239,14 +1194,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1268,7 +1215,6 @@ limitations under the License.
                     <xsl:with-param name="background" select="$background"/>
                     <xsl:with-param name="boxStarted" select="false()"/>
                     <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1283,7 +1229,6 @@ limitations under the License.
                     <xsl:with-param name="background" select="$background"/>
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
@@ -1298,8 +1243,7 @@ limitations under the License.
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
-        <xsl:param name="buffer" select="''"/>    
-        <xsl:param name="JC"/>
+        <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldforeground"/>
@@ -1310,7 +1254,6 @@ limitations under the License.
                 <xsl:apply-templates select="following-sibling::node()[1]">
                     <xsl:with-param name="foreground" select="$foreground"/>
                     <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
@@ -1352,14 +1295,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1382,7 +1317,6 @@ limitations under the License.
                     <xsl:with-param name="background" select="'AlphaBlack'"/>
                     <xsl:with-param name="boxStarted" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="oldbackground" select="$background"/>
@@ -1400,7 +1334,6 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="oldbackground"/>
         <xsl:param name="oldforeground"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:choose>
@@ -1425,14 +1358,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1455,7 +1380,6 @@ limitations under the License.
                     <xsl:with-param name="foreground" select="$foreground"/>
                     <xsl:with-param name="background" select="$foreground"/>
                     <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
@@ -1482,14 +1406,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1512,7 +1428,6 @@ limitations under the License.
                     <xsl:with-param name="foreground" select="$foreground"/>
                     <xsl:with-param name="background" select="$foreground"/>
                     <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
@@ -1542,7 +1457,6 @@ limitations under the License.
                     </xsl:with-param>
                     <xsl:with-param name="oldbackground" select="$background"/>
                     <xsl:with-param name="oldforeground" select="$oldforeground"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                 </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
@@ -1556,7 +1470,6 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="oldforeground"/>
         <xsl:param name="oldbackground"/>
-        <xsl:param name="JC"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:choose>
@@ -1582,14 +1495,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1614,7 +1519,6 @@ limitations under the License.
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
                     <xsl:with-param name="oldforeground" select="$foreground"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''" />
@@ -1631,7 +1535,6 @@ limitations under the License.
                     <xsl:with-param name="buffer" select="$buffer"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
                     <xsl:with-param name="oldforeground" select="$foreground"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
                 </xsl:apply-templates>
@@ -1656,14 +1559,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1685,7 +1580,6 @@ limitations under the License.
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
                     <xsl:with-param name="oldforeground" select="$foreground"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
@@ -1714,14 +1608,6 @@ limitations under the License.
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:choose>
-                    <!--** If VP is '00' and JCspacetrimming is false, set xml:space to preserve and write the un-normalized content of the buffer -->
-                    <xsl:when test="$JCspacetrimming = 'false' and $JC = '00'">
-                        <tt:span
-                            style="{$style}"
-                            xml:space="preserve">
-                            <xsl:value-of select="$buffer"/>
-                        </tt:span>
-                    </xsl:when>
                     <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
                     <xsl:when test="$spanCreated">
                         <tt:span
@@ -1743,7 +1629,6 @@ limitations under the License.
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
                     <xsl:with-param name="oldforeground" select="$foreground"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
@@ -1758,7 +1643,6 @@ limitations under the License.
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="oldforeground" select="$foreground"/>
                     <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="JC" select="$JC"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
                     <xsl:with-param name="buffer">
@@ -1830,7 +1714,6 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()" />
         <xsl:param name="buffer" select="''" />
-        <xsl:param name="JC" />
         <xsl:param name="doubleHeight" />
         <xsl:param name="spanCreated" />
         <xsl:param name="oldforeground"/>
@@ -1841,7 +1724,6 @@ limitations under the License.
             <xsl:with-param name="background" select="'AlphaBlack'" />
             <xsl:with-param name="boxStarted" select="$boxStarted" />
             <xsl:with-param name="buffer" select="$buffer" />
-            <xsl:with-param name="JC" select="$JC" />
             <xsl:with-param name="doubleHeight" select="$doubleHeight" />
             <xsl:with-param name="spanCreated" select="$spanCreated" />
             <xsl:with-param name="oldbackground" select="$oldbackground"/>
