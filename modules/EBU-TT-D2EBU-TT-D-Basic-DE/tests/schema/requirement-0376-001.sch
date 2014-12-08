@@ -20,17 +20,17 @@ limitations under the License.
         schemaVersion="ISO19757-3">
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
-    <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing xml:lang attribute with value "en"</title>
+    <ns uri="http://www.w3.org/ns/ttml#parameter" prefix="ttp"/>
+    <title>Testing ttp:cellResolution attribute with value "50 30"</title>
     <pattern id="LanguageCode">
         <rule context="/">
-            <assert test="tt:tt/@xml:lang">
-                The xml:lang attribute must be present.
+            <assert test="tt:tt/@ttp:cellResolution">
+                The ttp:cellResolution attribute must be present.
             </assert> 
         </rule>
-        <rule context="tt:tt/@xml:lang">
-            <assert test=". = 'en'">
-                Expected value: "en" Value from test: "<value-of select="."/>"
+        <rule context="tt:tt/@ttp:cellResolution">
+            <assert test=". = '50 30'">
+                Expected value: "50 30" Value from test: "<value-of select="."/>"
             </assert> 
         </rule>
     </pattern>            

@@ -15,23 +15,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<schema xmlns="http://purl.oclc.org/dsdl/schematron"  
-        queryBinding="xslt" 
-        schemaVersion="ISO19757-3">
+<schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing xml:lang attribute with value "en"</title>
-    <pattern id="LanguageCode">
+    <title>Testing color mapping with changing background color</title>
+    <pattern id="SpanStyleColor">
         <rule context="/">
-            <assert test="tt:tt/@xml:lang">
-                The xml:lang attribute must be present.
+            <assert test="tt:tt/tt:body/tt:div/tt:p[2]/tt:span[1]">
+                The first tt:span element must be present.
+            </assert> 
+            <assert test="tt:tt/tt:body/tt:div/tt:p[2]/tt:span[2]">
+                The second tt:span element must be present.
+            </assert> 
+        </rule>    
+        <rule context="tt:tt/tt:body/tt:div/tt:p[2]/tt:span[1]">
+            <assert test="@style = 'textBlack'">
+                Expected value "textBlack" "<value-of select="@style"/>"
             </assert> 
         </rule>
-        <rule context="tt:tt/@xml:lang">
-            <assert test=". = 'en'">
-                Expected value: "en" Value from test: "<value-of select="."/>"
+        <rule context="tt:tt/tt:body/tt:div/tt:p[2]/tt:span[2]">
+            <assert test="@style = 'textBlack'">
+                Expected value "textBlack" "<value-of select="@style"/>"
             </assert> 
         </rule>
-    </pattern>            
+    </pattern>           
 </schema>
