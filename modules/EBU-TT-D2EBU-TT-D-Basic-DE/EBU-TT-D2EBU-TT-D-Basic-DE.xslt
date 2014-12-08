@@ -303,25 +303,21 @@
                 The begin attribute of the tt:p element has invalid content. 
             </xsl:message>
         </xsl:if>
-        <xsl:variable name="beginhours" select="substring($begin, 1, 2)"/>
-        <xsl:variable name="beginminutes" select="substring($begin, 4, 2)"/>
-        <xsl:variable name="beginseconds" select="substring($begin, 7, 2)"/>
-        <xsl:variable name="beginframes" select="substring($begin, 10, 3)"/>
+        <xsl:variable name="beginHours" select="substring($begin, 1, 2)"/>
+        <xsl:variable name="beginMinutes" select="substring($begin, 4, 2)"/>
+        <xsl:variable name="beginSeconds" select="substring($begin, 7, 2)"/>
+        <xsl:variable name="beginFrames" select="substring($begin, 10, 3)"/>
         <xsl:choose>
             <!-- Check validity of time-stamp -->
-            <xsl:when test="string-length($begin) = 12 and
-                number($beginhours) &gt;= 0 and number($beginhours) &lt; 24 and
-                number($beginminutes) &gt;= 0 and number($beginminutes) &lt; 60 and
-                number($beginseconds) &gt;= 0 and number($beginseconds) &lt; 60 and
-                number($beginframes) &gt;= 0 and number($beginframes) &lt; 968">
-                <xsl:number value="$beginhours" format="01"/>:<xsl:number 
-                    value="$beginminutes" format="01"/>:<xsl:number 
-                        value="$beginseconds" format="01"/>.<xsl:number 
-                            value="$beginframes" format="001"/>
+            <xsl:when test="number($beginHours) &gt;= 0 and number($beginHours) &lt; 24 and
+                number($beginMinutes) &gt;= 0 and number($beginMinutes) &lt; 60 and
+                number($beginSeconds) &gt;= 0 and number($beginSeconds) &lt; 60 and
+                number($beginFrames) &gt;= 0 and number($beginFrames) &lt;= 999">
+                <xsl:value-of select="concat($beginHours, ':', $beginMinutes, ':', $beginSeconds, '.', $beginFrames)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:message terminate="yes">
-                    The begin attribute should use a valid media timeformat. 
+                    The begin attribute should use a valid media timeformat.
                 </xsl:message>
             </xsl:otherwise>
         </xsl:choose>
@@ -335,25 +331,21 @@
                 The begin attribute of the tt:p element has invalid content. 
             </xsl:message>
         </xsl:if>
-        <xsl:variable name="endhours" select="substring($end, 1, 2)"/>
-        <xsl:variable name="endminutes" select="substring($end, 4, 2)"/>
-        <xsl:variable name="endseconds" select="substring($end, 7, 2)"/>
-        <xsl:variable name="endframes" select="substring($end, 10, 3)"/>
+        <xsl:variable name="endHours" select="substring($end, 1, 2)"/>
+        <xsl:variable name="endMinutes" select="substring($end, 4, 2)"/>
+        <xsl:variable name="endSeconds" select="substring($end, 7, 2)"/>
+        <xsl:variable name="endFrames" select="substring($end, 10, 3)"/>
         <xsl:choose>
             <!-- Check validity of time-stamp -->
-            <xsl:when test="string-length($end) = 12 and
-                number($endhours) &gt;= 0 and number($endhours) &lt; 24 and
-                number($endminutes) &gt;= 0 and number($endminutes) &lt; 60 and
-                number($endseconds) &gt;= 0 and number($endseconds) &lt; 60 and
-                number($endframes) &gt;= 0 and number($endframes) &lt; 968">
-                <xsl:number value="$endhours" format="01"/>:<xsl:number 
-                    value="$endminutes" format="01"/>:<xsl:number 
-                        value="$endseconds" format="01"/>.<xsl:number 
-                            value="$endframes" format="001"/>
+            <xsl:when test="number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
+                number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
+                number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
+                number($endFrames) &gt;= 0 and number($endFrames) &lt;= 999">
+                <xsl:value-of select="concat($endHours, ':', $endMinutes, ':', $endSeconds, '.', $endFrames)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:message terminate="yes">
-                    The begin attribute should use a valid media timeformat. 
+                    The end attribute should use a valid media timeformat.
                 </xsl:message>
             </xsl:otherwise>
         </xsl:choose>
