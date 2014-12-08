@@ -567,7 +567,7 @@ limitations under the License.
         <!--** Container for the elements located within a TTI block. Steps: -->
         <xsl:param name="frameRate"/>
         <!--@ Convert content of TCI element into the desired time code format (media or smpte) using the given frame rate -->
-        <xsl:variable name="convertedbegin">
+        <xsl:variable name="convertedBegin">
             <xsl:apply-templates select="TCI">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
@@ -575,7 +575,7 @@ limitations under the License.
             </xsl:apply-templates>
         </xsl:variable>
         <!--@ Convert content of TCO element into the desired time code format (media or smpte) using the given frame rate -->
-        <xsl:variable name="convertedend">
+        <xsl:variable name="convertedEnd">
             <xsl:apply-templates select="TCO">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
@@ -587,8 +587,8 @@ limitations under the License.
         <xsl:apply-templates select="JC"/>
         <xsl:apply-templates select="TF">
             <!--** Tunnel parameters needed for value calculation of decending elements -->
-            <xsl:with-param name="begin" select="$convertedbegin"/>
-            <xsl:with-param name="end" select="$convertedend"/>
+            <xsl:with-param name="begin" select="$convertedBegin"/>
+            <xsl:with-param name="end" select="$convertedEnd"/>
             <xsl:with-param name="SN" select="normalize-space(SN)"/>
             <xsl:with-param name="JC" select="normalize-space(JC)"/>
             <xsl:with-param name="VP" select="normalize-space(VP)"/>
@@ -641,10 +641,10 @@ limitations under the License.
             </xsl:message>
         </xsl:if>
         <!--@ Split content-string in hours, minutes, seconds and frames; the TCI elmeent's content is always a smpte formatted time code -->
-        <xsl:variable name="beginhours" select="substring($begin, 1, 2)"/>
-        <xsl:variable name="beginminutes" select="substring($begin, 3, 2)"/>
-        <xsl:variable name="beginseconds" select="substring($begin, 5, 2)"/>
-        <xsl:variable name="beginframes" select="substring($begin, 7, 2)"/>
+        <xsl:variable name="beginHours" select="substring($begin, 1, 2)"/>
+        <xsl:variable name="beginMinutes" select="substring($begin, 3, 2)"/>
+        <xsl:variable name="beginSeconds" select="substring($begin, 5, 2)"/>
+        <xsl:variable name="beginFrames" select="substring($begin, 7, 2)"/>
         <xsl:choose>
             <!--@ When timeCodeFormat 'media' is set, it has to be calculated from STLXML file's smpte timeCodeFormat.
                 If timeCodeFormat 'smpte' is used, the values can be copied, subdividing with ':' is necessary -->
@@ -652,18 +652,18 @@ limitations under the License.
                 <xsl:choose>
                     <!--@ Check validity for 25 frames -->
                     <xsl:when test="string-length(normalize-space($begin)) = 8 and
-                        number($beginhours) &gt;= 0 and number($beginhours) &lt; 24 and
-                        number($beginminutes) &gt;= 0 and number($beginminutes) &lt; 60 and
-                        number($beginseconds) &gt;= 0 and number($beginseconds) &lt; 60 and
-                        number($beginframes) &gt;= 0 and number($beginframes) &lt; 25 and 
+                        number($beginHours) &gt;= 0 and number($beginHours) &lt; 24 and
+                        number($beginMinutes) &gt;= 0 and number($beginMinutes) &lt; 60 and
+                        number($beginSeconds) &gt;= 0 and number($beginSeconds) &lt; 60 and
+                        number($beginFrames) &gt;= 0 and number($beginFrames) &lt; 25 and 
                         $frameRate = '25'">
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$beginframes"/>
-                            <xsl:with-param name="seconds" select="$beginseconds"/>
-                            <xsl:with-param name="minutes" select="$beginminutes"/>
-                            <xsl:with-param name="hours" select="$beginhours"/>
+                            <xsl:with-param name="frames" select="$beginFrames"/>
+                            <xsl:with-param name="seconds" select="$beginSeconds"/>
+                            <xsl:with-param name="minutes" select="$beginMinutes"/>
+                            <xsl:with-param name="hours" select="$beginHours"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--@ Interrupt when the given value isn't correct for 25 frames -->
@@ -784,62 +784,62 @@ limitations under the License.
             </xsl:message>
         </xsl:if>
         <!--@ Calculate hours, minutes and seconds depending on the given offset parameter -->
-        <xsl:variable name="mediahours" select="floor(($stampValueInSeconds - $offsetInSeconds) div 3600)"/>
-        <xsl:variable name="mediaminutes" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) div 60)"/>
-        <xsl:variable name="mediaseconds" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) mod 60)"/>
+        <xsl:variable name="mediaHours" select="floor(($stampValueInSeconds - $offsetInSeconds) div 3600)"/>
+        <xsl:variable name="mediaMinutes" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) div 60)"/>
+        <xsl:variable name="mediaSeconds" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) mod 60)"/>
         <!--@ Add leading zeros if necessary -->
-        <xsl:variable name="outputhours">
+        <xsl:variable name="outputHours">
             <xsl:choose>
-                <xsl:when test="string-length($mediahours) = 1">
-                    <xsl:value-of select="concat('0', $mediahours)"/>
+                <xsl:when test="string-length($mediaHours) = 1">
+                    <xsl:value-of select="concat('0', $mediaHours)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="$mediahours"/>
+                    <xsl:value-of select="$mediaHours"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="outputminutes">
+        <xsl:variable name="outputMinutes">
             <xsl:choose>
-                <xsl:when test="string-length($mediaminutes) = 1">
-                    <xsl:value-of select="concat('0', $mediaminutes)"/>
+                <xsl:when test="string-length($mediaMinutes) = 1">
+                    <xsl:value-of select="concat('0', $mediaMinutes)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="$mediaminutes"/>
+                    <xsl:value-of select="$mediaMinutes"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="outputseconds">
+        <xsl:variable name="outputSeconds">
             <xsl:choose>
-                <xsl:when test="string-length($mediaseconds) = 1">
-                    <xsl:value-of select="concat('0', $mediaseconds)"/>
+                <xsl:when test="string-length($mediaSeconds) = 1">
+                    <xsl:value-of select="concat('0', $mediaSeconds)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="$mediaseconds"/>
+                    <xsl:value-of select="$mediaSeconds"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <xsl:choose>
             <!--@ If timebase is media, convert the frames to milliseconds and concatenate afterwards -->
             <xsl:when test="$timeCodeFormat = 'media'">
-                <xsl:variable name="mediaframes" select="(number($frames) div number($frameRate))*1000 mod 1000"/>
-                <xsl:variable name="outputfraction">
+                <xsl:variable name="mediaFrames" select="(number($frames) div number($frameRate))*1000 mod 1000"/>
+                <xsl:variable name="outputFraction">
                     <xsl:choose>
-                        <xsl:when test="string-length($mediaframes) = 1">
-                            <xsl:value-of select="concat('00', $mediaframes)"/>
+                        <xsl:when test="string-length($mediaFrames) = 1">
+                            <xsl:value-of select="concat('00', $mediaFrames)"/>
                         </xsl:when>
-                        <xsl:when test="string-length($mediaframes) = 2">
-                            <xsl:value-of select="concat('0', $mediaframes)"/>
+                        <xsl:when test="string-length($mediaFrames) = 2">
+                            <xsl:value-of select="concat('0', $mediaFrames)"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="$mediaframes"/>
+                            <xsl:value-of select="$mediaFrames"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
-                <xsl:value-of select="concat($outputhours, ':', $outputminutes, ':', $outputseconds, '.', $outputfraction)"/>
+                <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>
             </xsl:when>
             <!--@ If timebase is smpte, concatenate the frames to the calculated values -->
             <xsl:when test="$timeCodeFormat = 'smpte'">
-                <xsl:value-of select="concat($outputhours, ':', $outputminutes, ':', $outputseconds, ':', $frames)"/>                
+                <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, ':', $frames)"/>                
             </xsl:when>
             <!--@ Interrupt if the source's timeCodeFormat is neither 'media' nor 'smpte' -->
             <xsl:otherwise>
@@ -890,8 +890,8 @@ limitations under the License.
                 <xsl:with-param name="foreground" select="'AlphaWhite'"/>
                 <xsl:with-param name="background" select="'AlphaBlack'"/>
                 <xsl:with-param name="spanCreated" select="false()"/>
-                <xsl:with-param name="oldbackground" select="'AlphaBlack'"/>
-                <xsl:with-param name="oldforeground" select="'AlphaWhite'"/>
+                <xsl:with-param name="oldBackground" select="'AlphaBlack'"/>
+                <xsl:with-param name="oldForeground" select="'AlphaWhite'"/>
             </xsl:apply-templates>
             <!--@ Calculate the amount of lines already used by the subtitle itself -->
             <xsl:variable name="lines" >
@@ -938,8 +938,8 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <!--@ If current StartBox element is followed by another one, the current one doesn't create a tt:span -->
         <xsl:choose>
             <xsl:when test="string-length(normalize-space($buffer)) = 0">
@@ -951,8 +951,8 @@ limitations under the License.
                     <xsl:with-param name="boxStarted" select="true()"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:when>
             <!--@ If the buffer has content and a Box was already started, create a tt:span element -->
@@ -989,8 +989,8 @@ limitations under the License.
                                 <xsl:with-param name="boxStarted" select="true()"/>
                                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                                 <xsl:with-param name="spanCreated" select="true()"/>
-                                <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                                <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                                <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                                <xsl:with-param name="oldForeground" select="$oldForeground"/>
                             </xsl:apply-templates>
                         </tt:span>
                     </xsl:when>
@@ -1008,8 +1008,8 @@ limitations under the License.
                                 <xsl:with-param name="boxStarted" select="true()"/>
                                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                                 <xsl:with-param name="spanCreated" select="true()"/>
-                                <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                                <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                                <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                                <xsl:with-param name="oldForeground" select="$oldForeground"/>
                             </xsl:apply-templates>
                         </tt:span>
                     </xsl:otherwise>
@@ -1026,20 +1026,20 @@ limitations under the License.
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <!--@ Append normalized text-node to the current buffer -->
-        <xsl:variable name="bufferadded" select="concat($buffer, string(normalize-space(.)))"/>
+        <xsl:variable name="bufferAdded" select="concat($buffer, string(normalize-space(.)))"/>
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements; forward updated buffer -->
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
-            <xsl:with-param name="buffer" select="$bufferadded"/>
+            <xsl:with-param name="buffer" select="$bufferAdded"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="oldbackground" select="$oldbackground"/>
-            <xsl:with-param name="oldforeground" select="$oldforeground"/>
+            <xsl:with-param name="oldBackground" select="$oldBackground"/>
+            <xsl:with-param name="oldForeground" select="$oldForeground"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -1051,10 +1051,10 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <!--@ Append a space to the current buffer -->
-        <xsl:variable name="bufferadded" select="concat($buffer, ' ')"/>
+        <xsl:variable name="bufferAdded" select="concat($buffer, ' ')"/>
         <!--@ When a box was started, meaning the space element is located either between two StartBoxes or between a StartBox 
             and an EndBox, process the space element by forwarding the appended buffer-->
         <xsl:apply-templates select="following-sibling::node()[1]">
@@ -1064,12 +1064,12 @@ limitations under the License.
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="oldbackground" select="$oldbackground"/>
-            <xsl:with-param name="oldforeground" select="$oldforeground"/>
+            <xsl:with-param name="oldBackground" select="$oldBackground"/>
+            <xsl:with-param name="oldForeground" select="$oldForeground"/>
             <xsl:with-param name="buffer">
                 <xsl:choose>
                     <xsl:when test="$boxStarted">
-                        <xsl:value-of select="$bufferadded"/>
+                        <xsl:value-of select="$bufferAdded"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="$buffer"/>
@@ -1087,8 +1087,8 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <!--@ If the buffer is not empty, write it. However, this should not occur as it is assumed that every logical line ends with an EndBox element
             that writes the buffer -->
         <xsl:if test="string-length($buffer) &gt; 0">
@@ -1137,8 +1137,8 @@ limitations under the License.
             <xsl:with-param name="buffer" select="''"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="false()"/>
-            <xsl:with-param name="oldbackground" select="$oldbackground"/>
-            <xsl:with-param name="oldforeground" select="$oldforeground"/>
+            <xsl:with-param name="oldBackground" select="$oldBackground"/>
+            <xsl:with-param name="oldForeground" select="$oldForeground"/>
         </xsl:apply-templates>        
     </xsl:template>
     
@@ -1150,8 +1150,8 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight" select="true()"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <xsl:with-param name="foreground" select="$foreground"/>
@@ -1160,8 +1160,8 @@ limitations under the License.
             <xsl:with-param name="buffer" select="$buffer"/>
             <xsl:with-param name="doubleHeight" select="true()"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="oldbackground" select="$oldbackground"/>
-            <xsl:with-param name="oldforeground" select="$oldforeground"/>
+            <xsl:with-param name="oldBackground" select="$oldBackground"/>
+            <xsl:with-param name="oldForeground" select="$oldForeground"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -1173,8 +1173,8 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <xsl:choose>
             <!--@ If the buffer is not empty, write its content in a tt:span -->
             <xsl:when test="string-length(normalize-space($buffer)) &gt; 0">
@@ -1219,8 +1219,8 @@ limitations under the License.
                     <xsl:with-param name="buffer" select="''"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:when>
             <!--@ If the buffer is empty, just pass on the parameters -->
@@ -1233,8 +1233,8 @@ limitations under the License.
                     <xsl:with-param name="buffer" select="''"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
@@ -1248,8 +1248,8 @@ limitations under the License.
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <xsl:choose>
             <!--@ If the current background is already black, just pass on the parameters with the correct buffer -->
             <xsl:when test="$background = 'AlphaBlack'">
@@ -1259,8 +1259,8 @@ limitations under the License.
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                     <xsl:with-param name="buffer">
                         <xsl:choose>
                             <!--@ If the following node is a text node, a box has been started and the current buffer doesn't end with a space (' '), append a space (' ');
@@ -1321,8 +1321,8 @@ limitations under the License.
                     <xsl:with-param name="buffer" select="''"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="oldbackground" select="$background"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$background"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
@@ -1334,8 +1334,8 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="oldbackground"/>
-        <xsl:param name="oldforeground"/>
+        <xsl:param name="oldBackground"/>
+        <xsl:param name="oldForeground"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:choose>
@@ -1385,16 +1385,16 @@ limitations under the License.
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="oldbackground" select="$background"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$background"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="(name(following-sibling::node()[1]) != $oldforeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0) and $background != $oldbackground and $foreground != $oldforeground">
+            <xsl:when test="(name(following-sibling::node()[1]) != $oldForeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0) and $background != $oldBackground and $foreground != $oldForeground">
                 <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
                 <xsl:variable name="colorStyle">
                     <xsl:call-template name="getStyle">
                         <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$oldforeground"/>
+                        <xsl:with-param name="foreground" select="$oldForeground"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:variable name="style">
@@ -1433,8 +1433,8 @@ limitations under the License.
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="oldbackground" select="$background"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$background"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:when>
             <!--@ If background and foreground have the same color, just pass on the parameters -->
@@ -1457,8 +1457,8 @@ limitations under the License.
                             </xsl:when>
                         </xsl:choose>
                     </xsl:with-param>
-                    <xsl:with-param name="oldbackground" select="$background"/>
-                    <xsl:with-param name="oldforeground" select="$oldforeground"/>
+                    <xsl:with-param name="oldBackground" select="$background"/>
+                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
@@ -1470,8 +1470,8 @@ limitations under the License.
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:choose>
@@ -1519,8 +1519,8 @@ limitations under the License.
                     <xsl:with-param name="foreground" select="name(.)"/>
                     <xsl:with-param name="background" select="$background"/>
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$foreground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$foreground"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''" />
@@ -1528,26 +1528,26 @@ limitations under the License.
             </xsl:when>
             <!--@ If the preceding element is a NewBackground element and the background used before was the same color
                 as the current element, just pass on the parameters with the current color as new foreground -->
-            <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and ($oldbackground = name(.) or $background = name(.))">
+            <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and ($oldBackground = name(.) or $background = name(.))">
                 <!--@ Match following sibling node with the foreground set to the current element's name -->
                 <xsl:apply-templates select="following-sibling::node()[1]">
                     <xsl:with-param name="foreground" select="name(.)"/>
                     <xsl:with-param name="background" select="$background"/>
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
                     <xsl:with-param name="buffer" select="$buffer"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$foreground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$foreground"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
                 </xsl:apply-templates>
             </xsl:when>
-            <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and string-length(normalize-space($buffer)) != 0 and ($background = $oldbackground and $oldforeground != name(.))">
+            <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and string-length(normalize-space($buffer)) != 0 and ($background = $oldBackground and $oldForeground != name(.))">
                 <!--@ Match following sibling node with the foreground set to the current element's name -->
                 <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
                 <xsl:variable name="colorStyle">
                     <xsl:call-template name="getStyle">
                         <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$oldforeground"/>
+                        <xsl:with-param name="foreground" select="$oldForeground"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:variable name="style">
@@ -1580,8 +1580,8 @@ limitations under the License.
                     <xsl:with-param name="foreground" select="name(.)"/>
                     <xsl:with-param name="background" select="$background"/>   
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$foreground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$foreground"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
@@ -1591,7 +1591,7 @@ limitations under the License.
                 old style, the buffer is normalized not empty,
                 the current background is not the old background and the following element is not a NewBackground element, 
                 write a tt:span element with the current styling and pass on this element's color as new foreground with the correct buffer -->
-            <xsl:when test="not(name(following-sibling::*[1]) = 'NewBackground') and (string-length(normalize-space($buffer)) != 0) and not(name(.) = $oldforeground and $background = $oldbackground) and $foreground != name(.)">
+            <xsl:when test="not(name(following-sibling::*[1]) = 'NewBackground') and (string-length(normalize-space($buffer)) != 0) and not(name(.) = $oldForeground and $background = $oldBackground) and $foreground != name(.)">
                 <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
                 <xsl:variable name="colorStyle">
                     <xsl:call-template name="getStyle">
@@ -1629,8 +1629,8 @@ limitations under the License.
                     <xsl:with-param name="foreground" select="name(.)"/>
                     <xsl:with-param name="background" select="$background"/>   
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
-                    <xsl:with-param name="oldforeground" select="$foreground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
+                    <xsl:with-param name="oldForeground" select="$foreground"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="true()"/>
                     <xsl:with-param name="buffer" select="''"/>
@@ -1643,8 +1643,8 @@ limitations under the License.
                     <xsl:with-param name="foreground" select="name(.)"/>
                     <xsl:with-param name="background" select="$background"/>
                     <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldforeground" select="$foreground"/>
-                    <xsl:with-param name="oldbackground" select="$oldbackground"/>
+                    <xsl:with-param name="oldForeground" select="$foreground"/>
+                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
                     <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                     <xsl:with-param name="spanCreated" select="$spanCreated"/>
                     <xsl:with-param name="buffer">
@@ -1718,8 +1718,8 @@ limitations under the License.
         <xsl:param name="buffer" select="''" />
         <xsl:param name="doubleHeight" />
         <xsl:param name="spanCreated" />
-        <xsl:param name="oldforeground"/>
-        <xsl:param name="oldbackground"/>
+        <xsl:param name="oldForeground"/>
+        <xsl:param name="oldBackground"/>
         <!--@ Match the following sibling node -->
         <xsl:apply-templates select="following-sibling::node()[1]">
             <xsl:with-param name="foreground" select="$foreground" />
@@ -1728,8 +1728,8 @@ limitations under the License.
             <xsl:with-param name="buffer" select="$buffer" />
             <xsl:with-param name="doubleHeight" select="$doubleHeight" />
             <xsl:with-param name="spanCreated" select="$spanCreated" />
-            <xsl:with-param name="oldbackground" select="$oldbackground"/>
-            <xsl:with-param name="oldforeground" select="$oldforeground"/>
+            <xsl:with-param name="oldBackground" select="$oldBackground"/>
+            <xsl:with-param name="oldForeground" select="$oldForeground"/>
         </xsl:apply-templates>
     </xsl:template>
    
