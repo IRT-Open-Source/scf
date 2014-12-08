@@ -22,6 +22,7 @@ limitations under the License.
     xmlns:tts="http://www.w3.org/ns/ttml#styling" 
     xmlns:ttm="http://www.w3.org/ns/ttml#metadata" 
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style" 
+    xmlns:exslt="http://exslt.org/common"
     version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
     <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
@@ -311,7 +312,7 @@ limitations under the License.
                 tts:fontSize="1c 1c"
                 tts:lineHeight="normal"/>
             <!--@ Create all others supported styles -->
-            <xsl:copy-of select="$styleTemplates/tt:styling/tt:style"/>
+            <xsl:copy-of select="exslt:node-set($styleTemplates)/tt:styling/tt:style"/>
             <tt:style xml:id="textAlignLeft" tts:textAlign="start"/>
             <tt:style xml:id="textAlignCenter" tts:textAlign="center"/>
             <tt:style xml:id="textAlignRight" tts:textAlign="end"/>
@@ -1667,14 +1668,14 @@ limitations under the License.
         <xsl:param name="stlControlCode"/>
         <xsl:choose>
             <!--@ Terminate when there's no ttmlNamedColor given for the respective stlControlCode -->
-            <xsl:when test="not($colorMappings/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
+            <xsl:when test="not(exslt:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
                 <xsl:message terminate="yes">
                     There is no ttmlNamedColor element given for the stlControlCode <xsl:value-of select="$stlControlCode"/>.
                 </xsl:message>
             </xsl:when>
             <!--@ Return ttmlNamedColor otherwise -->
             <xsl:otherwise>
-                <xsl:value-of select="$colorMappings/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
+                <xsl:value-of select="exslt:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1697,14 +1698,14 @@ limitations under the License.
         </xsl:variable>
         <xsl:choose>
             <!--@ Terminate if there's no xml:id attribute belonging to a style with the respective settings for fore- and background -->
-            <xsl:when test="not($styleTemplates/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
+            <xsl:when test="not(exslt:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
                 <xsl:message terminate="yes">
                     No tt:style was found with foreground: <xsl:value-of select="$foreground_ttml"/> and background: <xsl:value-of select="$background_ttml"/>.
                 </xsl:message>
             </xsl:when>
             <!--@ Return the xml:id attribute's value otherwise -->
             <xsl:otherwise>
-                <xsl:value-of select="$styleTemplates/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>        
+                <xsl:value-of select="exslt:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>        
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
