@@ -1031,6 +1031,15 @@ limitations under the License.
         <xsl:param name="oldBackground"/>
         <!--@ Append normalized text-node to the current buffer -->
         <xsl:variable name="bufferAdded" select="concat($buffer, string(normalize-space(.)))"/>
+        <xsl:if test="count(following-sibling::node()) = 0 and string-length(normalize-space($buffer)) &gt; 0">
+            <xsl:call-template name="writeBuffer">
+                <xsl:with-param name="background" select="$background"/>
+                <xsl:with-param name="buffer" select="$bufferAdded"/>
+                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+                <xsl:with-param name="foreground" select="$foreground"/>
+                <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            </xsl:call-template>
+        </xsl:if>
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements; forward updated buffer -->
             <xsl:with-param name="foreground" select="$foreground"/>
@@ -1153,6 +1162,15 @@ limitations under the License.
         <xsl:param name="spanCreated"/>
         <xsl:param name="oldForeground"/>
         <xsl:param name="oldBackground"/>
+        <xsl:if test="count(following-sibling::node()) = 0 and string-length(normalize-space($buffer)) &gt; 0">
+            <xsl:call-template name="writeBuffer">
+                <xsl:with-param name="background" select="$background"/>
+                <xsl:with-param name="buffer" select="$buffer"/>
+                <xsl:with-param name="doubleHeight" select="true()"/>
+                <xsl:with-param name="foreground" select="$foreground"/>
+                <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            </xsl:call-template>
+        </xsl:if>
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <xsl:with-param name="foreground" select="$foreground"/>
@@ -1237,6 +1255,47 @@ limitations under the License.
                     <xsl:with-param name="oldBackground" select="$oldBackground"/>
                     <xsl:with-param name="oldForeground" select="$oldForeground"/>
                 </xsl:apply-templates>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template name="writeBuffer">
+        <xsl:param name="background"/>
+        <xsl:param name="foreground"/>
+        <xsl:param name="doubleHeight"/>
+        <xsl:param name="spanCreated"/>
+        <xsl:param name="buffer"/>
+        <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
+        <xsl:variable name="colorStyle">
+            <xsl:call-template name="getStyle">
+                <xsl:with-param name="background" select="$background"/>
+                <xsl:with-param name="foreground" select="$foreground"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="style">
+            <xsl:choose>
+                <xsl:when test="$doubleHeight">
+                    <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$colorStyle"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+            <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
+            <xsl:when test="$spanCreated">
+                <tt:span
+                    style="{$style}">
+                    <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
+                </tt:span>
+            </xsl:when>
+            <!--** Otherwise write the normalized content of the buffer -->
+            <xsl:otherwise>
+                <tt:span
+                    style="{$style}">
+                    <xsl:value-of select="normalize-space($buffer)"/>
+                </tt:span>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
