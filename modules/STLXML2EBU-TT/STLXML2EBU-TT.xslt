@@ -145,7 +145,7 @@ limitations under the License.
                 Files with a TCS value set to 0 are not supported by this transformation.
             </xsl:message>
         </xsl:if>
-        <!--@ Set frame rate according to DFC element, interrupt if the element's value is not supported; this implementation only supports values of '25' and '30' -->
+        <!--@ Set frame rate according to DFC element, interrupt if the element's value is not supported; this implementation only supports a value of '25' -->
         <xsl:variable name="frameRate">
             <xsl:choose>
                 <xsl:when test="normalize-space(HEAD/GSI/DFC) = 'STL25.01'">
@@ -158,8 +158,8 @@ limitations under the License.
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <!--@ Set frame rate Multiplier according to frame rate, interrupt if the frame rate value is not supported; this implementation only supports values of '25' and '30'
-            and thus the frame rate Multiplier is either '1 1' or '1000 1001' -->
+        <!--@ Set frame rate Multiplier according to frame rate, interrupt if the frame rate value is not supported; this implementation only supports a value of '25'
+            and thus the frame rate Multiplier is '1 1' -->
         <xsl:variable name="frameRateMultiplier">
             <xsl:choose>
                 <xsl:when test="$frameRate = '25'">
@@ -204,11 +204,11 @@ limitations under the License.
                     ttp:cellResolution="50 30"
                     xml:lang="{$language}">
                     <xsl:apply-templates select="HEAD">
-                        <!--** Tunnel parameter needed for value calculation of decendaning elements -->
+                        <!--** Tunnel parameter needed for value calculation of descending elements -->
                         <xsl:with-param name="frameRate" select="$frameRate"/>
                     </xsl:apply-templates>
                     <xsl:apply-templates select="BODY">
-                        <!--** Tunnel parameter needed for value calculation of decendaning elements -->
+                        <!--** Tunnel parameter needed for value calculation of descending elements -->
                         <xsl:with-param name="frameRate" select="$frameRate"/>
                     </xsl:apply-templates>
                 </tt:tt>
@@ -257,7 +257,7 @@ limitations under the License.
         <tt:head>
             <!--@ Process GSI container -->
             <xsl:apply-templates select="GSI">
-                <!--** Tunnel parameter needed for value calculation of decendaning elements -->
+                <!--** Tunnel parameter needed for value calculation of descending elements -->
                 <xsl:with-param name="frameRate" select="$frameRate"/>
             </xsl:apply-templates>                
         </tt:head>
@@ -266,13 +266,6 @@ limitations under the License.
     <xsl:template match="GSI">
         <!--** Container for Metadata information for all the document's subtitles. Steps: -->
         <xsl:param name="frameRate"/>
-        <!--<xsl:variable name="test">
-            <xsl:call-template name="getStyle">
-                <xsl:with-param name="background" select="'AlphaBlue'"/>
-                <xsl:with-param name="foreground" select="'AlphaYellow'"/>
-            </xsl:call-template>
-        </xsl:variable>
-        <xsl:value-of select="$test"/>-->
         <tt:metadata>
             <ebuttm:documentMetadata>
                 <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
@@ -641,7 +634,7 @@ limitations under the License.
                 The TCI field has invalid content
             </xsl:message>
         </xsl:if>
-        <!--@ Split content-string in hours, minutes, seconds and frames; the TCI elmeent's content is always a smpte formatted time code -->
+        <!--@ Split content-string in hours, minutes, seconds and frames; the TCI elment's content is always a smpte formatted time code -->
         <xsl:variable name="beginHours" select="substring($begin, 1, 2)"/>
         <xsl:variable name="beginMinutes" select="substring($begin, 3, 2)"/>
         <xsl:variable name="beginSeconds" select="substring($begin, 5, 2)"/>
@@ -713,7 +706,7 @@ limitations under the License.
                         number($endseconds) &gt;= 0 and number($endseconds) &lt; 60 and
                         number($endframes) &gt;= 0 and number($endframes) &lt; 25 and 
                         $frameRate = '25'">
-                        <!--@ Calculate the correct timestamp depending on the Offset given by the respective parameter -->
+                        <!--@ Calculate the correct timestamp depending on the offset given by the respective parameter -->
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
@@ -1536,7 +1529,7 @@ limitations under the License.
         <xsl:param name="spanCreated"/>
         <xsl:choose>
             <!--@ If the next element is a NewBackground element, the buffer is not empty and the current background is not equal
-                to the current element, write a tt:span element with the current styling and pass on the current Color-element 
+                to the current element, write a tt:span element with the current styling and pass on the current color element 
                 as new foreground with the correct buffer -->
             <xsl:when test="name(following-sibling::*[1]) = 'NewBackground' and string-length($buffer) &gt; 0 and $background != name(.)">
                 <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
