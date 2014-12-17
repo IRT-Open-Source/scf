@@ -111,7 +111,7 @@ limitations under the License.
                 </tt:style>                
                 <xsl:apply-templates select="tt:styling/tt:style[@xml:id != 'defaultStyle']"/>
             </tt:styling>
-            <!--@ Create tt:layout element map tt:region elements -->
+            <!--@ Create tt:layout element and map tt:region elements -->
             <tt:layout>
                 <xsl:apply-templates select="tt:layout/tt:region"/>
             </tt:layout>                
@@ -205,13 +205,17 @@ limitations under the License.
     </xsl:template>
     
     <xsl:template match="tt:region">
+        <!--** Matches a tt:region element. Steps: -->
+        <!--@ Create tt:region element -->
         <tt:region>
+            <!--@ Copy attribute-values if they're set if possible -->
             <xsl:attribute name="xml:id"><xsl:value-of select="@xml:id"/></xsl:attribute>
             <xsl:attribute name="tts:extent">
                 <xsl:choose>
                     <xsl:when test="contains(@tts:extent, '%')">
                         <xsl:value-of select="@tts:extent"/>
                     </xsl:when>
+                    <!--@ Interrupt if the value of the tts:extent attribute is not supported -->
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
                             This implementation only supports EBU-TT files created according to EBU Tech 3360.
@@ -224,6 +228,7 @@ limitations under the License.
                     <xsl:when test="contains(@tts:origin, '%')">
                         <xsl:value-of select="@tts:origin"/>
                     </xsl:when>
+                    <!--@ Interrupt if the value of the tts:origin attribute is not supported -->
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
                             This implementation only supports EBU-TT files created according to EBU Tech 3360.
@@ -349,7 +354,7 @@ limitations under the License.
         <!--** Container element containing all subtitles of a subtitle group. Steps: -->
         <xsl:param name="legacyTimeBase" />
         <xsl:param name="frameRate" />
-        <!--@ Create tt:div container element, referencing defaultStyle -->
+        <!--@ Create tt:div container element -->
         <tt:div>
             <xsl:if test="@xml:id != ''">
                 <xsl:attribute name="xml:id">
