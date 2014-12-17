@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2014 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
     xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
     xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ebuttm="urn:ebu:tt:metadata"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
     <xsl:output encoding="UTF-8" indent="no"/>
-    <xsl:param name="offsetInSeconds" select="0"/>
     <xsl:template match="/">
         <xsl:apply-templates select="tt:tt"/>
     </xsl:template>
     
     <xsl:template match="tt:tt">
         <xsl:comment>Profile: EBU-TT-D-Basic-DE</xsl:comment>
+        <!--** EBU-TT-D-Basic-DE file's root element. Steps: -->
         <tt:tt>
             <xsl:attribute name="ttp:timeBase">
                 <xsl:value-of select="'media'"/>
@@ -27,7 +44,10 @@
     </xsl:template>
     
     <xsl:template match="tt:head">
+        <!--** Container element containing all header information. Steps: -->
+        <!--@ Create tt:head container element -->
         <tt:head>
+            <!--** Container element containing metadata. Steps: -->
             <tt:metadata>
                 <ebuttm:documentMetadata>
                     <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
@@ -39,7 +59,7 @@
     </xsl:template>
                
     <xsl:template match="tt:styling">
-        <!-- These are all supported styles in EBU-TT-D-Basic-DE -->
+        <!--@ Create tt:styling for all supported styles in EBU-TT-D-Basic-DE -->
         <tt:styling>
             <tt:style 
                 xml:id="defaultStyle"
@@ -91,7 +111,7 @@
     </xsl:template>
     
     <xsl:template match="tt:layout">
-        <!-- These are all supported layouts for EBU-TT-D-Basic-DE -->
+        <!--@ Create tt:layout element with all supported layouts for EBU-TT-D-Basic-DE -->
         <tt:layout>
             <tt:region 
                 xml:id="bottom"
@@ -107,10 +127,11 @@
     </xsl:template>
     
     <xsl:template match="tt:body">
+        <!--** Container element containing the tt:div element. Steps: -->
         <tt:body>
             <tt:div 
                 style="defaultStyle">
-                <!-- As the body can contain multiple tt:p elements, map the first and pass on the body's style -->
+                <!-- As the body can contain multiple tt:div elements, map the first and pass on the style -->
                 <xsl:apply-templates select="child::*[1]">
                     <xsl:with-param name="inheritedStyle" select="@style" />
                 </xsl:apply-templates>
@@ -263,7 +284,7 @@
             <xsl:attribute name="xml:id">
                 <xsl:value-of select="@xml:id"/>
             </xsl:attribute>
-            <xsl:attribute name="{'style'}">
+            <xsl:attribute name="style">
                 <xsl:choose>
                     <xsl:when test="$refStyle = 'right' or $refStyle = 'end'">
                         <xsl:value-of select="'textRight'"/>
@@ -276,13 +297,13 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <xsl:attribute name="{'region'}">
+            <xsl:attribute name="region">
                 <xsl:value-of select="'bottom'"/>
             </xsl:attribute>
-            <xsl:attribute name="{'begin'}">
+            <xsl:attribute name="begin">
                 <xsl:apply-templates select="@begin"/>
             </xsl:attribute>
-            <xsl:attribute name="{'end'}">
+            <xsl:attribute name="end">
                 <xsl:apply-templates select="@end"/>
             </xsl:attribute>
             <xsl:apply-templates select="child::node()[1]">
@@ -368,16 +389,16 @@
         <xsl:if test="string-length(.) &gt;= 0">
             <tt:span>
                 <xsl:if test="@begin != ''">
-                    <xsl:attribute name="{'begin'}">
+                    <xsl:attribute name="begin">
                         <xsl:apply-templates select="@begin"/>
                     </xsl:attribute>
                 </xsl:if>
                 <xsl:if test="@end != ''">
-                    <xsl:attribute name="{'end'}">
+                    <xsl:attribute name="end">
                         <xsl:apply-templates select="@end"/>
                     </xsl:attribute>
                 </xsl:if>
-                <xsl:attribute name="{'style'}">
+                <xsl:attribute name="style">
                     <xsl:value-of select="$refStyle"/>
                 </xsl:attribute>
                 <xsl:apply-templates select="child::node()[1]"/>
@@ -401,7 +422,7 @@
                     </xsl:call-template>
                 </xsl:variable>
                 <tt:span>
-                    <xsl:attribute name="{'style'}">
+                    <xsl:attribute name="style">
                         <xsl:value-of select="$refStyle"/>
                     </xsl:attribute>
                     <xsl:value-of select="."/>
