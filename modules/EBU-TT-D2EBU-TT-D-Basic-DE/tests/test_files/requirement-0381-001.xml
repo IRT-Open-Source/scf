@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing ebuttm:documentCountryOfOrigin element with value "PT" -->
+<!-- Testing ebuttm:documentEbuttVersion element with value "v1.0" -->
 <tt:tt xmlns:tt="http://www.w3.org/ns/ttml"
     xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
     xmlns:tts="http://www.w3.org/ns/ttml#styling"
@@ -24,13 +24,8 @@ limitations under the License.
     xmlns:ebutts="urn:ebu:tt:style"
     ttp:timeBase="media"
     ttp:cellResolution="32 15"
-    xml:lang="de">
+    xml:lang="es">
     <tt:head>
-        <tt:metadata>
-            <ebuttm:documentMetadata>
-                <ebuttm:documentCountryOfOrigin>PT</ebuttm:documentCountryOfOrigin>
-            </ebuttm:documentMetadata>
-        </tt:metadata>
         <tt:styling>
             <tt:style 
                 xml:id="defaultStyle"
@@ -62,7 +57,7 @@ limitations under the License.
                 xml:id="sub1"
                 region="defaultRegion"
                 begin="00:00:00.000"
-                end="00:00:02.000">Lorem ipsum dolor sit amet</tt:p>                  
+                end="00:00:02.000">Lorem ipsum dolor sit amet</tt:p>   
         </tt:div>
     </tt:body>
 </tt:tt>

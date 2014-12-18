@@ -19,17 +19,18 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing ebuttm:documentCountryOfOrigin element with value "DE"</title>
-    <pattern id="CountryOfOrigin">
+    <title>Testing ebuttm:documentEbuttVersion element with value "v1.0"</title>
+    <pattern id="SpanIDAttribute">
         <rule context="/">
-            <assert test="tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentCountryOfOrigin">
-                The ebuttm:documentCountryOfOrigin element must be present.
+            <assert test="tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentEbuttVersion">
+                The ebuttm:documentEbuttVersion element must be present.
             </assert> 
         </rule>
-        <rule context="tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentCountryOfOrigin">
-            <assert test=". = 'DE'">
-                Expected value: "DE" Value from test: "<value-of select="."/>" 
+        <rule context="tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentEbuttVersion">
+            <assert test=". = 'v1.0'">
+                Expected value: "v1.0" Value from test: "<value-of select="."/>"
             </assert> 
+            
         </rule>
     </pattern>            
 </schema>
