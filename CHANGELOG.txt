@@ -1,0 +1,25 @@
+-----------------------------
+Version 0.2
+-----------------------------
+GENERAL
+- CHANGED: Comments, correction of typos, code improvment
+- ADDED: Testfiles
+
+STL2STLXML
+- ADDED: Initial Commit under Apache 2 Licence
+
+STLXML2EBU-TT
+- FIXED #1: Needless alignment for tt:span
+- FIXED #2: Typo Style
+- FIXED #3: Renaming of parameter from timeCodeFormat into timebase
+- FIXED #4 (Handling when Endbox is missing)
+- FIXED #5: Bug offsetInSecondParameter    
+- FIXED #6: Bug unecessary tt:span creation
+- CHANGED: Dynamic mapping of styles independent of naming scheme
+- REMOVED: "Space preserve feature"
+
+EBU-TT-D2EBU-TT-D
+- FIXED #5: Bug offsetInSecondParameter    
+
+EBU-TT-D2EBU-TT-D-Basic-DE
+- ADDED: Initial Commit

@@ -1,18 +1,18 @@
 # SCF
 The Subtitling Conversion Framework (SCF) is a set of modules for converting XML based subtitle formats. Main target is to build up a flexible and extensible transformation pipeline to convert EBU STL formats and EBU-TT subtitle formats.      
 
-The SCF is an early Alpha release with the version 0.1. It is not recommended to use the SCF in production yet.
+The SCF is an early Alpha release with the version 0.2. It is not recommended to use the SCF in production yet.
 
 ##License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer Rundfunktechnik 
 on GitHub is subject to the [Apache 2.0 license] (LICENSE). 
 
 ##Prerequisites
-For the XSLT modules an XSLT processor that is conformant to XSLT 1.0 is needed. You could use for example a [saxon xslt processor](http://saxon.sourceforge.net/) from version 6.5.5.    
+For the XSLT modules an XSLT processor that is conformant to XSLT 1.0 is needed. You could use for example a [saxon xslt processor](http://saxon.sourceforge.net/) from version 6.5.5. The STLXML2EBU-TT module requires in addition EXSLT support.    
 
 To validate an STLXML with the STLXML W3C XML Schema an XML Schema 1.0 parser is required. You could use for example [xerces XML parser and validator] (http://xerces.apache.org/). 
 
-For the conversion of an EBU STL file into STLXML (an XML based representation of the STL file) you need software that implements the STLXML XSD. You could use for example the python script stl2stlxml.py that [is available here](https://github.com/Irt-Open-Source/stl2stlxml). stl2stlxml.py requires a [python 2.7.x ](https://www.python.org/downloads/) (it will not run under python 3.0).
+For the conversion of an EBU STL file into STLXML [python 2.7.x ](https://www.python.org/downloads/) is required (it will not run under python 3.0).
 
 
 ##Structure
@@ -41,20 +41,28 @@ Apart from the artefacts the module folder contains a folder with test files and
 
 ##DESCRIPTION
 ### Modules
-Currently the SCF has three modules:
+Currently the SCF has four modules:
 
 * STMLXML-XSD 
+* STL2STLXML
 * STMLXML2EBU-TT
 * EBU-TT2EBU-TT-D
+* EBU-TT-D2EBU-TT-D-Basic-DE
 
 #### STLXML-XSD
 The STLXML W3C XML Schema is a tool to check if the XML representation of the EBU STL files conform to the expected structure. Files that don't conform will most probably fail the STLXML to EBU-TT conversion or will lead to unexpected results.
+
+#### STL2STLXML
+The STL2STLXML script decodes the EBU-STL file and exports in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
 
 #### STLXML2EBU-TT
 The STMLXML2EBU-TT XSLT transforms an XML representation of an EBU STL file into an EBU-TT that conforms to EBU Tech 3350 (EBU-TT Part 1). It follows the guideline provided by EBU Tech 3360 version 0.9.
 
 #### EBU-TT2EBU-TT-D
 The EBU-TT2EBU-TT-D XSLT converts EBU-TT Part 1 files that have been created according to EBU Tech 3360 into EBU-TT-D files that conform to EBU Tech 3380. 
+
+#### EBU-TT-D2EBU-TT-D-Basic-DE
+The EBU-TT-D2EBU-TT-D-Basic-DE XSLT converts EBU-TT-D files that have been created according to EBU Tech 3380 into EBU-TT-D-Basic-DE files that conform to XML-Format für die Distribution von Untertiteln in den ARD Mediatheken (EBU-TT-D-Basic-DE).
 
 ### Tests
 The test files that are used as test input for a module are named according to the following pattern:
@@ -83,3 +91,4 @@ QC: Barbara Fichte, Peter tho Pesch
 EBU STL (EBU Tech 3264) https://tech.ebu.ch/docs/tech/tech3264.pdf   
 MAPPING EBU STL TO EBU-TT SUBTITLE FILES (EBU Tech 3360) https://tech.ebu.ch/docs/tech/tech3360.pdf   
 EBU-TT-D SUBTITLING DISTRIBUTION FORMAT (EBU Tech 3380) https://tech.ebu.ch/docs/tech/tech3380.pdf  
+XML-Format für die Distribution von Untertiteln in den ARD Mediatheken (EBU-TT-D-Basic-DE) http://www.irt.de/en/publications/technical-guidelines.html

@@ -5,6 +5,8 @@ Conversion Framework (SCF)) is developed and provided by Institut fuer
 Rundfunktechnik, Germany, in cooperation with Yann Coupin regarding the
 python script stl2stlxml.py, and future contributors to this project.
 
-The python script stl2stlxml.py is derived from version 2.1 of to_srt.py (available at https://github.com/yanncoupin/stl2srt) which was developed by Yann Coupin, and is licensed under the Apache License, Version 2.0.
+The python script stl2stlxml.py is derived from version 2.1 of to_srt.py
+(available at https://github.com/yanncoupin/stl2srt) which was developed 
+by Yann Coupin, and is licensed under the Apache License, Version 2.0.
 
 Copyright 2014 Institut fuer Rundfunktechnik GmbH (IRT) 
