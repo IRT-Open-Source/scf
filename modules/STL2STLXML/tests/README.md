@@ -1,0 +1,2 @@
+# Tests for the STL2STLXML module
+The folder files contains EBU STL files that can be used as test input for the STL2STLXML module. The folder schema contains for each test file a corresponding schematron document. The result of processing a test file (in this case a STLXML file) shall always validate against the corresponding schematron schema.

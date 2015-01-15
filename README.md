@@ -24,7 +24,7 @@ Each module has its own directory under the "modules" folder:
       +---STLXML-XSD    
 
 
-The main artefact is the root of the respective module folder:     
+The main artefact is in the root of the respective module folder:     
 
       +---EBU-TT2EBU-TT-D   
         |   EBU-TT2EBU-TT-D.xslt    
@@ -53,7 +53,7 @@ Currently the SCF has four modules:
 The STLXML W3C XML Schema is a tool to check if the XML representation of the EBU STL files conform to the expected structure. Files that don't conform will most probably fail the STLXML to EBU-TT conversion or will lead to unexpected results.
 
 #### STL2STLXML
-The STL2STLXML script decodes the EBU-STL file and exports in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
+The STL2STLXML script decodes the EBU-STL file and exports it in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
 
 #### STLXML2EBU-TT
 The STMLXML2EBU-TT XSLT transforms an XML representation of an EBU STL file into an EBU-TT that conforms to EBU Tech 3350 (EBU-TT Part 1). It follows the guideline provided by EBU Tech 3360 version 0.9.
@@ -62,7 +62,7 @@ The STMLXML2EBU-TT XSLT transforms an XML representation of an EBU STL file into
 The EBU-TT2EBU-TT-D XSLT converts EBU-TT Part 1 files that have been created according to EBU Tech 3360 into EBU-TT-D files that conform to EBU Tech 3380. 
 
 #### EBU-TT-D2EBU-TT-D-Basic-DE
-The EBU-TT-D2EBU-TT-D-Basic-DE XSLT converts EBU-TT-D files that have been created according to EBU Tech 3380 into EBU-TT-D-Basic-DE files that conform to XML-Format für die Distribution von Untertiteln in den ARD Mediatheken (EBU-TT-D-Basic-DE).
+The EBU-TT-D2EBU-TT-D-Basic-DE XSLT converts EBU-TT-D files that have been created according to EBU Tech 3380 into EBU-TT-D-Basic-DE files that conform to the "XML-Format for Distribution of Subtitles in the ARD Mediathek portals" (EBU-TT-D-Basic-DE).
 
 ### Tests
 The test files that are used as test input for a module are named according to the following pattern:
@@ -91,4 +91,4 @@ QC: Barbara Fichte, Peter tho Pesch
 EBU STL (EBU Tech 3264) https://tech.ebu.ch/docs/tech/tech3264.pdf   
 MAPPING EBU STL TO EBU-TT SUBTITLE FILES (EBU Tech 3360) https://tech.ebu.ch/docs/tech/tech3360.pdf   
 EBU-TT-D SUBTITLING DISTRIBUTION FORMAT (EBU Tech 3380) https://tech.ebu.ch/docs/tech/tech3380.pdf  
-XML-Format für die Distribution von Untertiteln in den ARD Mediatheken (EBU-TT-D-Basic-DE) http://www.irt.de/en/publications/technical-guidelines.html
+XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE) http://www.irt.de/en/publications/technical-guidelines.html

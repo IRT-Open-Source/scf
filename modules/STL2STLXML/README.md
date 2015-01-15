@@ -6,17 +6,17 @@ Python 2.7.x
 
 ## USAGE
 
-    stl2stlxml.py [SOURCE-STL-FILE] -x [DESTINATION-XML-FILE]
+    stl2stlxml.py [SOURCE-STL-FILE] [-x DESTINATION-XML-FILE]
 
 [SOURCE-STL-FILE]   <i>Path to the source EBU-STL file that shall be translated.</i>
 
--x, --xml [DESTINATION-XML-FILE] <i>Output file for the XML representation of the stl file.</i>
+-x, --xml DESTINATION-XML-FILE <i>Output file for the XML representation of the stl file. If this option is not specified the result is written to STDOUT.</i>
 
 -p, --pretty  <i>Output the XML File in pretty XML (with indention).</i>
 
 
 ##DESCRIPTION
-Decodes the EBU-STL file and exports in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
+Decodes the EBU-STL file and exports it in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
 
 ## EXAMPLES
     python stl2stlxml.py test.stl -x test.xml
