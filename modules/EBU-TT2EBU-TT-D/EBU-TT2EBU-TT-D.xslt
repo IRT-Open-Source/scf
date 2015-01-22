@@ -21,12 +21,58 @@ limitations under the License.
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style">
     <xsl:output encoding="UTF-8" indent="no"/>
     <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
-    <xsl:param name="offsetInSeconds" select="0"/>
+    <xsl:param name="offsetInSeconds"/>
+    <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this STLXML file -->
+    <xsl:param name="offsetInFrames"/>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
     
     <xsl:template match="/">
+        <xsl:choose>
+            <xsl:when test="$offsetInSeconds and $offsetInFrames">
+                <!--@ Interrupt transformation if both parameters are set -->
+                <xsl:message terminate="yes">
+                    The parameters offsetInFrames and offsetInSeconds are specified at the same time. 
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="$offsetInFrames and (number(translate($offsetInFrames, ':', '')) != number(translate($offsetInFrames, ':', '')))">
+                <!--@ Interrupt transformation if content contains non-numerical values -->
+                <xsl:message terminate="yes">
+                    The value for the parameter offsetInFrames contains non-numerical values. 
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="$offsetInFrames and (string-length(translate($offsetInFrames, ':', '')) != 8)">
+                <!--@ Interrupt transformation if content is not valid -->
+                <xsl:message terminate="yes">
+                    The value for the parameter offsetInFrames does not have the necessary format of 'hh:mm:ss:ff'.  The value for hours shall be a number between 00 and 23, minutes and 
+                    and seconds shall be between 00 and 59 and with a framerate of 25 the framerate the frame part shall be between 00 and 24 (begin and end of the intervals are included). 
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="$offsetInFrames and 
+                not(number(substring($offsetInFrames, 1,2)) &gt;= 0 and number(substring($offsetInFrames, 1,2)) &lt; 24 and
+                number(substring($offsetInFrames, 4,2)) &gt;= 0 and number(substring($offsetInFrames, 4,2) ) &lt; 60 and
+                number(substring($offsetInFrames, 7,2)) &gt;= 0 and number(substring($offsetInFrames, 7,2)) &lt; 60 and
+                number(substring($offsetInFrames, 10,2)) &gt;= 0 and number(substring($offsetInFrames, 10,2)) &lt; 25)">
+                <!--@ Interrupt transformation if content is not valid -->
+                <xsl:message terminate="yes">
+                    The value for the parameter offsetInFrames does not have the necessary format of "hh:mm:ss:ff". The value for hours shall be a number between 00 and 23, minutes and 
+                    and seconds shall be between 00 and 59 and with a framerate of 25 the framerate shall be between 00 and 24 (begin and end of the intervals are included).  
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="$offsetInSeconds and (number($offsetInSeconds) != number($offsetInSeconds))">
+                <!--@ Interrupt transformation if content contains non-numerical values -->
+                <xsl:message terminate="yes">
+                    The  value of the parameter offsetInSeconds contains non-numerical values.
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="contains($offsetInSeconds, '.')">
+                <!--@ Interrupt transformation if content contains fraction -->
+                <xsl:message terminate="yes">
+                    The value for the parameter offsetInSeconds contains the character '.'. Fractions are not supported for the parameter offsetInSeconds.
+                </xsl:message>
+            </xsl:when>
+        </xsl:choose>
         <xsl:apply-templates select="tt:tt"/>        
     </xsl:template>
     
@@ -642,77 +688,120 @@ limitations under the License.
         <xsl:param name="frames"/>
         <xsl:param name="legacyTimeBase"/>
         <xsl:param name="frameRate"/>
-        <!--@ Calculate the value in seconds of the current timestamp -->
-        <xsl:variable name="stampValueInSeconds" select="$seconds + $minutes * 60 + $hours * 3600"/>
-        <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
-        <xsl:if test="$offsetInSeconds &gt; $stampValueInSeconds">
-            <xsl:message terminate="yes">
-                The chosen offset would result in a negative timestamp. stamp: <xsl:value-of select="concat($hours, $minutes, $seconds, $frames)"/> 
-            </xsl:message>
-        </xsl:if>
-        <!--@ Calculate hours, minutes and seconds depending on the given offset parameter -->
-        <xsl:variable name="mediaHours" select="floor(($stampValueInSeconds - $offsetInSeconds) div 3600)"/>
-        <xsl:variable name="mediaMinutes" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) div 60)"/>
-        <xsl:variable name="mediaSeconds" select="floor((($stampValueInSeconds - $offsetInSeconds) mod 3600) mod 60)"/>
-        <!--@ Add leading zeros if necessary -->
-        <xsl:variable name="outputHours">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaHours) = 1">
-                    <xsl:value-of select="concat('0', $mediaHours)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaHours"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="outputMinutes">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaMinutes) = 1">
-                    <xsl:value-of select="concat('0', $mediaMinutes)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaMinutes"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="outputSeconds">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaSeconds) = 1">
-                    <xsl:value-of select="concat('0', $mediaSeconds)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaSeconds"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
         <xsl:choose>
-            <!--@ If timebase is media, concatenate the frames to the calculated values -->
-            <xsl:when test="$legacyTimeBase = 'media'">
-                <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $frames)"/>
+            <xsl:when test="$offsetInFrames and $legacyTimeBase='media'">
+                <!--@ Interrupt transformation if the offsetInFrames is used and the timeBase is set to media -->
+                <xsl:message terminate="yes">
+                    The $offsetInFrames parameter can't be used with ttp:timeBase set to media
+                </xsl:message>
             </xsl:when>
-            <!--@ If timebase is smpte, convert the frames to milliseconds and concatenate afterwards -->
-            <xsl:when test="$legacyTimeBase = 'smpte'">
-                <xsl:variable name="mediaFrames" select="(number($frames) div number($frameRate))*1000 mod 1000"/>
-                <xsl:variable name="outputFraction">
+            <xsl:otherwise>
+                <!--@ Convert actual timestamp and the respective offset to values of milliseconds -->
+                <xsl:variable name="timestampSummedUp">
                     <xsl:choose>
-                        <xsl:when test="string-length($mediaFrames) = 1">
-                            <xsl:value-of select="concat('00', $mediaFrames)"/>
+                        <xsl:when test="$legacyTimeBase='media'">
+                            <xsl:value-of select="($seconds + $minutes * 60 + $hours * 3600)*1000"/>
                         </xsl:when>
-                        <xsl:when test="string-length($mediaFrames) = 2">
-                            <xsl:value-of select="concat('0', $mediaFrames)"/>
+                        <xsl:when test="$legacyTimeBase='smpte'">
+                            <xsl:value-of select="($hours * 3600 + $minutes * 60 + $seconds + ($frames div $frameRate)) * 1000"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="offsetSummedUp">
+                    <xsl:choose>
+                        <xsl:when test="$offsetInSeconds">
+                            <xsl:value-of select="$offsetInSeconds *1000"/>
+                        </xsl:when>
+                        <xsl:when test="$offsetInFrames">
+                            <xsl:value-of select="(substring($offsetInFrames, 1,2) * 3600 + 
+                                substring($offsetInFrames, 4,2) * 60 + 
+                                substring($offsetInFrames, 7,2) + (substring($offsetInFrames, 10,2) div $frameRate)) * 1000"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="$mediaFrames"/>
+                            <xsl:value-of select="0"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
-                <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>                
-            </xsl:when>
-            <!--@ Interrupt if the source's timeCodeFormat is neither 'media' nor 'smpte' -->
-            <xsl:otherwise>
-                <xsl:message terminate="yes">
-                    The selected timeCodeFormat is unknown. Only 'media' and 'smpte' are supported.
-                </xsl:message>
+                
+                <xsl:variable name="mediaHours">
+                    <xsl:value-of select="floor(($timestampSummedUp - $offsetSummedUp) div 3600000)"/>
+                </xsl:variable>
+                <xsl:variable name="mediaMinutes">
+                    <xsl:value-of select="floor((($timestampSummedUp - $offsetSummedUp) mod 3600000) div 60000 ) "/>
+                </xsl:variable>
+                <xsl:variable name="mediaSeconds">
+                    <xsl:value-of select="floor(((($timestampSummedUp - $offsetSummedUp) mod 3600000) mod 60000) div 1000)"/>
+                </xsl:variable>
+                <xsl:variable name="mediaFrames">
+                    <xsl:value-of select="floor((($timestampSummedUp - $offsetSummedUp) mod 3600000) mod 60000) mod 1000"/>
+                </xsl:variable>
+                
+                <!--@ Add leading zeros if necessary -->
+                <xsl:variable name="outputHours">
+                    <xsl:choose>
+                        <xsl:when test="string-length($mediaHours) = 1">
+                            <xsl:value-of select="concat('0', $mediaHours)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$mediaHours"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="outputMinutes">
+                    <xsl:choose>
+                        <xsl:when test="string-length($mediaMinutes) = 1">
+                           <xsl:value-of select="concat('0', $mediaMinutes)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$mediaMinutes"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="outputSeconds">
+                    <xsl:choose>
+                        <xsl:when test="string-length($mediaSeconds) = 1">
+                            <xsl:value-of select="concat('0', $mediaSeconds)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$mediaSeconds"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
+                <xsl:if test="$mediaHours &lt; 0 or $mediaMinutes &lt; 0 or $mediaSeconds &lt; 0 or $mediaFrames &lt; 0">
+                    <xsl:message terminate="yes">
+                        The chosen offset would result in a negative timestamp for a time value.
+                    </xsl:message>
+                </xsl:if>           
+                <xsl:choose>
+                    <!--@ If timebase is media, concatenate the frames to the calculated values -->
+                    <xsl:when test="$legacyTimeBase = 'media'">
+                        <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $frames)"/>
+                    </xsl:when>
+                    <!--@ If timebase is smpte, convert the frames to milliseconds and concatenate afterwards -->
+                    <xsl:when test="$legacyTimeBase = 'smpte'">
+                        <xsl:variable name="outputFraction">
+                            <xsl:choose>
+                                <xsl:when test="string-length($mediaFrames) = 1">
+                                    <xsl:value-of select="concat('00', $mediaFrames)"/>
+                                </xsl:when>
+                                <xsl:when test="string-length($mediaFrames) = 2">
+                                    <xsl:value-of select="concat('0', $mediaFrames)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="$mediaFrames"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
+                        <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>                
+                    </xsl:when>
+                    <!--@ Interrupt if the source's timeCodeFormat is neither 'media' nor 'smpte' -->
+                    <xsl:otherwise>
+                        <xsl:message terminate="yes">
+                            The selected timeCodeFormat is unknown. Only 'media' and 'smpte' are supported.
+                        </xsl:message>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
