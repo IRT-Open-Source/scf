@@ -229,7 +229,7 @@ limitations under the License.
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template name="translate_hexvalue">
+    <xsl:template name="translateHexvalue">
         <xsl:param name="color"/>
         <xsl:choose>
             <xsl:when test="number(substring($color, 2, 1)) &lt;= 7 and number(substring($color, 4, 1)) &lt;= 7 and number(substring($color, 6, 1)) &lt;= 7">
@@ -377,7 +377,7 @@ limitations under the License.
         <!-- Calls style_Color template with a concatenated list of all styles referenced by the ancestors. This template then determines which
             style last referenced a value for the tts:color attribute and the appropriate style. -->
         <xsl:variable name="refStyle">
-            <xsl:call-template name="translate_hexvalue">
+            <xsl:call-template name="translateHexvalue">
                 <xsl:with-param name="color">
                     <xsl:call-template name="style_Color">
                         <xsl:with-param name="newStyle" select="concat(@style, ' ', $inheritedStyle)" />
@@ -417,8 +417,12 @@ limitations under the License.
             </xsl:when>
             <xsl:when test="name(parent::*[1]) != 'tt:span' and string-length(normalize-space(.)) &gt; 0">
                 <xsl:variable name="refStyle">
-                    <xsl:call-template name="style_Color">
-                        <xsl:with-param name="inheritedStyle" select="$inheritedStyle" />
+                    <xsl:call-template name="translateHexvalue">
+                        <xsl:with-param name="color">
+                            <xsl:call-template name="style_Color">
+                                <xsl:with-param name="newStyle" select="concat(@style, ' ', $inheritedStyle)" />
+                            </xsl:call-template>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </xsl:variable>
                 <tt:span>
