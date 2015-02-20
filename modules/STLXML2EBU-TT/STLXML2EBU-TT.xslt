@@ -691,29 +691,29 @@ limitations under the License.
             </xsl:message>
         </xsl:if>
         <!--@ Split content-string in hours, minutes, seconds and frames; the TCI elmeent's content is always a smpte formatted time code -->
-        <xsl:variable name="endhours" select="substring($end, 1, 2)"/>
-        <xsl:variable name="endminutes" select="substring($end, 3, 2)"/>
-        <xsl:variable name="endseconds" select="substring($end, 5, 2)"/>
-        <xsl:variable name="endframes" select="substring($end, 7, 2)"/>        
+        <xsl:variable name="endHours" select="substring($end, 1, 2)"/>
+        <xsl:variable name="endMinutes" select="substring($end, 3, 2)"/>
+        <xsl:variable name="endSeconds" select="substring($end, 5, 2)"/>
+        <xsl:variable name="endFrames" select="substring($end, 7, 2)"/>        
         <xsl:choose>
             <!--@ When timeCodeFormat 'media' is set, it has to be calculated from STLXML file's smpte timeCodeFormat -->
             <xsl:when test="$timeCodeFormat = 'media'">
                 <xsl:choose>
                     <!--@ Check validity for 25 frames -->
                     <xsl:when test="string-length(normalize-space($end)) = 8 and
-                        number($endhours) &gt;= 0 and number($endhours) &lt; 24 and
-                        number($endminutes) &gt;= 0 and number($endminutes) &lt; 60 and
-                        number($endseconds) &gt;= 0 and number($endseconds) &lt; 60 and
-                        number($endframes) &gt;= 0 and number($endframes) &lt; 25 and 
+                        number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
+                        number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
+                        number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
+                        number($endFrames) &gt;= 0 and number($endFrames) &lt; 25 and 
                         $frameRate = '25'">
                         <!--@ Calculate the correct timestamp depending on the offset given by the respective parameter -->
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$endframes"/>
-                            <xsl:with-param name="seconds" select="$endseconds"/>
-                            <xsl:with-param name="minutes" select="$endminutes"/>
-                            <xsl:with-param name="hours" select="$endhours"/>
+                            <xsl:with-param name="frames" select="$endFrames"/>
+                            <xsl:with-param name="seconds" select="$endSeconds"/>
+                            <xsl:with-param name="minutes" select="$endMinutes"/>
+                            <xsl:with-param name="hours" select="$endHours"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--@ Interrupt when the given value isn't correct for 25 frames -->
@@ -729,19 +729,19 @@ limitations under the License.
                 <xsl:choose>
                     <!--@ Check validity for 25 frames -->
                     <xsl:when test="string-length($end) = 8 and
-                        number($endhours) &gt;= 0 and number($endhours) &lt; 24 and
-                        number($endminutes) &gt;= 0 and number($endminutes) &lt; 60 and
-                        number($endseconds) &gt;= 0 and number($endseconds) &lt; 60 and
-                        number($endframes) &gt;= 0 and number($endframes) &lt; 25 and 
+                        number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
+                        number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
+                        number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
+                        number($endFrames) &gt;= 0 and number($endFrames) &lt; 25 and 
                         $frameRate = '25'">
                         <!--@ Calculate the correct timestamp depending on the Offset given by the respective parameter -->
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$endframes"/>
-                            <xsl:with-param name="seconds" select="$endseconds"/>
-                            <xsl:with-param name="minutes" select="$endminutes"/>
-                            <xsl:with-param name="hours" select="$endhours"/>
+                            <xsl:with-param name="frames" select="$endFrames"/>
+                            <xsl:with-param name="seconds" select="$endSeconds"/>
+                            <xsl:with-param name="minutes" select="$endMinutes"/>
+                            <xsl:with-param name="hours" select="$endHours"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--@ Interrupt when the given value isn't correct for 25 frames -->

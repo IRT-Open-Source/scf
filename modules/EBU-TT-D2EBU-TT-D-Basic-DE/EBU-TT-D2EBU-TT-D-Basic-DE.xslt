@@ -139,7 +139,7 @@ limitations under the License.
         </tt:body>
     </xsl:template>
     
-    <xsl:template name="style_Align">
+    <xsl:template name="styleAlign">
         <!-- Calculates the styling for tts:textAlign attribute for tt:p element when called in the tt:p template. 
         Every style attribute is passed on to the children so at tt:p element level this template can be called 
         to determine which is the latest referenced style defining a tts:textAlign attribute. -->
@@ -147,7 +147,7 @@ limitations under the License.
         <xsl:param name="reversedStyles" select="''"/>
         <xsl:choose>
             <xsl:when test="contains($newStyle, ' ')">
-                <xsl:call-template name="style_Align">
+                <xsl:call-template name="styleAlign">
                     <xsl:with-param name="reversedStyles" select="concat($reversedStyles, ' ', substring-before($newStyle, ' '))"/>
                     <xsl:with-param name="newStyle" select="substring-after($newStyle, ' ')"/>
                 </xsl:call-template>
@@ -160,7 +160,7 @@ limitations under the License.
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="$reversedStyles != ''">
-                                <xsl:call-template name="style_Align">
+                                <xsl:call-template name="styleAlign">
                                     <xsl:with-param name="reversedStyles" select="substring-after($reversedStyles, ' ')"/>
                                     <xsl:with-param name="newStyle">
                                         <xsl:choose>
@@ -184,7 +184,7 @@ limitations under the License.
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template name="style_Color">
+    <xsl:template name="styleColor">
         <!-- Calculates the styling for style attribute for tt:p element when called in the tt:p template. 
         Every style attribute is passed on to the children so at tt:p element level this template can be called 
         to determine which is the latest referenced style defining a color changing style attribute. -->
@@ -192,7 +192,7 @@ limitations under the License.
         <xsl:param name="reversedStyles" select="''"/>
         <xsl:choose>
             <xsl:when test="contains($newStyle, ' ')">
-                <xsl:call-template name="style_Color">
+                <xsl:call-template name="styleColor">
                     <xsl:with-param name="reversedStyles" select="concat($reversedStyles, ' ', substring-before($newStyle, ' '))"/>
                     <xsl:with-param name="newStyle" select="substring-after($newStyle, ' ')"/>
                 </xsl:call-template>
@@ -205,7 +205,7 @@ limitations under the License.
                     <xsl:otherwise>
                         <xsl:choose>
                             <xsl:when test="$reversedStyles != ''">
-                                <xsl:call-template name="style_Color">
+                                <xsl:call-template name="styleColor">
                                     <xsl:with-param name="reversedStyles" select="substring-after($reversedStyles, ' ')"/>
                                     <xsl:with-param name="newStyle">
                                         <xsl:choose>
@@ -273,10 +273,10 @@ limitations under the License.
     
     <xsl:template match="tt:p">
         <xsl:param name="inheritedStyle" />        
-        <!-- Calls style_Align template with a concatenated list of all styles referenced by the ancestors. This template then determines which
+        <!-- Calls styleAlign template with a concatenated list of all styles referenced by the ancestors. This template then determines which
             style last referenced a value for the tts:textAlign attribute and returns this value. -->
         <xsl:variable name="refStyle">
-            <xsl:call-template name="style_Align">
+            <xsl:call-template name="styleAlign">
                 <xsl:with-param name="newStyle" select="concat(@style, ' ', $inheritedStyle)" />
             </xsl:call-template>
         </xsl:variable>
@@ -374,12 +374,12 @@ limitations under the License.
     
     <xsl:template match="tt:span">
         <xsl:param name="inheritedStyle"/>
-        <!-- Calls style_Color template with a concatenated list of all styles referenced by the ancestors. This template then determines which
+        <!-- Calls styleColor template with a concatenated list of all styles referenced by the ancestors. This template then determines which
             style last referenced a value for the tts:color attribute and the appropriate style. -->
         <xsl:variable name="refStyle">
             <xsl:call-template name="translateHexvalue">
                 <xsl:with-param name="color">
-                    <xsl:call-template name="style_Color">
+                    <xsl:call-template name="styleColor">
                         <xsl:with-param name="newStyle" select="concat(@style, ' ', $inheritedStyle)" />
                     </xsl:call-template>
                 </xsl:with-param>
@@ -419,7 +419,7 @@ limitations under the License.
                 <xsl:variable name="refStyle">
                     <xsl:call-template name="translateHexvalue">
                         <xsl:with-param name="color">
-                            <xsl:call-template name="style_Color">
+                            <xsl:call-template name="styleColor">
                                 <xsl:with-param name="newStyle" select="concat(@style, ' ', $inheritedStyle)" />
                             </xsl:call-template>
                         </xsl:with-param>
