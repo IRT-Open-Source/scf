@@ -1,8 +1,26 @@
 -----------------------------
+Version 0.2.1
+-----------------------------
+GENERAL:
+- CHANGED: Refactoring according to coding styles
+- ADDED: Testfiles
+
+STL2STLXML:
+- FIXED #9: Translation of "~" character is missing for ISO6937/2
+- ADDED: Missing character references
+
+EBU-TT2EBU-TT-D
+- ADDED: Parameter for offset in frames
+
+EBU-TT-D2EBU-TT-D-Basic-DE
+- FIXED #8: Missing style reference for text not in a tt:span
+
+
+-----------------------------
 Version 0.2
 -----------------------------
 GENERAL
-- CHANGED: Comments, correction of typos, code improvment
+- CHANGED: Comments, correction of typos, code improvement
 - ADDED: Testfiles
 
 STL2STLXML
@@ -14,7 +32,7 @@ STLXML2EBU-TT
 - FIXED #3: Renaming of parameter from timeCodeFormat into timebase
 - FIXED #4 (Handling when Endbox is missing)
 - FIXED #5: Bug offsetInSecondParameter    
-- FIXED #6: Bug unecessary tt:span creation
+- FIXED #6: Bug unnecessary tt:span creation
 - CHANGED: Dynamic mapping of styles independent of naming scheme
 - REMOVED: "Space preserve feature"
 
