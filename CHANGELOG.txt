@@ -1,11 +1,17 @@
 -----------------------------
+Version 0.2.2
+-----------------------------
+TT-Filter-Styles-No-References
+- ADDED: Helper module TT-Filter-Styles-No-References
+
+-----------------------------
 Version 0.2.1
 -----------------------------
-GENERAL:
+GENERAL
 - CHANGED: Refactoring according to coding styles
 - ADDED: Testfiles
 
-STL2STLXML:
+STL2STLXML
 - FIXED #9: Translation of "~" character is missing for ISO6937/2
 - ADDED: Missing character references
 
