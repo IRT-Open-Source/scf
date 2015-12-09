@@ -5,3 +5,10 @@ The module contains helper submodules that solve smaller transformation tasks.
 
 ### TT-Filter-Styles-No-References
 The module filters out style elements from the document instance that are not referenced by content elements.
+
+### DFXP2TTML
+The module converts DFXP namespaces to TTML namespaces.
+
+### TTML2DFXP
+The module converts TTML namespaces to DFXP namespaces.
+ 
