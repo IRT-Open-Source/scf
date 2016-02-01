@@ -12,3 +12,5 @@ The module converts DFXP namespaces to TTML namespaces.
 ### TTML2DFXP
 The module converts TTML namespaces to DFXP namespaces.
  
+### GetTTMLProfile
+The module determines the profile identifier of a TTML file by checking for the appropriate profile signalling.

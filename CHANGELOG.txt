@@ -1,4 +1,10 @@
 -----------------------------
+Version 0.2.4
+-----------------------------
+Get-TTML-Profile
+- ADDED: Helper module GetTTMLProfile
+
+-----------------------------
 Version 0.2.3
 -----------------------------
 DFXP2TTML

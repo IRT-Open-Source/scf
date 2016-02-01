@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<tt:tt ttp:timeBase="smpte" xml:lang="de" xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:cellResolution="50 30" xmlns:ebuttm="urn:ebu:tt:metadata" tts:extent="704px 576px" ttp:dropMode="nonDrop" ttp:frameRate="25" ttp:frameRateMultiplier="1 1" ttp:markerMode="discontinuous">
+    <tt:head>
+        <tt:metadata>
+            <ebuttm:documentMetadata>
+                <ebuttm:conformsToStandard>urn:ebu:tt:exchange:2015-09</ebuttm:conformsToStandard>
+                <ebuttm:documentTotalNumberOfSubtitles>7</ebuttm:documentTotalNumberOfSubtitles>
+                <ebuttm:documentMaximumNumberOfDisplayableCharacterInAnyRow>40</ebuttm:documentMaximumNumberOfDisplayableCharacterInAnyRow>
+                <ebuttm:documentStartOfProgramme>10:00:00:00</ebuttm:documentStartOfProgramme>
+                <ebuttm:documentCountryOfOrigin>DE</ebuttm:documentCountryOfOrigin>
+                <ebuttm:documentPublisher>Institut fuer Rundfunktechnik</ebuttm:documentPublisher>
+            </ebuttm:documentMetadata>
+        </tt:metadata>
+        <tt:styling>
+            <tt:style xml:id="defaultStyle" tts:fontFamily="monospaceSansSerif" tts:fontSize="1c 1c" tts:lineHeight="normal" tts:textAlign="center" tts:color="white" tts:backgroundColor="transparent" tts:fontStyle="normal" tts:fontWeight="normal" tts:textDecoration="none" tts:wrapOption="noWrap"/>
+            <tt:style xml:id="textWhite" tts:color="white" tts:fontSize="1c 2c"/>
+            <tt:style xml:id="textCenter" tts:textAlign="center" />
+            <tt:style xml:id="textLeft" tts:textAlign="start" />
+            <tt:style xml:id="textRight" tts:textAlign="end" />
+        </tt:styling>
+        <tt:layout>
+            <tt:region xml:id="bottom" tts:origin="10% 10%" tts:extent="80% 80%" tts:padding="0c" tts:displayAlign="after" tts:writingMode="lrtb" tts:showBackground="whenActive" tts:overflow="visible"/>
+        </tt:layout>
+    </tt:head>
+    <tt:body>
+        <tt:div style="defaultStyle">
+            <tt:p xml:id="sub1" style="textLeft" region="bottom" begin="00:00:00:00" end="00:00:01:08">
+                <tt:span style="textWhite">left single row</tt:span>
+                <tt:br/>
+            </tt:p>
+            <tt:p xml:id="sub2" style="textCenter" region="bottom" begin="00:00:01:12" end="00:00:02:17">
+                <tt:span style="textWhite">center single row</tt:span>
+                <tt:br/>
+            </tt:p>
+            <tt:p xml:id="sub3" style="textRight" region="bottom" begin="00:00:02:21" end="00:00:04:01">
+                <tt:span style="textWhite">right single row</tt:span>
+                <tt:br/>
+            </tt:p>
+            <tt:p xml:id="sub4" style="textLeft" region="bottom" begin="00:00:04:05" end="00:00:06:11">
+                <tt:span style="textWhite">left</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">two row subtitle</tt:span>
+                <tt:br/>
+            </tt:p>
+            <tt:p xml:id="sub5" style="textCenter" region="bottom" begin="00:00:06:15" end="00:00:08:21">
+                <tt:span style="textWhite">center</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">two rowsubtitle</tt:span>
+                <tt:br/>
+            </tt:p>
+            <tt:p xml:id="sub6" style="textRight" region="bottom" begin="00:00:09:00" end="00:00:11:02">
+                <tt:span style="textWhite">right</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">two row subtitle</tt:span>
+                <tt:br/>
+            </tt:p>
+            <tt:p xml:id="sub7" style="textCenter" region="bottom" begin="00:00:11:06" end="00:00:15:20">
+                <tt:span style="textWhite">Alignment with</tt:span>
+                <tt:br/>
+                <tt:span style="textWhite">Spaces</tt:span>
+                <tt:br/>
+            </tt:p>
+        </tt:div>
+    </tt:body>
+</tt:tt>
