@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<tt xml:lang="en-us" xmlns="http://www.w3.org/ns/ttml" 
+    xmlns:tts='http://www.w3.org/ns/ttml#styling' 
+    xmlns:ttp='http://www.w3.org/ns/ttml#parameter'
+    ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-full">
+    <head>
+        <styling>
+            <!-- A typical transparent region with centered text that has an outline -->
+            <style xml:id="bottomMidStyle" tts:textAlign="center" tts:textOutline="#000000ff 5%" tts:backgroundColor="#00000000" tts:color="#ffffffff" tts:origin='20% 58%' tts:extent='60% 18%'/>
+        </styling>
+        <layout>
+            <!-- typical 'pop on' type region -->
+            <region xml:id="bottomMid" style="bottomMidStyle" />
+        </layout>
+    </head>
+    <body>
+        <div style="defaultFont">
+            <p region="bottomMid" begin='00:00:00.101' end='00:00:03.000'> This is a pop on caption. </p>
+        </div>
+    </body>
+</tt>
