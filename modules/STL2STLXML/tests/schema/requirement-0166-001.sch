@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
+    <title>Testing Characters code table 00 - Latin Alphabet - column A</title>
     <pattern id="CharacterCodeTable">
         <rule context="/">
             <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
@@ -24,10 +24,13 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
+            <let name="expected_value" value="'¡¢£$¥§‘“«←↑→↓'"/>
             <assert test=". = $expected_value">
                 Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
             </assert> 
+            <assert test="StartBox[position() &lt; 3][name(following-sibling::node()[1]) = 'space' ]">
+                The first node after the start of the first box must be a space element.
+            </assert>             
         </rule>
-    </pattern>
+    </pattern>            
 </schema>

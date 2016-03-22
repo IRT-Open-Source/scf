@@ -16,18 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing TNB with value "00005"</title>
+    <pattern id="TotalNumberofTextandTimingInformationblocks">
         <rule context="/">
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element must be present.
+            <assert test="StlXml/HEAD/GSI/TNB">
+                The TNB element must be present.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+        <rule context="StlXml/HEAD/GSI/TNB">
+            <assert test="normalize-space(.) = '00005'">
+                Expected value: "00005" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
-    </pattern>
+    </pattern>            
 </schema>

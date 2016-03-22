@@ -16,18 +16,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing DoubleWidth mapping.</title>
+    <pattern id="SubtitleNumber">
         <rule context="/">
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF/DoubleWidth">
+                The DoubleWidth element must be present.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+            <assert test="name(child::*[4]) = 'DoubleWidth'">
+                Expected value: "DoubleWidth" Value from test: "<value-of select="name(child::*[4])"/>"
             </assert> 
         </rule>
-    </pattern>
+    </pattern>            
 </schema>
+

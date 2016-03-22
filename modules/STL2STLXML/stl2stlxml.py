@@ -32,6 +32,7 @@ class iso6937(codecs.Codec):
                       0xbe, 0xbf))
     direct_mapping = {
         0x8a: 0x000a,  # line break
+        0xa4: 0x0024,  # $
         0xa8: 0x00a4,  # ¤
         0xa9: 0x2018,  # ‘
         0xaa: 0x201C,  # “
@@ -63,17 +64,17 @@ class iso6937(codecs.Codec):
         0xde: 0x215D,  # ⅝
         0xdf: 0x215E,  # ⅞
 
-        0xe0: 0x2126,  # Ohm Ω
+        0xe0: 0x03A9,  # Ohm Ω
         0xe1: 0x00C6,  # Æ
         0xe2: 0x0110,  # Đ
-        0xe3: 0x00AA,  # ª
+        0xe3: 0x1EA1,  # ạ
         0xe4: 0x0126,  # Ħ
         0xe6: 0x0132,  # Ĳ
         0xe7: 0x013F,  # Ŀ
         0xe8: 0x0141,  # Ł
         0xe9: 0x00D8,  # Ø
         0xea: 0x0152,  # Œ
-        0xeb: 0x00BA,  # º
+        0xeb: 0x1ECD,  # ọ
         0xec: 0x00DE,  # Þ
         0xed: 0x0166,  # Ŧ
         0xee: 0x014A,  # Ŋ
@@ -101,12 +102,13 @@ class iso6937(codecs.Codec):
         0xc2: 0x0301,  # acute accent
         0xc3: 0x0302,  # circumflex
         0xc4: 0x0303,  # tilde
-        0xc5: 0x0304,  # macron
+        0xc5: 0x0304,  # macron above
         0xc6: 0x0306,  # breve
         0xc7: 0x0307,  # dot
         0xc8: 0x0308,  # umlaut
         0xca: 0x030A,  # ring
         0xcb: 0x0327,  # cedilla
+        0xcc: 0x0331,  # macron below
         0xcd: 0x030B,  # double acute accent
         0xce: 0x0328,  # ogonek
         0xcf: 0x030C,  # caron
@@ -299,11 +301,9 @@ class STL:
                     self.TTIfields,
                     struct.unpack('<BHBBBBBBBBBBBBB112s', data)
                 ))
-                # Skip TTI Block with reserved EBN code
-                if TTI['EBN'] in range(240-254):
+                # Skip TTI Block with reserved EBN code or User Data
+                if TTI['EBN'] in range(240, 255):
                     continue
-                if TTI['EBN'] == 254:
-                    break
                 # If comment skip.
                 if TTI['CF']:  # comments are ignored
                     continue

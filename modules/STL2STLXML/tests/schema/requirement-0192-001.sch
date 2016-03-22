@@ -16,18 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing TCS with value "1" for "Intended for use"</title>
+    <pattern id="TimeCodeStatus">
         <rule context="/">
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element must be present.
+            <assert test="StlXml/HEAD/GSI/TCS">
+                The TCS element must be present.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+        <rule context="StlXml/HEAD/GSI/TCS">
+            <assert test="normalize-space(.) = '1'">
+                Expected value: "1" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
-    </pattern>
+    </pattern>            
 </schema>

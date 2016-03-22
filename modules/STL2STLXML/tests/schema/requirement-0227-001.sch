@@ -16,18 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing Flash Control Code mapping</title>
+    <pattern id="FlashControlCode">
         <rule context="/">
             <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
                 The TF element must be present.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
-            </assert> 
+            <assert test="StartBox[position() &lt; 3][name(following-sibling::node()[1]) = 'Flash']">
+                The first node after the start of the first box must be a Flash element.
+            </assert>             
         </rule>
-    </pattern>
+    </pattern>            
 </schema>

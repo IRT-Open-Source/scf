@@ -16,18 +16,27 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing EBN, derived from a single TTI block</title>
+    <pattern id="ExtensionBlockNumber">
+        <rule context="/">
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
+                The EBN element must be present.
+            </assert> 
+        </rule>
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
+            <assert test="normalize-space(.) = 'ff'">
+                Expected value: "ff" Value from test: "<value-of select="normalize-space(.)"/>"
+            </assert> 
+        </rule>
         <rule context="/">
             <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
                 The TF element must be present.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+            <assert test="normalize-space(.) = 'Block_FF'">
+                Expected value: "Block_FF" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
-    </pattern>
+    </pattern>            
 </schema>

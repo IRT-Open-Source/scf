@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing GSI field with chars from 0x20 to 0x7E</title>
+    <title>Testing GSI field with chars from 0x80 to 0xFF</title>
     <pattern id="CodePage">
         <rule context="/">
             <assert test="StlXml/HEAD/GSI/OPT">
@@ -28,21 +28,30 @@ limitations under the License.
             <assert test="StlXml/HEAD/GSI/TPT">
                 The TPT element must be present.
             </assert> 
+            <assert test="StlXml/HEAD/GSI/TET">
+                The TET element must be present.
+            </assert> 
         </rule>
         <rule context="StlXml/HEAD/GSI/OPT">
-            <let name="expected_value" value="' !&quot;#$%&amp;''()*+,-./0123456789:;&lt;=&gt;?'"/>
+            <let name="expected_value" value="'ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒ'"/>
             <assert test=". = $expected_value">
                 Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
             </assert> 
         </rule>
         <rule context="StlXml/HEAD/GSI/OET">
-            <let name="expected_value" value="'@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'"/>
+            <let name="expected_value" value="'áíóúñÑªº¿®¬½¼¡«»░▒▓│┤ÁÂÀ©╣║╗╝¢¥┐'"/>
             <assert test=". = $expected_value">
                 Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
             </assert> 
         </rule>
         <rule context="StlXml/HEAD/GSI/TPT">
-            <let name="expected_value" value="'`abcdefghijklmnopqrstuvwxyz{|}~ '"/>
+            <let name="expected_value" value="'└┴┬├─┼ãÃ╚╔╩╦╠═╬¤ðÐÊËÈıÍÎÏ┘┌█▄¦Ì▀'"/>
+            <assert test=". = $expected_value">
+                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+            </assert> 
+        </rule>
+        <rule context="StlXml/HEAD/GSI/TET">
+            <let name="expected_value" value="'ÓßÔÒõÕµþÞÚÛÙýÝ¯´­±‗¾¶§÷¸°¨·¹³²■ '"/>
             <assert test=". = $expected_value">
                 Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
             </assert> 

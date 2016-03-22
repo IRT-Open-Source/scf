@@ -16,18 +16,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing OPT element with value "Ô"</title>
+    <pattern id="CodePageDecoding">
         <rule context="/">
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element must be present.
+            <assert test="StlXml/HEAD/GSI/CPN">
+                The CPN element must be present.
+            </assert> 
+            <assert test="StlXml/HEAD/GSI/OPT">
+                The OPT element must be present.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+        <rule context="StlXml/HEAD/GSI/CPN">
+            <assert test="normalize-space(.) = '860'">
+                Expected CPN value: "860" CPN value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
-    </pattern>
+        <rule context="StlXml/HEAD/GSI/OPT">
+            <assert test="normalize-space(.) = 'Ô'">
+                Expected value: "Ô" Value from test: "<value-of select="normalize-space(.)"/>"
+            </assert> 
+        </rule>
+    </pattern>            
 </schema>

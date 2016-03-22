@@ -16,18 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing CS with value "00" for "Subtitle not part of a cumulative set"</title>
+    <pattern id="CumulativeStatus">
         <rule context="/">
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/CS">
+                The CS element must be present.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/CS">
+            <assert test="normalize-space(.) = '00'">
+                Expected value: "00" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
-    </pattern>
+    </pattern>            
 </schema>

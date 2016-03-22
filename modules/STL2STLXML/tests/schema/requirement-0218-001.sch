@@ -16,18 +16,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing Characters code table 00 - Latin Alphabet - column 7</title>
-    <pattern id="CharacterCodeTable">
+    <title>Testing TF element with value "¿"</title>
+    <pattern id="CodePageDecoding">
         <rule context="/">
+            <assert test="StlXml/HEAD/GSI/CCT">
+                The CCT element must be present.
+            </assert> 
             <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
                 The TF element must be present.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <let name="expected_value" value="'pqrstuvwxyz{|}~'"/>
-            <assert test=". = $expected_value">
-                Expected value: "<value-of select="$expected_value"/>" Value from test: "<value-of select="."/>"
+        <rule context="StlXml/HEAD/GSI/CCT">
+            <assert test="normalize-space(.) = '00'">
+                Expected CCT value: "00" CCT value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
-    </pattern>
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
+            <assert test="text() = '¿'">
+                Expected value: "¿" Value from test: "<value-of select="text()"/>"
+            </assert> 
+        </rule>
+    </pattern>            
 </schema>
