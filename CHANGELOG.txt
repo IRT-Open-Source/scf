@@ -1,4 +1,15 @@
 -----------------------------
+Version 0.2.5
+-----------------------------
+STL2STLXML
+- ADDED: Test files
+- DELETED: Test files
+- FIX #20: Characters with macron
+- FIX #19: Mapping of "$"
+- FIX: EBN Field handling
+- FIX: Mapping character codes
+
+-----------------------------
 Version 0.2.4
 -----------------------------
 Get-TTML-Profile
