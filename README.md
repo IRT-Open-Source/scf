@@ -1,7 +1,7 @@
 # SCF
 The Subtitling Conversion Framework (SCF) is a set of modules for converting XML based subtitle formats. Main target is to build up a flexible and extensible transformation pipeline to convert EBU STL formats and EBU-TT subtitle formats.      
 
-The SCF is an early Alpha release with the version 0.2.5.
+The SCF is an early Alpha release with the version 0.2.6.
 
 ##License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer Rundfunktechnik 
@@ -48,6 +48,7 @@ Currently the SCF has the following five core modules:
 * STMLXML2EBU-TT
 * EBU-TT2EBU-TT-D
 * EBU-TT-D2EBU-TT-D-Basic-DE
+* FlashDFXP2EBU-TT-D-Basic-DE
 
 #### STLXML-XSD
 The STLXML W3C XML Schema is a tool to check if the XML representation of the EBU STL files conform to the expected structure. Files that don't conform will most probably fail the STLXML to EBU-TT conversion or will lead to unexpected results.
@@ -63,6 +64,10 @@ The EBU-TT2EBU-TT-D XSLT converts EBU-TT Part 1 files that have been created acc
 
 #### EBU-TT-D2EBU-TT-D-Basic-DE
 The EBU-TT-D2EBU-TT-D-Basic-DE XSLT converts EBU-TT-D files that have been created according to EBU Tech 3380 into EBU-TT-D-Basic-DE files that conform to the "XML-Format for Distribution of Subtitles in the ARD Mediathek portals" (EBU-TT-D-Basic-DE).
+
+### FlashDFXP2EBU-TT-D-Basic-DE
+The FlashDFXP2EBU-TT-D-Basic-DE module converts a TTML/DFXP file made for Adobe Flash player into EBU-TT-D-Basic-DE.
+
 
 ### Tests
 The test files that are used as test input for a module are named according to the following pattern:
@@ -83,7 +88,7 @@ Furthermore each module contains in a documentation folder the requirements for 
     
 
 ##AUTHORS
-Development: Tilman Eberspächer, Andreas Tai, Barbara Fichte, Dominik Garsche, Stefan Pöschel
+Development: Tilman Eberspächer, Andreas Tai, Barbara Fichte, Dominik Garsche, Stefan Pöschel, Peter tho Pesch
 Test Files: Barbara Fichte, Lilli Weiss, Tilman Eberspächer, Stefan Pöschel
 QC: Barbara Fichte, Peter tho Pesch
 

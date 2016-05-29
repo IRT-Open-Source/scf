@@ -1,4 +1,10 @@
 -----------------------------
+Version 0.2.6
+-----------------------------
+FlashDFXP2EBU-TT-D-Basic-DE
+- ADDED: Module FlashDFXP2EBU-TT-D-Basic-DE
+
+-----------------------------
 Version 0.2.5
 -----------------------------
 STL2STLXML
