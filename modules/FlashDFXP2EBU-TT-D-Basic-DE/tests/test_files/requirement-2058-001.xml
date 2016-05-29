@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- Test Color Mapping -->
+
+<tt xml:lang="de" xmlns="http://www.w3.org/2006/04/ttaf1"
+    xmlns:tts="http://www.w3.org/2006/10/ttaf1#style">
+    <head>
+        <styling>
+            <style id="c1" tts:color="#FF0000" tts:textAlign="center"/>
+        </styling>
+    </head>
+    <body>
+        <div xml:lang="de" style="c1">
+            <p begin="04.7" end="11.4" tts:textAlign="center">Subtitle 1</p>
+            <p begin="12.7" end="13.4" tts:textAlign="center" tts:color="#000000">Subtitle 2</p>            
+            <p begin="13.7" end="15.4" tts:textAlign="center">Subtitle <span tts:color="#00FF00">3</span></p>
+            <p begin="16.7" end="18.4" tts:textAlign="center"><span tts:color="#FFFF00">Subtitle</span> 4</p>
+            <p begin="19.7" end="20.4" tts:textAlign="center"><span tts:color="#0000FF">Subtitle</span> 5</p>
+            <p begin="21.7" end="22.4" tts:textAlign="center"><span tts:color="#FF00FF">Subtitle</span> 6</p>
+            <p begin="23.7" end="24.4" tts:textAlign="center"><span tts:color="#00FFFF">Subtitle</span> 7</p>
+            <p begin="25.7" end="26.4" tts:textAlign="center"><span tts:color="#FFFFFF">Subtitle</span> 8</p>
+        </div>
+    </body>
+</tt>
