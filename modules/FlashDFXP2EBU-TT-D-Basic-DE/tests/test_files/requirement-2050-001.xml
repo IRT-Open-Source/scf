@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- Test of static mapping -->
+
+<!--*** Comment 1 ***-->
+<!--*** Comment 2 2016-02-07 ***-->
+
+<tt xml:lang="de" xmlns="http://www.w3.org/2006/04/ttaf1"
+    xmlns:tts="http://www.w3.org/2006/10/ttaf1#style">
+    <head>
+        <styling>
+            <style id="c1" tts:color="#FFFFFF" tts:textAlign="center"/>
+        </styling>
+    </head>
+    <body>
+        <div xml:lang="de" style="c1">
+            <p begin="04.7" end="11.4" tts:textAlign="center">Subtitle 1</p>
+            <p begin="103.9" end="107.4" tts:textAlign="center" tts:color="#FFFF00">Subtitle 2 first
+                row<br/>Subtitle 2 second row</p>
+        </div>
+    </body>
+</tt>
