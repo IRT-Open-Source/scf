@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<requirements>
+	<requirement name="requirement-0255-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0256-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0257a-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0258-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0259-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0260a-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0261-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0262-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0263-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0264-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0265-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0266-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0267-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0268-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0269-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0270-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0271-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0272-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0273-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0274-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0275-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0276-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0277-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0278-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0279-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0280-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0281-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0282-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0283-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0284-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0285-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0286-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0287-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0288-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0289-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0290-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0291-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0292-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0293-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0294-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0295-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0296-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0297-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0298-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0299-001" file="testfile_generic.xml"/>
+
+	<requirement name="requirement-0301-001" file="requirement-0301-001.xml"/>
+	<requirement name="requirement-0302-001" file="requirement-0302-001.xml"/>
+	<requirement name="requirement-0303-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0304-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0305-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0306-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0307-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0308-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0309-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0310-001" file="testfile_tti_colors.xml"/>
+
+	<requirement name="requirement-0313-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0314-001" file="testfile_tti_colors.xml"/>
+	<requirement name="requirement-0315-001" file="requirement-0315-001.xml"/>
+	<requirement name="requirement-0316-001" file="requirement-0316-001.xml"/>
+
+	<requirement name="requirement-0330-001" file="testfile_tti_bgcolor.xml"/>
+	<requirement name="requirement-0331-001" file="testfile_tti_bgcolor.xml"/>
+
+	<requirement name="requirement-0334-001" file="testfile_tti_newline.xml"/>
+	<requirement name="requirement-0335-001" file="testfile_generic.xml"/>
+
+	<requirement name="requirement-0422-001" file="requirement-0422-001.xml"/>
+</requirements>

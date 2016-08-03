@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<requirements>
+    <requirement name="requirement-0255-001" description="GSI Header - content">
+        <text gsi_offset="0" tti_offset="0" field_offset="0" size="1024">850STL25.0120008IRT Testsendung                 IRT Testfolge                   IRT Test Programme              IRT Test Episode                Open Source Translator          open.source@irt.de              ABC-4711        151210151217 618   18   1  40231100000001000000011DEUInstitut für Rundfunktechnik    Open Source Editor              open.source@irt.de</text>
+    </requirement>
+    <requirement name="requirement-0256-001" description="GSI Header - order">
+        <text gsi_offset="0" tti_offset="0" field_offset="0" size="1024">850STL25.0120008IRT Testsendung                 IRT Testfolge                   IRT Test Programme              IRT Test Episode                Open Source Translator          open.source@irt.de              ABC-4711        151210151217 618   18   1  40231100000001000000011DEUInstitut für Rundfunktechnik    Open Source Editor              open.source@irt.de</text>
+    </requirement>
+    <requirement name="requirement-0257a-001" description="Code Page Number mapping (subset)">
+        <text gsi_offset="0" tti_offset="0" field_offset="0" size="3">850</text>
+    </requirement>
+    <requirement name="requirement-0258-001" description="Disk Format Code mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="3" size="8">STL25.01</text>
+    </requirement>
+    <requirement name="requirement-0259-001" description="Display Standard Code mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="11" size="1">2</text>
+    </requirement>
+    <requirement name="requirement-0260a-001" description="Character Code Table Number mapping (subset)">
+        <text gsi_offset="0" tti_offset="0" field_offset="12" size="2">00</text>
+    </requirement>
+    <requirement name="requirement-0261-001" description="Language Code mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="14" size="2">08</text>
+    </requirement>
+    <requirement name="requirement-0262-001" description="Original Programme Title mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="16" size="32">IRT Testsendung</text>
+    </requirement>
+    <requirement name="requirement-0263-001" description="Original Episode Title mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="48" size="32">IRT Testfolge</text>
+    </requirement>
+    <requirement name="requirement-0264-001" description="Translated Programme Title mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="80" size="32">IRT Test Programme</text>
+    </requirement>
+    <requirement name="requirement-0265-001" description="Translated Episode Title mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="112" size="32">IRT Test Episode</text>
+    </requirement>
+    <requirement name="requirement-0266-001" description="Translator's Name mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="144" size="32">Open Source Translator</text>
+    </requirement>
+    <requirement name="requirement-0267-001" description="Translator's Contact Details mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="176" size="32">open.source@irt.de</text>
+    </requirement>
+    <requirement name="requirement-0268-001" description="Subtitle List Reference Code mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="208" size="16">ABC-4711</text>
+    </requirement>
+    <requirement name="requirement-0269-001" description="Creation Date mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="224" size="6">151210</text>
+    </requirement>
+    <requirement name="requirement-0270-001" description="Revision Date mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="230" size="6">151217</text>
+    </requirement>
+    <requirement name="requirement-0271-001" description="Revision Number mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="236" size="2" xml:space="preserve"> 6</text>
+    </requirement>
+    <requirement name="requirement-0272-001" description="Total Number of Text and Timing Information block mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="238" size="5">18</text>
+    </requirement>
+    <requirement name="requirement-0273-001" description="Total Number of Subtitles mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="243" size="5">18</text>
+    </requirement>
+    <requirement name="requirement-0274-001" description="Total Number of Subtitle Groups mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="248" size="3">1</text>
+    </requirement>
+    <requirement name="requirement-0275-001" description="Maximum Number of Displayable Characters in any text row mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="251" size="2">40</text>
+    </requirement>
+    <requirement name="requirement-0276-001" description="Maximum Number of Displayable Rows mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="253" size="2">23</text>
+    </requirement>
+    <requirement name="requirement-0277-001" description="Time Code: Status mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="255" size="1">1</text>
+    </requirement>
+    <requirement name="requirement-0278-001" description="Time Code: Start-of-Programme mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="256" size="8">10000000</text>
+    </requirement>
+    <requirement name="requirement-0279-001" description="Time Code: First In-Cue mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="264" size="8">10000000</text>
+    </requirement>
+    <requirement name="requirement-0280-001" description="Total Number of Disks mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="272" size="1">1</text>
+    </requirement>
+    <requirement name="requirement-0281-001" description="Disk Sequence Number mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="273" size="1">1</text>
+    </requirement>
+    <requirement name="requirement-0282-001" description="Country of Origin mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="274" size="3">DEU</text>
+    </requirement>
+    <requirement name="requirement-0283-001" description="Publisher mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="277" size="32">Institut für Rundfunktechnik</text>
+    </requirement>
+    <requirement name="requirement-0284-001" description="Editor's Name mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="309" size="32">Open Source Editor</text>
+    </requirement>
+    <requirement name="requirement-0285-001" description="Editor's Contact Details mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="341" size="32">open.source@irt.de</text>
+    </requirement>
+    <requirement name="requirement-0286-001" description="User-Defined Area mapping">
+        <text gsi_offset="0" tti_offset="0" field_offset="448" size="576"/>
+    </requirement>
+    <requirement name="requirement-0287-001" description="Unused Bytes handling">
+        <text gsi_offset="0" tti_offset="0" field_offset="373" size="75"/>
+    </requirement>
+    <requirement name="requirement-0288-001" description="TTI Block - mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="0">000000FF000A0000000A0002031602000D2020202020202020200B0B776569FB20617566207363687761727A0A0A8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
+    </requirement>
+    <requirement name="requirement-0289-001" description="TTI Block - order">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="0">000000FF000A0000000A0002031602000D2020202020202020200B0B776569FB20617566207363687761727A0A0A8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
+    </requirement>
+    <requirement name="requirement-0290-001" description="Subtitle Group Number mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="0">00</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="0">00</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="0">00</binary>
+    </requirement>
+    <requirement name="requirement-0291-001" description="Subtitle Number mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="1">0000</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="1">0100</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="1">0200</binary>
+    </requirement>
+    <requirement name="requirement-0292-001" description="Extension Block Number mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="3">FF</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="3">FF</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="3">FF</binary>
+    </requirement>
+    <requirement name="requirement-0293-001" description="Cumulative Status mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="4">00</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="4">00</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="4">00</binary>
+    </requirement>
+    <requirement name="requirement-0294-001" description="Time Code In mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="5">0A000000</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="5">0A000207</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="5">0A00040B</binary>
+    </requirement>
+    <requirement name="requirement-0295-001" description="Time Code Out mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="9">0A000203</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="9">0A000407</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="9">0A00060E</binary>
+    </requirement>
+    <requirement name="requirement-0296-001" description="Vertical Position mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="13">16</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="13">16</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="13">16</binary>
+    </requirement>
+    <requirement name="requirement-0297-001" description="Justification Code mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="14">02</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="14">02</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="14">02</binary>
+    </requirement>
+    <requirement name="requirement-0298-001" description="Comment Flag mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="15">00</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="15">00</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="15">00</binary>
+    </requirement>
+    <requirement name="requirement-0299-001" description="Text Field mapping - content">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16">0D2020202020202020200B0B776569FB20617566207363687761727A0A0A</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="16">0D0320202020202020200B0B67656C6220617566207363687761727A0A0A</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="16">0D0220202020202020200B0B6772C8756E20617566207363687761727A0A0A</binary>
+    </requirement>
+
+    <requirement name="requirement-0301-001" description="Space element mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="4">20</binary>
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="6">20</binary>
+    </requirement>
+    <requirement name="requirement-0302-001" description="Text Field mapping - Text">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">C861C86FC875FB</binary>
+    </requirement>
+    <requirement name="requirement-0303-001" description="AlphaBlack element mapping">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">00</binary>
+    </requirement>
+    <requirement name="requirement-0304-001" description="AlphaRed element mapping">
+		<binary gsi_offset="1024" tti_offset="128" field_offset="16" byte_offset="3">01</binary>
+    </requirement>
+    <requirement name="requirement-0305-001" description="AlphaGreen element mapping">
+		<binary gsi_offset="1024" tti_offset="256" field_offset="16" byte_offset="3">02</binary>
+    </requirement>
+    <requirement name="requirement-0306-001" description="AlphaYellow element mapping">
+		<binary gsi_offset="1024" tti_offset="384" field_offset="16" byte_offset="3">03</binary>
+    </requirement>
+    <requirement name="requirement-0307-001" description="AlphaBlue element mapping">
+		<binary gsi_offset="1024" tti_offset="512" field_offset="16" byte_offset="3">04</binary>
+    </requirement>
+    <requirement name="requirement-0308-001" description="AlphaMagenta element mapping">
+		<binary gsi_offset="1024" tti_offset="640" field_offset="16" byte_offset="3">05</binary>
+    </requirement>
+    <requirement name="requirement-0309-001" description="AlphaCyan element mapping">
+		<binary gsi_offset="1024" tti_offset="768" field_offset="16" byte_offset="3">06</binary>
+    </requirement>
+    <requirement name="requirement-0310-001" description="AlphaWhite element mapping">
+		<binary gsi_offset="1024" tti_offset="896" field_offset="16" byte_offset="3">07</binary>
+    </requirement>
+
+    <requirement name="requirement-0313-001" description="EndBox element mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="8">0A0A</binary>
+    </requirement>
+    <requirement name="requirement-0314-001" description="StartBox element mapping">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="1">0B0B</binary>
+    </requirement>
+    <requirement name="requirement-0315-001" description="NormalHeight element mapping">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="0">0C</binary>
+    </requirement>
+    <requirement name="requirement-0316-001" description="DoubleHeight element mapping">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="0">0D</binary>
+    </requirement>
+
+    <requirement name="requirement-0330-001" description="BlackBackground element mapping">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="10">1C</binary>
+    </requirement>
+    <requirement name="requirement-0331-001" description="NewBackground element mapping">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="4">1D</binary>
+    </requirement>
+
+    <requirement name="requirement-0334-001" description="Newline element mapping">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="9">8A</binary>
+    </requirement>
+    <requirement name="requirement-0335-001" description="Text Field mapping - length">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="30">8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
+        <binary gsi_offset="1024" tti_offset="128" field_offset="16" byte_offset="30">8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
+        <binary gsi_offset="1024" tti_offset="256" field_offset="16" byte_offset="31">8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
+    </requirement>
+
+    <requirement name="requirement-0422-001" description="Text Field mapping - ignore undesired characters">
+		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">546573740A0A8F</binary>
+    </requirement>
+</requirements>
