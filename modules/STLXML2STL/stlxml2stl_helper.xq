@@ -15,7 +15,4 @@
 
 import module namespace stlxml2stl = 'stlxml2stl' at 'stlxml2stl.xqm';
 
-(: select the available stdout depending on used OS (Windows/Linux) :)
-let $stdout := if(fn:exists(fn:environment-variable("WINDIR"))) then "CON" else "/dev/stdout"
-
-return file:write-binary($stdout, stlxml2stl:encode(.))
+stlxml2stl:encode(.)

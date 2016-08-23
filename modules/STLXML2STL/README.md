@@ -2,7 +2,7 @@
 The STLXML2STL module converts an XML representation of EBU-STL to a binary file that conforms to EBU-STL (EBU Tech 3264). The module is written in XQuery and designed to be executed with BaseX or Saxon XQuery processors.
 
 ## Prerequisites
-[BaseX 8.2.3](http://basex.org/) or [Saxon Enterprise Edition (EE) 9.6.0.5](www.saxonica.com/) (tested with these versions).
+[BaseX 8.4](http://basex.org/) or [Saxon Enterprise Edition (EE) 9.6.0.5](www.saxonica.com/) (tested with these versions).
 
 ## USAGE
 The converter is available as an XQuery library module (`stlxml2stl.xqm`) which can be used from other XQuery modules:
