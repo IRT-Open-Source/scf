@@ -582,7 +582,7 @@ limitations under the License.
             </xsl:choose>        
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="RD">
         <!--** Element containing information about the Revision Date. Steps: -->
         <!--@ Check for the element containing only numerical content -->
@@ -630,15 +630,19 @@ limitations under the License.
     <xsl:template match="BODY">
         <!--** Container for the TTICONTAINER element. Steps: -->
         <xsl:param name="frameRate"/>
-        <!--@ Create tt:body and tt:div elements, match the first child -->
+        <!--@ Create tt:body and tt:div elements for every used SGN (in document order) -->
         <tt:body>
-            <tt:div
-                style="defaultStyle">
-                <xsl:apply-templates select="TTICONTAINER/TTI[1]">
-                    <!--** Tunnel parameters needed for value calculation of decending elements -->
-                    <xsl:with-param name="frameRate" select="$frameRate"/>
-                </xsl:apply-templates>
-            </tt:div>
+            <xsl:variable name="tti_all" select="TTICONTAINER/TTI"/>
+            <xsl:for-each select="fn:distinct-values($tti_all/SGN)">
+                <tt:div style="defaultStyle" xml:id="{concat('SGN', .)}">
+                    <!--@ Match children with the respective SGN (in document order) -->
+                    <xsl:variable name="sgn" select="."/>
+                    <xsl:apply-templates select="$tti_all[SGN = $sgn]">
+                        <!--** Tunnel parameters needed for value calculation of decending elements -->
+                        <xsl:with-param name="frameRate" select="$frameRate"/>
+                    </xsl:apply-templates>
+                </tt:div>                
+            </xsl:for-each>
         </tt:body>
     </xsl:template>
 
@@ -671,11 +675,6 @@ limitations under the License.
             <xsl:with-param name="SN" select="normalize-space(SN)"/>
             <xsl:with-param name="JC" select="normalize-space(JC)"/>
             <xsl:with-param name="VP" select="normalize-space(VP)"/>
-        </xsl:apply-templates>
-        <!--@ Process the next TTI sibling element -->
-        <xsl:apply-templates select="following-sibling::*[1]">
-            <!--** Tunnel parameters needed for value calculation of following elements -->
-            <xsl:with-param name="frameRate" select="$frameRate"/>
         </xsl:apply-templates>
     </xsl:template>
 
