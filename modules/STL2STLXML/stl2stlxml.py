@@ -321,10 +321,8 @@ class STL:
                                                    TTI['TCOs'], TTI['TCOf'])
                 ''' If this is the last subtitle return '''
                 if TTI['EBN'] == 'ff':
-                    # skip empty subtitles
-                    if txt:
-                        TTI['TF'] = ''.join(txt)
-                        self.tti.append(TTI)
+                    TTI['TF'] = ''.join(txt)
+                    self.tti.append(TTI)
                     break
         self.tti.sort(key=_getSubtitleNumber)
 
