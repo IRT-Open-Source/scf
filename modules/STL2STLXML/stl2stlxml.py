@@ -274,7 +274,13 @@ class STL:
 
         GSI = self.GSI
 
+        # fall back to cp850 if codepage unsupported by Python (despite whether supported by STL!)
         self.gsiCodePage = 'cp%s' % GSI['CPN']
+        try:
+            codecs.lookup(self.gsiCodePage)
+        except LookupError:
+            self.gsiCodePage = 'cp850'
+
         # Matching the Character Code Table Number (CCT).
         # The CCT is used to decode the TTI Blocks
         self.codePage = {
