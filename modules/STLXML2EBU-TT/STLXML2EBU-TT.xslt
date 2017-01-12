@@ -350,44 +350,21 @@ limitations under the License.
             </xsl:message>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="TCP">
         <!--** Element containing information about the Time Code: Start-of-Programme. Steps: -->
         <xsl:param name="frameRate"/>
-        <!--@ Check for the element containing only numerical content -->
-        <xsl:if test="number(.) != number(.)">
-            <!--@ Interrupt transformation if content contains non-numerical values -->
-            <xsl:message terminate="yes">
-                The TCP field has invalid content
-            </xsl:message>
-        </xsl:if>
-        <!--@ Split content-string in hours, minutes, seconds and frames; ebuttm:documentStartOfProgramme is always a SMPTE timecode -->
-        <xsl:variable name="hours" select="substring(normalize-space(.), 1, 2)"/>
-        <xsl:variable name="minutes" select="substring(normalize-space(.), 3, 2)"/>
-        <xsl:variable name="seconds" select="substring(normalize-space(.), 5, 2)"/>
-        <xsl:variable name="frames" select="substring(normalize-space(.), 7, 2)"/>
-        <xsl:choose>
-            <!--@ Check validity for 25 frames -->
-            <xsl:when test="string-length(normalize-space(.)) = 8 and
-                            number($hours) &gt;= 0 and number($hours) &lt; 24 and
-                            number($minutes) &gt;= 0 and number($minutes) &lt; 60 and
-                            number($seconds) &gt;= 0 and number($seconds) &lt; 60 and
-                            number($frames) &gt;= 0 and number($frames) &lt; 25 and 
-                            $frameRate = '25'">
-                <!--@ Create ebuttm:documentStartOfProgramme element with the checked content -->
-                <ebuttm:documentStartOfProgramme>
-                    <xsl:value-of select="concat($hours, ':', $minutes, ':', $seconds, ':', $frames)"/>
-                </ebuttm:documentStartOfProgramme>
-            </xsl:when>
-            <!--@ Interrupt, if the TCP element's value is invalid for 25 frames -->
-            <xsl:otherwise>
-                <xsl:message terminate="yes">
-                    TCP is always set in valid smpte time with format hhmmssff. This implementation only supports 25 frames.
-                </xsl:message>
-            </xsl:otherwise>
-        </xsl:choose>        
+        
+        <!--@ Create ebuttm:documentStartOfProgramme element with the checked content -->
+        <ebuttm:documentStartOfProgramme>
+            <xsl:call-template name="getTimecode">
+                <xsl:with-param name="fieldName">TCP</xsl:with-param>
+                <xsl:with-param name="timeCodeFormat">smpte</xsl:with-param>
+                <xsl:with-param name="frameRate" select="$frameRate"/>
+            </xsl:call-template>
+        </ebuttm:documentStartOfProgramme>
     </xsl:template>
-    
+
     <xsl:template match="OPT">
         <!--** Element containing information about the Original Programme Title. Steps: -->
         <!--@ Check if content is either empty or only consists of spaces -->
@@ -708,135 +685,74 @@ limitations under the License.
     </xsl:template>
     
     <xsl:template match="TCI">
-        <!--** Converts the value of the TCI element into either a media or smpte time code format with the desired
-            frame rate. Steps:-->
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
-        <xsl:variable name="begin" select="normalize-space(.)"/>
-        <!--@ Check if there's any non-numerical content in the normalized TCI field -->
-        <xsl:if test="number($begin) != number($begin)">
-            <!--@ Interrupt transformation if content contains non-numerical values -->
-            <xsl:message terminate="yes">
-                The TCI field has invalid content
-            </xsl:message>
-        </xsl:if>
-        <!--@ Split content-string in hours, minutes, seconds and frames; the TCI elment's content is always a smpte formatted time code -->
-        <xsl:variable name="beginHours" select="substring($begin, 1, 2)"/>
-        <xsl:variable name="beginMinutes" select="substring($begin, 3, 2)"/>
-        <xsl:variable name="beginSeconds" select="substring($begin, 5, 2)"/>
-        <xsl:variable name="beginFrames" select="substring($begin, 7, 2)"/>
-        <xsl:choose>
-            <!--@ When timeCodeFormat 'media' is set, it has to be calculated from STLXML file's smpte timeCodeFormat.
-                If timeCodeFormat 'smpte' is used, the values can be copied, subdividing with ':' is necessary -->
-            <xsl:when test="$timeCodeFormat = 'media' or 'smpte'">
-                <xsl:choose>
-                    <!--@ Check validity for 25 frames -->
-                    <xsl:when test="string-length(normalize-space($begin)) = 8 and
-                        number($beginHours) &gt;= 0 and number($beginHours) &lt; 24 and
-                        number($beginMinutes) &gt;= 0 and number($beginMinutes) &lt; 60 and
-                        number($beginSeconds) &gt;= 0 and number($beginSeconds) &lt; 60 and
-                        number($beginFrames) &gt;= 0 and number($beginFrames) &lt; 25 and 
-                        $frameRate = '25'">
-                        <xsl:call-template name="timestampConversion">
-                            <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
-                            <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$beginFrames"/>
-                            <xsl:with-param name="seconds" select="$beginSeconds"/>
-                            <xsl:with-param name="minutes" select="$beginMinutes"/>
-                            <xsl:with-param name="hours" select="$beginHours"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <!--@ Interrupt when the given value isn't correct for 25 frames -->
-                    <xsl:otherwise>
-                        <xsl:message terminate="yes">
-                            TCI is always set in valid smpte time with format hhmmssff. This implementation only supports 25 frames.
-                        </xsl:message>
-                    </xsl:otherwise>
-                </xsl:choose>                    
-            </xsl:when>
-            <!--@ Interrupt if timeCodeFormat is set to neither 'media' nor 'smpte'-->
-            <xsl:otherwise>
-                <xsl:message terminate="yes">
-                    The selected timeCodeFormat is unknown. Only 'media' and 'smpte' are supported.
-                </xsl:message>
-            </xsl:otherwise>
-        </xsl:choose>
+        
+        <xsl:call-template name="getTimecode">
+            <xsl:with-param name="fieldName">TCI</xsl:with-param>
+            <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
+            <xsl:with-param name="frameRate" select="$frameRate"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xsl:template match="TCO">
-        <!--** Converts the value of the TCO element into either a media or smpte time code format with the desired
-            frame rate. Steps:-->
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
-        <xsl:variable name="end" select="normalize-space(.)"/>
-        <!--@ Check if there's any non-numerical content in the normalized TCO field -->
-        <xsl:if test="number($end) != number($end)">
+        
+        <xsl:call-template name="getTimecode">
+            <xsl:with-param name="fieldName">TCO</xsl:with-param>
+            <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
+            <xsl:with-param name="frameRate" select="$frameRate"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template name="getTimecode">
+        <!--** Converts the value of the TCx element into either a media or smpte time code format with the desired
+            frame rate. Steps:-->
+        <xsl:param name="fieldName"/>
+        <xsl:param name="timeCodeFormat"/>
+        <xsl:param name="frameRate"/>
+        <xsl:variable name="tc" select="normalize-space(.)"/>
+        <!--@ Check if there's any non-numerical content in the normalized TCx field -->
+        <xsl:if test="number($tc) != number($tc)">
             <!--@ Interrupt transformation if content contains non-numerical values -->
             <xsl:message terminate="yes">
-                The TCO field has invalid content
+                The <xsl:value-of select="$fieldName"/> field has invalid content.
             </xsl:message>
         </xsl:if>
-        <!--@ Split content-string in hours, minutes, seconds and frames; the TCI elmeent's content is always a smpte formatted time code -->
-        <xsl:variable name="endHours" select="substring($end, 1, 2)"/>
-        <xsl:variable name="endMinutes" select="substring($end, 3, 2)"/>
-        <xsl:variable name="endSeconds" select="substring($end, 5, 2)"/>
-        <xsl:variable name="endFrames" select="substring($end, 7, 2)"/>        
+        <!--@ Split content-string in hours, minutes, seconds and frames; the TCx element's content is always a SMPTE formatted time code -->
+        <xsl:variable name="hours" select="substring($tc, 1, 2)"/>
+        <xsl:variable name="minutes" select="substring($tc, 3, 2)"/>
+        <xsl:variable name="seconds" select="substring($tc, 5, 2)"/>
+        <xsl:variable name="frames" select="substring($tc, 7, 2)"/>
         <xsl:choose>
-            <!--@ When timeCodeFormat 'media' is set, it has to be calculated from STLXML file's smpte timeCodeFormat -->
-            <xsl:when test="$timeCodeFormat = 'media'">
+            <!--@ If timeCodeFormat 'media' or 'smpte' is used, get result (offsets are applied, if needed) -->
+            <xsl:when test="$timeCodeFormat = 'media' or 'smpte'">
                 <xsl:choose>
                     <!--@ Check validity for 25 frames -->
-                    <xsl:when test="string-length(normalize-space($end)) = 8 and
-                        number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
-                        number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
-                        number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
-                        number($endFrames) &gt;= 0 and number($endFrames) &lt; 25 and 
+                    <xsl:when test="string-length($tc) = 8 and
+                        number($hours) &gt;= 0 and number($hours) &lt; 24 and
+                        number($minutes) &gt;= 0 and number($minutes) &lt; 60 and
+                        number($seconds) &gt;= 0 and number($seconds) &lt; 60 and
+                        number($frames) &gt;= 0 and number($frames) &lt; 25 and 
                         $frameRate = '25'">
                         <!--@ Calculate the correct timestamp depending on the offset given by the respective parameter -->
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$endFrames"/>
-                            <xsl:with-param name="seconds" select="$endSeconds"/>
-                            <xsl:with-param name="minutes" select="$endMinutes"/>
-                            <xsl:with-param name="hours" select="$endHours"/>
+                            <xsl:with-param name="frames" select="$frames"/>
+                            <xsl:with-param name="seconds" select="$seconds"/>
+                            <xsl:with-param name="minutes" select="$minutes"/>
+                            <xsl:with-param name="hours" select="$hours"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--@ Interrupt when the given value isn't correct for 25 frames -->
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
-                            TCO is always set in valid smpte time with format hhmmssff. This implementation only supports 25 frames.
+                            <xsl:value-of select="$fieldName"/> is always set in valid SMPTE time with format hhmmssff. This implementation only supports 25 frames.
                         </xsl:message>
                     </xsl:otherwise>
                 </xsl:choose>                    
-            </xsl:when>
-            <!--@ If timeCodeFormat 'smpte' is used, the values can be copied, subdividing with ':' is necessary -->
-            <xsl:when test="$timeCodeFormat = 'smpte'">                    
-                <xsl:choose>
-                    <!--@ Check validity for 25 frames -->
-                    <xsl:when test="string-length($end) = 8 and
-                        number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
-                        number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
-                        number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
-                        number($endFrames) &gt;= 0 and number($endFrames) &lt; 25 and 
-                        $frameRate = '25'">
-                        <!--@ Calculate the correct timestamp depending on the Offset given by the respective parameter -->
-                        <xsl:call-template name="timestampConversion">
-                            <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
-                            <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$endFrames"/>
-                            <xsl:with-param name="seconds" select="$endSeconds"/>
-                            <xsl:with-param name="minutes" select="$endMinutes"/>
-                            <xsl:with-param name="hours" select="$endHours"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <!--@ Interrupt when the given value isn't correct for 25 frames -->
-                    <xsl:otherwise>
-                        <xsl:message terminate="yes">
-                            TCO is always set in valid smpte time with format hhmmssff. This implementation only supports 25 frames.
-                        </xsl:message>
-                    </xsl:otherwise>
-                </xsl:choose>
             </xsl:when>
             <!--@ Interrupt if timeCodeFormat is set to neither 'media' nor 'smpte'-->
             <xsl:otherwise>
