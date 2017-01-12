@@ -117,7 +117,7 @@ class iso6937(codecs.Codec):
     cc_mapping = {
         0x00: 0xE000,  # AlphaBlack,
         0x01: 0xE001,  # AlphaRed,
-        0x02: 0xE002,  # AlphaGreen",
+        0x02: 0xE002,  # AlphaGreen,
         0x03: 0xE003,  # AlphaYellow,
         0x04: 0xE004,  # AlphaBlue,
         0x05: 0xE005,  # AlphaMagenta,
@@ -146,10 +146,10 @@ class iso6937(codecs.Codec):
         0x1c: 0xE01c,  # BlackBackground,
         0x1d: 0xE01d,  # NewBackground,
         0x1e: 0xE01e,  # HoldMosaic,
-        0x1f: 0xE01f,  # ReleaseMosaic"
+        0x1f: 0xE01f,  # ReleaseMosaic
         0x20: 0xE020,  # Space
         0x8a: 0xE08a,  # newline
-        0xa0: 0xE0a0,   # Space no break space
+        0xa0: 0xE0a0,  # Space no break space
     }
 
     def decode(self, inputdata):
@@ -191,6 +191,105 @@ class iso6937(codecs.Codec):
 
     def encode(self, inputdata):
         pass
+
+
+class stl_encoding(codecs.Codec):
+    """
+    A class to implement an encoding which extends an existing encoding
+    while handling STL specific character codes
+    """
+
+    # Control codes mapping
+    cc_mapping = {
+        0x00: 0xE000,  # AlphaBlack,
+        0x01: 0xE001,  # AlphaRed,
+        0x02: 0xE002,  # AlphaGreen,
+        0x03: 0xE003,  # AlphaYellow,
+        0x04: 0xE004,  # AlphaBlue,
+        0x05: 0xE005,  # AlphaMagenta,
+        0x06: 0xE006,  # AlphaCyan,
+        0x07: 0xE007,  # AlphaWhite,
+        0x08: 0xE008,  # Flash,
+        0x09: 0xE009,  # Steady,
+        0x0a: 0xE00a,  # EndBox,
+        0x0b: 0xE00b,  # StartBox,
+        0x0c: 0xE00c,  # NormalHeight,
+        0x0d: 0xE00d,  # DoubleHeight,
+        0x0e: 0xE00e,  # DoubleWidth,
+        0x0f: 0xE00f,  # DoubleSize,
+        0x10: 0xE010,  # MosaicBlack,
+        0x11: 0xE011,  # MosaicRed,
+        0x12: 0xE012,  # MosaicGreen,
+        0x13: 0xE013,  # MosaicYellow,
+        0x14: 0xE014,  # MosaicBlue,
+        0x15: 0xE015,  # MosaicMagenta,
+        0x16: 0xE016,  # MosaicCyan,
+        0x17: 0xE017,  # MosaicWhite,
+        0x18: 0xE018,  # Conceal,
+        0x19: 0xE019,  # ContiguousMosaic,
+        0x1a: 0xE01a,  # SeparatedMosaic,
+        0x1b: 0xE01b,  # Reserved,
+        0x1c: 0xE01c,  # BlackBackground,
+        0x1d: 0xE01d,  # NewBackground,
+        0x1e: 0xE01e,  # HoldMosaic,
+        0x1f: 0xE01f,  # ReleaseMosaic
+        0x20: 0xE020,  # Space
+        0x8a: 0xE08a,  # newline
+        0xa0: 0xE0a0,  # Space no break space
+    }
+
+    def decode(self, inputdata):
+        """
+        Implements codec class decode function interface.
+        Decodes the text fields (TF) in a tti block.
+        """
+        base_decoder = codecs.getdecoder(self.base_encoding)
+        output = []
+        state = None  #  If previous char was diacritic contains value of diacritic.
+        for char in inputdata:
+            char_ord = ord(char)
+            if char_ord == 0x8f:  # 0x8Fh (in STL for unused space) marks the end of TF.
+                break
+            # Append Teletext control code.
+            if char_ord in self.cc_mapping:
+                output.append(self.cc_mapping[char_ord])
+            else:
+                output.append(ord(base_decoder(char)[0]))
+        output = ''.join(map(unichr, output))
+        return (output, len(output))
+
+    def search(self, name):
+        if name in (self.stl_encoding):
+            return codecs.CodecInfo(self.encode,
+                                    self.decode,
+                                    name=self.stl_encoding)
+
+    def encode(self, inputdata):
+        pass
+    
+    def __init__(self, base_encoding):
+        self.base_encoding = base_encoding
+        self.stl_encoding = base_encoding + '_stl'
+
+
+class iso8859_5_stl(stl_encoding):
+    def __init__(self):
+        stl_encoding.__init__(self, 'iso-8859-5')
+
+
+class iso8859_6_stl(stl_encoding):
+    def __init__(self):
+        stl_encoding.__init__(self, 'iso-8859-6')
+
+
+class iso8859_7_stl(stl_encoding):
+    def __init__(self):
+        stl_encoding.__init__(self, 'iso-8859-7')
+
+
+class iso8859_8_stl(stl_encoding):
+    def __init__(self):
+        stl_encoding.__init__(self, 'iso-8859-8')
 
 
 def _getSubtitleNumber(entry):
@@ -253,6 +352,10 @@ class STL:
     def __init__(self):
         self.tti = []
         codecs.register(iso6937().search)
+        codecs.register(iso8859_5_stl().search)
+        codecs.register(iso8859_6_stl().search)
+        codecs.register(iso8859_7_stl().search)
+        codecs.register(iso8859_8_stl().search)
 
     def readSTL(self, fileHandle):
         """
@@ -285,10 +388,10 @@ class STL:
         # The CCT is used to decode the TTI Blocks
         self.codePage = {
             '00': 'iso_6937-2',
-            '01': 'iso-8859-5',
-            '02': 'iso-8859-6',
-            '03': 'iso-8859-7',
-            '04': 'iso-8859-8',
+            '01': 'iso-8859-5_stl',
+            '02': 'iso-8859-6_stl',
+            '03': 'iso-8859-7_stl',
+            '04': 'iso-8859-8_stl',
         }[GSI['CCT']]
         # Number of TTI Blocks
         self.numberOfTTI = int(GSI['TNB'])
