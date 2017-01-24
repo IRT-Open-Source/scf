@@ -413,9 +413,6 @@ class STL:
                 # Skip TTI Block with reserved EBN code or User Data
                 if TTI['EBN'] in range(240, 255):
                     continue
-                # If comment skip.
-                if TTI['CF']:  # comments are ignored
-                    continue
                 txt += TTI['TF'].decode(self.codePage)  # add the decoded text
                 # If fields are used as "codes" rather than numbers back converting them to hex.
                 TTI['JC'] = hex(TTI['JC']).replace('0x', '').zfill(2)

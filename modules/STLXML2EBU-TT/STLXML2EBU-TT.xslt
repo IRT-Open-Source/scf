@@ -611,7 +611,7 @@ limitations under the License.
         <xsl:param name="frameRate"/>
         <!--@ Create tt:body and tt:div elements for every used SGN (in document order) -->
         <tt:body>
-            <xsl:variable name="tti_all" select="TTICONTAINER/TTI"/>
+            <xsl:variable name="tti_all" select="TTICONTAINER/TTI[number(CF) = 0]"/>
             <xsl:for-each select="fn:distinct-values($tti_all/SGN)">
                 <tt:div style="defaultStyle" xml:id="{concat('SGN', .)}">
                     <!--@ Match children with the respective SGN (in document order) -->
