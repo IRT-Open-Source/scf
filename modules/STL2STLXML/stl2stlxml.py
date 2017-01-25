@@ -350,7 +350,8 @@ class STL:
         0xE0a0: 'space'
     }
 
-    def __init__(self):
+    def __init__(self, separate_tti):
+        self.separate_tti = separate_tti
         self.tti = []
         codecs.register(iso6937().search)
         codecs.register(iso8859_5_stl().search)
@@ -432,8 +433,8 @@ class STL:
                     continue    # preserve txt, as there may be more than one text TTI
                 else:
                     txt += TTI['TF'].decode(self.codePage)  # add the decoded text
-                    ''' If this is the last subtitle return '''
-                    if TTI['EBN'] == 'ff':
+                    # If this is the last TTI block or separate TTI blocks are desired, output the so far merged txt
+                    if TTI['EBN'] == 'ff' or self.separate_tti:
                         TTI['TF'] = ''.join(txt)
                         self.tti.append(TTI)
                         break
@@ -543,13 +544,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('stl_file', help="path to EBU STL input file")
     parser.add_argument('-x', '--xml_file', help="path to STL-XML output", default=None)
-    parser.add_argument('-p', '--pretty', help="if the STL-XML should be 'prettified'",
+    parser.add_argument('-p', '--pretty', help="if the STL-XML shall be 'prettified'",
                         dest='pretty_xml', action='store_const', const=True, default=False)
+    parser.add_argument('-s', '--separate_tti', help="if text TTI blocks shall NOT be merged",
+                        dest='separate_tti', action='store_const', const=True, default=False)
 
     args = parser.parse_args()
 
     # Read STL file
-    stl = STL()
+    stl = STL(args.separate_tti)
     with open(args.stl_file, 'rb') as inputHandle:
         stl.readSTL(inputHandle)
 
