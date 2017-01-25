@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing EBN, derived from a single TTI block</title>
+    <title>Testing EBN, derived from multiple TTI blocks with in-between reserved data</title>
     <pattern id="ExtensionBlockNumber">
         <rule context="/">
             <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
@@ -34,8 +34,8 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <assert test="normalize-space(.) = 'Block_FF'">
-                Expected value: "Block_FF" Value from test: "<value-of select="normalize-space(.)"/>"
+            <assert test="normalize-space(.) = 'Block_00Block_FF'">
+                Expected value: "Block_00Block_FF" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
     </pattern>            

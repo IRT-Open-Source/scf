@@ -16,24 +16,44 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing EBN, derived from multiple TTI blocks</title>
+    <title>Testing EBN, derived from multiple TTI blocks with in-between User Data</title>
     <pattern id="ExtensionBlockNumber">
         <rule context="/">
             <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
-                The EBN element must be present.
+                The EBN element must be present in the second TTI block.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
+            <assert test="normalize-space(.) = 'fe'">
+                Expected value: "fe" Value from test: "<value-of select="normalize-space(.)"/>"
+            </assert> 
+        </rule>
+        <rule context="/">
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
+                The TF element must be present in the second TTI block.
+            </assert> 
+        </rule>
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
+            <assert test="normalize-space(.) = 'DQsLQmxvY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw=='">
+                Expected value: "DQsLQmxvY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==" Value from test: "<value-of select="normalize-space(.)"/>"
+            </assert> 
+        </rule>
+        <rule context="/">
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[3]/EBN">
+                The EBN element must be present in the third TTI block.
+            </assert> 
+        </rule>
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[3]/EBN">
             <assert test="normalize-space(.) = 'ff'">
                 Expected value: "ff" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
         <rule context="/">
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[3]/TF">
+                The TF element must be present in the third TTI block.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[3]/TF">
             <assert test="normalize-space(.) = 'Block_00Block_FF'">
                 Expected value: "Block_00Block_FF" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 

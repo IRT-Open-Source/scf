@@ -611,7 +611,8 @@ limitations under the License.
         <xsl:param name="frameRate"/>
         <!--@ Create tt:body and tt:div elements for every used SGN (in document order) -->
         <tt:body>
-            <xsl:variable name="tti_all" select="TTICONTAINER/TTI[number(CF) = 0]"/>
+            <!--@ Select all subtitle TTI blocks -->
+            <xsl:variable name="tti_all" select="TTICONTAINER/TTI[number(CF) != 1 and normalize-space(translate(EBN, $smallcase, $uppercase)) != 'FE']"/>
             <xsl:for-each select="fn:distinct-values($tti_all/SGN)">
                 <tt:div style="defaultStyle" xml:id="{concat('SGN', .)}">
                     <!--@ Match children with the respective SGN (in document order) -->
@@ -628,6 +629,7 @@ limitations under the License.
     <xsl:template match="TTI">
         <!--** Container for the elements located within a TTI block. Steps: -->
         <xsl:param name="frameRate"/>
+        <xsl:variable name="SN" select="normalize-space(SN)"/>
         <!--@ Convert content of TCI element into the desired time code format (media or smpte) using the given frame rate -->
         <xsl:variable name="convertedBegin">
             <xsl:apply-templates select="TCI">
@@ -647,6 +649,13 @@ limitations under the License.
         <xsl:apply-templates select="EBN"/> 
         <xsl:apply-templates select="VP"/>
         <xsl:apply-templates select="JC"/>
+        <!--@ Concat all user data into variable 'combined_user_data' -->
+        <xsl:variable name="tti_user_data" select="parent::node()/TTI[SN = $SN and normalize-space(translate(EBN, $smallcase, $uppercase)) = 'FE']"/>
+        <xsl:variable name="combined_user_data">
+            <xsl:for-each select="$tti_user_data">
+                <xsl:value-of select="normalize-space(./TF)"/>
+            </xsl:for-each>
+        </xsl:variable>
         <xsl:apply-templates select="TF">
             <!--** Tunnel parameters needed for value calculation of decending elements -->
             <xsl:with-param name="begin" select="$convertedBegin"/>
@@ -654,14 +663,16 @@ limitations under the License.
             <xsl:with-param name="SN" select="normalize-space(SN)"/>
             <xsl:with-param name="JC" select="normalize-space(JC)"/>
             <xsl:with-param name="VP" select="normalize-space(VP)"/>
+            <xsl:with-param name="user_data" select="$combined_user_data"/>
         </xsl:apply-templates>
+        
     </xsl:template>
 
     <xsl:template match="EBN">
         <!--** Checks if the EBN element has valid content and if the content is supported by this implementation -->
         <xsl:if test="normalize-space(translate(., $smallcase, $uppercase)) != 'FF'">
             <xsl:message terminate="yes">
-                This implementation only supports EBN values of 'FF' i.e. doesn't support Extension Block mapping.
+                This implementation only supports EBN values of 'FE' (user data) and 'FF' (last TTI block of subtitle set) i.e. it doesn't support Extension Block mapping. Segmented TTI blocks (e.g. for long subtitles) must be merged before conversion.
             </xsl:message>
         </xsl:if>   
     </xsl:template>
@@ -902,6 +913,7 @@ limitations under the License.
         <xsl:param name="SN"/>
         <xsl:param name="JC"/>
         <xsl:param name="VP"/>
+        <xsl:param name="user_data"/>
         <xsl:variable name="style">
             <xsl:choose>
                 <!--** JC 00 equals to unchanged representation -->
@@ -928,6 +940,14 @@ limitations under the License.
             region="bottomAligned"
             begin="{$begin}"
             end="{$end}">
+            <xsl:if test="string-length($user_data) != 0">
+                <tt:metadata>
+                    <!--** store user data in proprietaryUserData element -->
+                    <proprietaryUserData>
+                        <xsl:value-of select="$user_data"/>
+                    </proprietaryUserData>
+                </tt:metadata>
+            </xsl:if>
             <xsl:apply-templates select="child::*[1]">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="boxStarted" select="false()"/>

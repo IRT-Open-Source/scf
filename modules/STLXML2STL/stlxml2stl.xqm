@@ -112,7 +112,7 @@ declare function encode-tti($tti as element(TTI), $cct-number as xs:string) as x
     || tti-non-negative-integer($tti/VP, 1)
     || tti-hex($tti/JC)
     || tti-hex($tti/CF)
-    || tti-text-field($tti/TF, $cct-number)
+    || (if ($tti/EBN = 'fe') then tti-text-field_user_data($tti/TF) else tti-text-field_text($tti/TF, $cct-number))
   return xs:hexBinary($s)
 };
 
@@ -136,7 +136,11 @@ declare function tti-time-code($v as xs:string?) as item()? {
   ) return fn:string-join($s ! xs:string(.), '')
 };
 
-declare function tti-text-field($v as element(TF), $cct-number as xs:string) as item()? {
+declare function tti-text-field_user_data($v as element(TF)) as item()? {
+  xs:base64Binary($v) ! xs:hexBinary(.)
+};
+
+declare function tti-text-field_text($v as element(TF), $cct-number as xs:string) as item()? {
   let $encoding := tti-text-field-encoding($cct-number)
   let $s :=
     for $ch in $v/child::node()

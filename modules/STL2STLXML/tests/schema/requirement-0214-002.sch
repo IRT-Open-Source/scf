@@ -19,8 +19,13 @@ limitations under the License.
     <title>Testing CF with value "01" for "TF contains comments not intended for transmission"</title>
     <pattern id="CommentFlag">
         <rule context="/">
-            <assert test="count(StlXml/BODY/TTICONTAINER/TTI) = 2">
-                There must be exactly two TTI elements.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/CF">
+                The CF element must be present.
+            </assert> 
+        </rule>
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/CF">
+            <assert test="normalize-space(.) = '01'">
+                Expected value: "01" Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
     </pattern>            

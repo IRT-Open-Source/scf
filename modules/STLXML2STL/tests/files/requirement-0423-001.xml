@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StlXml>
+    <HEAD>
+        <GSI>
+            <CPN>850</CPN>
+            <DFC>STL25.01</DFC>
+            <DSC>2</DSC>
+            <CCT>00</CCT>
+            <LC>08</LC>
+            <OPT>IRT Testsendung                 </OPT>
+            <OET>IRT Testfolge                   </OET>
+            <TPT>IRT Test Programme              </TPT>
+            <TET>IRT Test Episode                </TET>
+            <TN>Open Source Translator          </TN>
+            <TCD>open.source@irt.de              </TCD>
+            <SLR>ABC-4711        </SLR>
+            <CD>151217</CD>
+            <RD>151217</RD>
+            <RN> 0</RN>
+            <TNB>1    </TNB>
+            <TNS>1    </TNS>
+            <TNG>1  </TNG>
+            <MNC>40</MNC>
+            <MNR>23</MNR>
+            <TCS>1</TCS>
+            <TCP>10000000</TCP>
+            <TCF>10000000</TCF>
+            <TND>1</TND>
+            <DSN>1</DSN>
+            <CO>DEU</CO>
+            <PUB>Institut für Rundfunktechnik    </PUB>
+            <EN>Open Source Editor              </EN>
+            <ECD>open.source@irt.de              </ECD>
+        </GSI>
+    </HEAD>
+    <BODY>
+        <TTICONTAINER>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>1</SN>
+                <EBN>fe</EBN>
+                <CS>00</CS>
+                <TCI>10000500</TCI>
+                <TCO>10000901</TCO>
+                <VP>22</VP>
+                <JC>02</JC>
+                <CF>00</CF>
+                <TF>DQsLQmxvY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==</TF>
+            </TTI>
+        </TTICONTAINER>
+    </BODY>
+</StlXml>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2014 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- Testing User Data in TTI block. -->
+<StlXml>
+    <HEAD>
+        <GSI>
+            <CPN>850</CPN>
+            <DFC>STL25.01</DFC>
+            <DSC>1</DSC>
+            <CCT>00</CCT>
+            <LC>08</LC>
+            <OPT>STL Test Data </OPT>
+            <OET> </OET>
+            <TPT> </TPT>
+            <TET> </TET>
+            <TN> </TN>
+            <TCD>subtitles@irt.de </TCD>
+            <SLR> </SLR>
+            <CD>140502</CD>
+            <RD>140502</RD>
+            <RN>01</RN>
+            <TNB>00004</TNB>
+            <TNS>00003</TNS>
+            <TNG>001</TNG>
+            <MNC>40</MNC>
+            <MNR>23</MNR>
+            <TCS>1</TCS>
+            <TCP>00000000</TCP>
+            <TCF>00000000</TCF>
+            <TND>1</TND>
+            <DSN>1</DSN>
+            <CO>DEU</CO>
+            <PUB>Institut fuer Rundfunktechnik </PUB>
+            <EN> </EN>
+            <ECD> </ECD>
+            <UDA></UDA>
+        </GSI>
+    </HEAD>
+    <BODY>
+        <TTICONTAINER>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>1</SN>
+                <EBN>ff</EBN>
+                <CS>00</CS>
+                <TCI>00000000</TCI>
+                <TCO>00000300</TCO>
+                <VP>20</VP>
+                <JC>02</JC>
+                <CF>00</CF>
+                <TF><DoubleHeight/><StartBox/><StartBox/>Test:<space/>User<space/>Data<space/>text<space/>field<space/>mapping<EndBox/><EndBox/><newline/><newline/></TF>
+            </TTI>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>2</SN>
+                <EBN>fe</EBN>
+                <CS>00</CS>
+                <TCI>00000500</TCI>
+                <TCO>00000901</TCO>
+                <VP>22</VP>
+                <JC>02</JC>
+                <CF>00</CF>
+                <TF>DQsLQmxvY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==</TF>
+            </TTI>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>2</SN>
+                <EBN>fe</EBN>
+                <CS>00</CS>
+                <TCI>00000500</TCI>
+                <TCO>00000901</TCO>
+                <VP>22</VP>
+                <JC>02</JC>
+                <CF>00</CF>
+                <TF>DoooooovY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==</TF>
+            </TTI>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>2</SN>
+                <EBN>ff</EBN>
+                <CS>00</CS>
+                <TCI>00000500</TCI>
+                <TCO>00000901</TCO>
+                <VP>22</VP>
+                <JC>02</JC>
+                <CF>00</CF>
+                <TF><DoubleHeight/><StartBox/><StartBox/>A<space/>simple<space/>subtitle.<EndBox/><EndBox/><newline/><newline/></TF>
+            </TTI>
+            <TTI>
+                <SGN>1</SGN>
+                <SN>3</SN>
+                <EBN>ff</EBN>
+                <CS>00</CS>
+                <TCI>00001100</TCI>
+                <TCO>00001500</TCO>
+                <VP>22</VP>
+                <JC>01</JC>
+                <CF>00</CF>
+                <TF><DoubleHeight/><StartBox/><StartBox/>End<space/>of<space/>Test.<EndBox/><EndBox/><newline/><newline/></TF>
+            </TTI>
+        </TTICONTAINER>
+    </BODY>
+</StlXml>

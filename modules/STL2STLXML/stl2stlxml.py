@@ -19,6 +19,7 @@ import unicodedata
 import xml.dom
 import sys
 import argparse
+import base64
 
 
 class iso6937(codecs.Codec):
@@ -410,10 +411,9 @@ class STL:
                     self.TTIfields,
                     struct.unpack('<BHBBBBBBBBBBBBB112s', data)
                 ))
-                # Skip TTI Block with reserved EBN code or User Data
-                if TTI['EBN'] in range(240, 255):
+                # Skip TTI Block with reserved EBN code
+                if TTI['EBN'] in range(240, 254):
                     continue
-                txt += TTI['TF'].decode(self.codePage)  # add the decoded text
                 # If fields are used as "codes" rather than numbers back converting them to hex.
                 TTI['JC'] = hex(TTI['JC']).replace('0x', '').zfill(2)
                 TTI['EBN'] = hex(TTI['EBN']).replace('0x', '').zfill(2)
@@ -425,11 +425,18 @@ class STL:
                                                    TTI['TCIs'], TTI['TCIf'])
                 TTI['TCO'] = "%02d%02d%02d%02d" % (TTI['TCOh'], TTI['TCOm'],
                                                    TTI['TCOs'], TTI['TCOf'])
-                ''' If this is the last subtitle return '''
-                if TTI['EBN'] == 'ff':
-                    TTI['TF'] = ''.join(txt)
+                if TTI['EBN'] == 'fe':
+                    # Output User Data as base64
+                    TTI['TF'] = base64.b64encode(TTI['TF'])
                     self.tti.append(TTI)
-                    break
+                    continue    # preserve txt, as there may be more than one text TTI
+                else:
+                    txt += TTI['TF'].decode(self.codePage)  # add the decoded text
+                    ''' If this is the last subtitle return '''
+                    if TTI['EBN'] == 'ff':
+                        TTI['TF'] = ''.join(txt)
+                        self.tti.append(TTI)
+                        break
         self.tti.sort(key=_getSubtitleNumber)
 
 
