@@ -1089,11 +1089,24 @@ limitations under the License.
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
-            <xsl:with-param name="buffer" select="$bufferAdded"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="oldBackground" select="$oldBackground"/>
             <xsl:with-param name="oldForeground" select="$oldForeground"/>
+            <xsl:with-param name="buffer">
+                <xsl:choose>
+                    <!--** Add to output if within boxing OR no boxing at all OR if just indent -->
+                    <xsl:when test="$boxStarted or not(../StartBox or ../EndBox) or string(normalize-space(.)) = ''">
+                        <xsl:value-of select="$bufferAdded"/>
+                    </xsl:when>
+                    <!--** Otherwise terminate -->
+                    <xsl:otherwise>
+                        <xsl:message terminate="yes">
+                            There shall be no text outside of boxing (found text: '<xsl:value-of select="string(normalize-space(.))"/>')!
+                        </xsl:message>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:with-param>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -1122,9 +1135,11 @@ limitations under the License.
             <xsl:with-param name="oldForeground" select="$oldForeground"/>
             <xsl:with-param name="buffer">
                 <xsl:choose>
-                    <xsl:when test="$boxStarted">
+                    <!--** Add to output if within boxing or no boxing at all -->
+                    <xsl:when test="$boxStarted or not(../StartBox or ../EndBox)">
                         <xsl:value-of select="$bufferAdded"/>
                     </xsl:when>
+                    <!--** Otherwise ignore -->
                     <xsl:otherwise>
                         <xsl:value-of select="$buffer"/>
                     </xsl:otherwise>
