@@ -737,36 +737,9 @@ limitations under the License.
                 </xsl:variable>
                 
                 <!--@ Add leading zeros if necessary -->
-                <xsl:variable name="outputHours">
-                    <xsl:choose>
-                        <xsl:when test="string-length($mediaHours) = 1">
-                            <xsl:value-of select="concat('0', $mediaHours)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$mediaHours"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:variable name="outputMinutes">
-                    <xsl:choose>
-                        <xsl:when test="string-length($mediaMinutes) = 1">
-                           <xsl:value-of select="concat('0', $mediaMinutes)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$mediaMinutes"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:variable name="outputSeconds">
-                    <xsl:choose>
-                        <xsl:when test="string-length($mediaSeconds) = 1">
-                            <xsl:value-of select="concat('0', $mediaSeconds)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$mediaSeconds"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
+                <xsl:variable name="outputHours" select="format-number($mediaHours, '00')"/>
+                <xsl:variable name="outputMinutes" select="format-number($mediaMinutes, '00')"/>
+                <xsl:variable name="outputSeconds" select="format-number($mediaSeconds, '00')"/>
                 <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
                 <xsl:if test="$mediaHours &lt; 0 or $mediaMinutes &lt; 0 or $mediaSeconds &lt; 0 or $mediaFrames &lt; 0">
                     <xsl:message terminate="yes">
@@ -780,19 +753,7 @@ limitations under the License.
                     </xsl:when>
                     <!--@ If timebase is smpte, convert the frames to milliseconds and concatenate afterwards -->
                     <xsl:when test="$legacyTimeBase = 'smpte'">
-                        <xsl:variable name="outputFraction">
-                            <xsl:choose>
-                                <xsl:when test="string-length($mediaFrames) = 1">
-                                    <xsl:value-of select="concat('00', $mediaFrames)"/>
-                                </xsl:when>
-                                <xsl:when test="string-length($mediaFrames) = 2">
-                                    <xsl:value-of select="concat('0', $mediaFrames)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:value-of select="$mediaFrames"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:variable>
+                        <xsl:variable name="outputFraction" select="format-number($mediaFrames, '000')"/>
                         <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>                
                     </xsl:when>
                     <!--@ Interrupt if the source's timeCodeFormat is neither 'media' nor 'smpte' -->

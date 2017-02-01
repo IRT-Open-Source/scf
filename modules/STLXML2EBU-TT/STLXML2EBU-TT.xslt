@@ -531,42 +531,27 @@ limitations under the License.
 
     <xsl:template match="CD">
         <!--** Element containing information about the Creation Date. Steps: -->
-        <!--@ Check for the element containing only numerical content -->
-        <xsl:if test="string-length(normalize-space(.)) &gt; 0 and number(.) = number(.)">
-            <!--@ Split content-string in year, month and day; ebuttExt:stlCreationDate is always a xs:date -->
-            <xsl:variable name="year" select="substring(normalize-space(.), 1, 2)"/>
-            <xsl:variable name="month" select="substring(normalize-space(.), 3, 2)"/>
-            <xsl:variable name="day" select="substring(normalize-space(.), 5, 2)"/>
-            <xsl:choose>
-                <!--@ Check validity for YYMMDD date -->
-                <xsl:when test="string-length(normalize-space(.)) = 6 and
-                    number($month) &gt;= 0 and number($month) &lt; 13 and
-                    number($day) &gt;= 0 and number($day) &lt; 32">
-                    <!--@ Create ebuttExt:stlCreationDate element with the checked content -->
-                    <ebuttExt:stlCreationDate>
-                        <!--@ Prepend century -->
-                        <xsl:choose>
-                            <xsl:when test="number($year) &lt; 80">20</xsl:when>
-                            <xsl:otherwise>19</xsl:otherwise>
-                        </xsl:choose>
-                        <xsl:value-of select="concat($year, '-', $month, '-', $day)"/>
-                    </ebuttExt:stlCreationDate>
-                </xsl:when>
-                <!--@ Interrupt, if the CD element's value is invalid -->
-                <xsl:otherwise>
-                    <xsl:message terminate="yes">
-                        CD is always set as date with format yymmdd.
-                    </xsl:message>
-                </xsl:otherwise>
-            </xsl:choose>        
-        </xsl:if>
+        <xsl:call-template name="getDate">
+            <xsl:with-param name="fieldNameStl">CD</xsl:with-param>
+            <xsl:with-param name="fieldNameEbutt">ebuttExt:stlCreationDate</xsl:with-param>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="RD">
         <!--** Element containing information about the Revision Date. Steps: -->
+        <xsl:call-template name="getDate">
+            <xsl:with-param name="fieldNameStl">RD</xsl:with-param>
+            <xsl:with-param name="fieldNameEbutt">ebuttExt:stlRevisionDate</xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+    
+    <xsl:template name="getDate">
+        <!--** Converts the value of the element into a date. Steps:-->
+        <xsl:param name="fieldNameStl"/>
+        <xsl:param name="fieldNameEbutt"/>
         <!--@ Check for the element containing only numerical content -->
         <xsl:if test="string-length(normalize-space(.)) &gt; 0 and number(.) = number(.)">
-            <!--@ Split content-string in year, month and day; ebuttExt:stlRevisionDate is always a xs:date -->
+            <!--@ Split content-string in year, month and day; the respective EBU-TT field is always a xs:date -->
             <xsl:variable name="year" select="substring(normalize-space(.), 1, 2)"/>
             <xsl:variable name="month" select="substring(normalize-space(.), 3, 2)"/>
             <xsl:variable name="day" select="substring(normalize-space(.), 5, 2)"/>
@@ -575,20 +560,20 @@ limitations under the License.
                 <xsl:when test="string-length(normalize-space(.)) = 6 and
                     number($month) &gt;= 0 and number($month) &lt; 13 and
                     number($day) &gt;= 0 and number($day) &lt; 32">
-                    <!--@ Create ebuttExt:stlRevisionDate element with the checked content -->
-                    <ebuttExt:stlRevisionDate>
+                    <!--@ Create element with the checked content -->
+                    <xsl:element name="{$fieldNameEbutt}">
                         <!--@ Prepend century -->
                         <xsl:choose>
                             <xsl:when test="number($year) &lt; 80">20</xsl:when>
                             <xsl:otherwise>19</xsl:otherwise>
                         </xsl:choose>
                         <xsl:value-of select="concat($year, '-', $month, '-', $day)"/>
-                    </ebuttExt:stlRevisionDate>
+                    </xsl:element>
                 </xsl:when>
-                <!--@ Interrupt, if the RD element's value is invalid -->
+                <!--@ Interrupt, if the element's value is invalid -->
                 <xsl:otherwise>
                     <xsl:message terminate="yes">
-                        RD is always set as date with format yymmdd.
+                        <xsl:value-of select="$fieldNameStl"/> is always set as date with format yymmdd.
                     </xsl:message>
                 </xsl:otherwise>
             </xsl:choose>        
@@ -834,63 +819,15 @@ limitations under the License.
         <xsl:variable name="mediaSeconds" select="$mediaTotalSeconds mod 60"/>
         <xsl:variable name="mediaFrames" select="$targetStampValueInFrames mod number($frameRate)"/>
         <!--@ Add leading zeros if necessary -->
-        <xsl:variable name="outputHours">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaHours) = 1">
-                    <xsl:value-of select="concat('0', $mediaHours)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaHours"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="outputMinutes">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaMinutes) = 1">
-                    <xsl:value-of select="concat('0', $mediaMinutes)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaMinutes"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="outputSeconds">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaSeconds) = 1">
-                    <xsl:value-of select="concat('0', $mediaSeconds)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaSeconds"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="outputFrames">
-            <xsl:choose>
-                <xsl:when test="string-length($mediaFrames) = 1">
-                    <xsl:value-of select="concat('0', $mediaFrames)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$mediaFrames"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
+        <xsl:variable name="outputHours" select="format-number($mediaHours, '00')"/>
+        <xsl:variable name="outputMinutes" select="format-number($mediaMinutes, '00')"/>
+        <xsl:variable name="outputSeconds" select="format-number($mediaSeconds, '00')"/>
+        <xsl:variable name="outputFrames" select="format-number($mediaFrames, '00')"/>
         <xsl:choose>
             <!--@ If timebase is media, convert the frames to milliseconds and concatenate afterwards -->
             <xsl:when test="$timeCodeFormat = 'media'">
                 <xsl:variable name="mediaFraction" select="($mediaFrames div number($frameRate))*1000 mod 1000"/>
-                <xsl:variable name="outputFraction">
-                    <xsl:choose>
-                        <xsl:when test="string-length($mediaFraction) = 1">
-                            <xsl:value-of select="concat('00', $mediaFraction)"/>
-                        </xsl:when>
-                        <xsl:when test="string-length($mediaFraction) = 2">
-                            <xsl:value-of select="concat('0', $mediaFraction)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$mediaFraction"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
+                <xsl:variable name="outputFraction" select="format-number($mediaFraction, '000')"/>
                 <xsl:value-of select="concat($outputHours, ':', $outputMinutes, ':', $outputSeconds, '.', $outputFraction)"/>
             </xsl:when>
             <!--@ If timebase is smpte, concatenate the frames to the calculated values -->

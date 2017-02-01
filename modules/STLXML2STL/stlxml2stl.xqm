@@ -34,6 +34,7 @@ declare function read-document($path as xs:string) as document-node() {
     fn:error($_:ERROR, "Invalid (XSD) input data: " || fn:string-join($info, ' -- '))
 };:)
 
+(: convert STLXML to STL :)
 declare function encode($stlxml as document-node()) as xs:hexBinary {
 (:  let $schema-ok := check-schema($stlxml):)
   (: character code table number for TTI text field encoding :)
@@ -45,10 +46,12 @@ declare function encode($stlxml as document-node()) as xs:hexBinary {
   return xs:hexBinary($GSI || xs:hexBinary(fn:string-join($TTI ! xs:string(.), '')))
 };
 
+(: output STL result to file :)
 declare function serialize($path as xs:string, $value as xs:hexBinary) as empty-sequence() {
   file:write-binary($path, bin:hex(xs:string($value)))
 };
 
+(: convert GSI block from STLXML to STL :)
 declare function encode-gsi($gsi as element(GSI)) as xs:hexBinary {
   let $GSI-CPN := map {
     '437': '343337',
@@ -64,6 +67,7 @@ declare function encode-gsi($gsi as element(GSI)) as xs:hexBinary {
     '2': '32'
   }
   let $CPN-number := $gsi/CPN/fn:string()
+  (: concatenate all fields :)
   let $s :=
        $GSI-CPN($gsi/CPN)
     || gsi-encode-chars($gsi/DFC, $CPN-number, 8)
@@ -101,7 +105,9 @@ declare function encode-gsi($gsi as element(GSI)) as xs:hexBinary {
   return xs:hexBinary($s)
 };
 
+(: convert TTI block from STLXML to STL :)
 declare function encode-tti($tti as element(TTI), $cct-number as xs:string) as xs:hexBinary {
+  (: concatenate all fields :)
   let $s :=
        tti-non-negative-integer($tti/SGN, 1)
     || tti-non-negative-integer($tti/SN, 2)
@@ -136,21 +142,25 @@ declare function tti-time-code($v as xs:string?) as item()? {
   ) return fn:string-join($s ! xs:string(.), '')
 };
 
+(: convert TF (with user data) from STLXML to STL :)
 declare function tti-text-field_user_data($v as element(TF)) as item()? {
   xs:base64Binary($v) ! xs:hexBinary(.)
 };
 
+(: convert TF (with text) from STLXML to STL :)
 declare function tti-text-field_text($v as element(TF), $cct-number as xs:string) as item()? {
   let $encoding := tti-text-field-encoding($cct-number)
   let $s :=
     for $ch in $v/child::node()
     return
       if($ch instance of element()) then
+        (: convert control character :)
         let $cs := $_:TTI-TF-CTRL-CHARS(fn:name($ch))
         return if(fn:empty($cs)) then
           fn:error($_:ERROR, "Invalid control character element '" || fn:name($ch) || "'.")
         else $cs
       else if($ch instance of text()) then
+        (: convert text :)
         tti-encode-text-field-chars(fn:replace($ch, '\s', ''), $cct-number)
       else
         ()
@@ -164,6 +174,7 @@ declare function tti-text-field_text($v as element(TF), $cct-number as xs:string
 };
 
 declare function tti-text-field-encoding($cct as xs:string) {
+  (: currently only CCT 00 is supported! :)
   let $encoding := map {
     '00': '6937-2'
   }($cct)

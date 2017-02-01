@@ -24,8 +24,8 @@ import base64
 
 class iso6937(codecs.Codec):
     """
-    A class to implement the somewhat exotic iso-6937 encoding
-    which STL files often use
+    A class to implement the somewhat exotic ISO-6937 encoding
+    which STL files often use (CCT 00)
     """
     identical = set(range(0x21, 0x7f))
     identical |= set((0xa1, 0xa2, 0xa3, 0xa5, 0xa7, 0xab, 0xb0, 0xb1,
@@ -114,7 +114,7 @@ class iso6937(codecs.Codec):
         0xce: 0x0328,  # ogonek
         0xcf: 0x030C,  # caron
     }
-    # Control codes mapping
+    # Control codes mapping - the mapped characters are later converted to the respective XML elements
     cc_mapping = {
         0x00: 0xE000,  # AlphaBlack,
         0x01: 0xE001,  # AlphaRed,
@@ -156,7 +156,7 @@ class iso6937(codecs.Codec):
     def decode(self, inputdata):
         """
         Implements codec class decode function interface.
-        Decodes the text fields (TF) in a tti block.
+        Decodes the Text Fields (TF) in a TTI block.
         """
         output = []
         state = None  #  If previous char was diacritic contains value of diacritic.
@@ -197,10 +197,10 @@ class iso6937(codecs.Codec):
 class stl_encoding(codecs.Codec):
     """
     A class to implement an encoding which extends an existing encoding
-    while handling STL specific character codes
+    while handling STL specific control codes
     """
 
-    # Control codes mapping
+    # Control codes mapping - the mapped characters are later converted to the respective XML elements
     cc_mapping = {
         0x00: 0xE000,  # AlphaBlack,
         0x01: 0xE001,  # AlphaRed,
@@ -242,11 +242,10 @@ class stl_encoding(codecs.Codec):
     def decode(self, inputdata):
         """
         Implements codec class decode function interface.
-        Decodes the text fields (TF) in a tti block.
+        Decodes the Text Fields (TF) in a TTI block.
         """
         base_decoder = codecs.getdecoder(self.base_encoding)
         output = []
-        state = None  #  If previous char was diacritic contains value of diacritic.
         for char in inputdata:
             char_ord = ord(char)
             if char_ord == 0x8f:  # 0x8Fh (in STL for unused space) marks the end of TF.
@@ -254,6 +253,7 @@ class stl_encoding(codecs.Codec):
             # Append Teletext control code.
             if char_ord in self.cc_mapping:
                 output.append(self.cc_mapping[char_ord])
+            # Append char mapped from existing base encoding
             else:
                 output.append(ord(base_decoder(char)[0]))
         output = ''.join(map(unichr, output))
@@ -274,21 +274,33 @@ class stl_encoding(codecs.Codec):
 
 
 class iso8859_5_stl(stl_encoding):
+    """
+    A derived class which represents the ISO-8859-5 encoding in STL (CCT 01)
+    """
     def __init__(self):
         stl_encoding.__init__(self, 'iso-8859-5')
 
 
 class iso8859_6_stl(stl_encoding):
+    """
+    A derived class which represents the ISO-8859-6 encoding in STL (CCT 02)
+    """
     def __init__(self):
         stl_encoding.__init__(self, 'iso-8859-6')
 
 
 class iso8859_7_stl(stl_encoding):
+    """
+    A derived class which represents the ISO-8859-7 encoding in STL (CCT 03)
+    """
     def __init__(self):
         stl_encoding.__init__(self, 'iso-8859-7')
 
 
 class iso8859_8_stl(stl_encoding):
+    """
+    A derived class which represents the ISO-8859-8 encoding in STL (CCT 04)
+    """
     def __init__(self):
         stl_encoding.__init__(self, 'iso-8859-8')
 
@@ -353,6 +365,7 @@ class STL:
     def __init__(self, separate_tti):
         self.separate_tti = separate_tti
         self.tti = []
+        # register all encodings that can be used for the Text Fields of the TTI blocks in STL
         codecs.register(iso6937().search)
         codecs.register(iso8859_5_stl().search)
         codecs.register(iso8859_6_stl().search)
@@ -387,7 +400,7 @@ class STL:
             self.gsiCodePage = 'cp850'
 
         # Matching the Character Code Table Number (CCT).
-        # The CCT is used to decode the TTI Blocks
+        # The CCT is used to decode the Text Field (TF) of the TTI Blocks.
         self.codePage = {
             '00': 'iso_6937-2',
             '01': 'iso-8859-5_stl',
@@ -510,8 +523,10 @@ class STLXML:
         for uChar in unicodeString:
             isControlChar = ord(uChar) in range(0xE000, 0xE0FF)
             if not isControlChar:
+                # add char
                 tempString += uChar
             else:
+                # convert control char to respective element
                 if len(tempString) > 0:
                     textNode = self.xmlDoc.createTextNode(tempString)
                     parentNode.appendChild(textNode)
@@ -531,7 +546,7 @@ class STLXML:
 
     def serialize(self, output, pretty=False):
         """
-        Create a textual representation of the xml file.
+        Create a textual representation of the XML file.
         'ouput' must be a '.write()'-supporting, file-like object.
         """
         if pretty:
