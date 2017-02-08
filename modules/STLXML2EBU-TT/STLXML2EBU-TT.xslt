@@ -296,6 +296,7 @@ limitations under the License.
                 <xsl:apply-templates select="PUB"/>
                 <xsl:apply-templates select="EN"/>
                 <xsl:apply-templates select="ECD"/>
+                <xsl:apply-templates select="UDA"/>
             </ebuttm:documentMetadata>
             <xsl:apply-templates select="CD"/>
             <xsl:apply-templates select="RD"/>
@@ -526,6 +527,17 @@ limitations under the License.
             <ebuttm:documentEditorsContactDetails>
                 <xsl:value-of select="normalize-space(.)"/>
             </ebuttm:documentEditorsContactDetails>
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="UDA">
+        <!--** Element containing data from the User Defined Area. Steps: -->
+        <!--@ Check if element is not empty -->
+        <xsl:if test="string-length(normalize-space(.)) &gt; 0">
+            <!--@ Create ebuttm:documentUserDefinedArea element with the normalized content -->
+            <ebuttm:documentUserDefinedArea>
+                <xsl:value-of select="normalize-space(.)"/>
+            </ebuttm:documentUserDefinedArea>
         </xsl:if>
     </xsl:template>
 

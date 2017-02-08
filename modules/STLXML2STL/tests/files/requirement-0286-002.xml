@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<StlXml>
+  <HEAD>
+    <GSI>
+      <CPN>850</CPN>
+      <DFC>STL25.01</DFC>
+      <DSC>2</DSC>
+      <CCT>00</CCT>
+      <LC>08</LC>
+      <OPT>IRT Testsendung                 </OPT>
+      <OET>IRT Testfolge                   </OET>
+      <TPT>IRT Test Programme              </TPT>
+      <TET>IRT Test Episode                </TET>
+      <TN>Open Source Translator          </TN>
+      <TCD>open.source@irt.de              </TCD>
+      <SLR>ABC-4711        </SLR>
+      <CD>151210</CD>
+      <RD>151217</RD>
+      <RN> 6</RN>
+      <TNB>18   </TNB>
+      <TNS>18   </TNS>
+      <TNG>1  </TNG>
+      <MNC>40</MNC>
+      <MNR>23</MNR>
+      <TCS>1</TCS>
+      <TCP>10000000</TCP>
+      <TCF>10000000</TCF>
+      <TND>1</TND>
+      <DSN>1</DSN>
+      <CO>DEU</CO>
+      <PUB>Institut für Rundfunktechnik    </PUB>
+      <EN>Open Source Editor              </EN>
+      <ECD>open.source@irt.de              </ECD>
+      <UDA>VGhpcyBpcyB0ZXN0IGRhdGEgd2l0aGluIHRoZSBVREEgZmllbGQuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg</UDA>
+    </GSI>
+  </HEAD>
+  <BODY>
+    <TTICONTAINER>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>weiß<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>1</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000207</TCI>
+        <TCO>10000407</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaYellow/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>gelb<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>2</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000411</TCI>
+        <TCO>10000614</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaGreen/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>grün<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>3</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000618</TCI>
+        <TCO>10000821</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaCyan/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>cyan<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>4</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000900</TCI>
+        <TCO>10001101</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaMagenta/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>magenta<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>5</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10001105</TCI>
+        <TCO>10001302</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaRed/><space/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>rot<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>6</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10001306</TCI>
+        <TCO>10001502</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaYellow/><NewBackground/><AlphaBlue/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>blau<space/>auf<space/>gelb<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>7</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10001506</TCI>
+        <TCO>10001705</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><NewBackground/><AlphaBlack/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>schwarz<space/>auf<space/>weiß<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>8</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10001709</TCI>
+        <TCO>10002006</TCO>
+        <VP>20</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>weiß<space/>auf<space/>schwarz<space/><EndBox/><EndBox/><newline/><newline/><DoubleHeight/><AlphaYellow/><NewBackground/><AlphaBlue/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>und<space/>blau<space/>auf<space/>gelb<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>9</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10002010</TCI>
+        <TCO>10002300</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><StartBox/><StartBox/>in<space/>einer<space/>Zeile<space/>ein<AlphaRed/>rotes<AlphaWhite/>Wort<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>10</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10002304</TCI>
+        <TCO>10002620</TCO>
+        <VP>20</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/><space/><space/>Ein<AlphaYellow/><NewBackground/><AlphaBlue/>blaues<space/><BlackBackground/><AlphaWhite/>Wort<space/><space/><EndBox/><EndBox/><newline/><newline/><DoubleHeight/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>mit<space/>gelbem<space/>Hintergrund.<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>11</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10002624</TCI>
+        <TCO>10002905</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaYellow/><NewBackground/><AlphaBlue/><space/><space/><space/><space/><StartBox/><StartBox/>Ein<AlphaWhite/><NewBackground/><AlphaBlue/>Wort<AlphaYellow/><NewBackground/><AlphaBlue/>auf<space/>weiß<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>12</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10002909</TCI>
+        <TCO>10003109</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>weiß<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>13</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10003113</TCI>
+        <TCO>10003315</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>weiß<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>14</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10003319</TCI>
+        <TCO>10003520</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><space/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>weiß<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>15</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10003524</TCI>
+        <TCO>10003722</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaYellow/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>gelb<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>16</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10003801</TCI>
+        <TCO>10004001</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaYellow/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>gelb<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>17</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10004005</TCI>
+        <TCO>10004211</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><DoubleHeight/><AlphaYellow/><space/><space/><space/><space/><space/><space/><space/><space/><StartBox/><StartBox/>gelb<space/>auf<space/>schwarz<EndBox/><EndBox/></TF>
+      </TTI>
+    </TTICONTAINER>
+  </BODY>
+</StlXml>

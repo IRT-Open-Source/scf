@@ -410,6 +410,9 @@ class STL:
         }[GSI['CCT']]
         # Number of TTI Blocks
         self.numberOfTTI = int(GSI['TNB'])
+        
+        # Output UDA as base64
+        GSI['UDA'] = base64.b64encode(GSI['UDA'])
 
     def _readTTI(self, fileHandle):
         eofReached = False
@@ -485,10 +488,8 @@ class STLXML:
 
     def _setGsi(self, Stl):
         gsiElement = self.xmlDoc.createElement('GSI')
-        # UDA (User Defined Data) field is not included.
-        reducedGsiFields = Stl.GSIfields[:-1]
         gsiElement = self._xmlFromListAndDict(gsiElement,
-                                              reducedGsiFields,
+                                              Stl.GSIfields,
                                               Stl.GSI,
                                               Stl.gsiCodePage)
         self.xmlDocHead = self.xmlDoc.createElement('HEAD')

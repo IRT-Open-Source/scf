@@ -100,8 +100,8 @@ declare function encode-gsi($gsi as element(GSI)) as xs:hexBinary {
     || gsi-encode-chars($gsi/ECD, $CPN-number, 32)
     (: spare bytes :)
     || fn:string-join(for $i in 1 to 75 return '20')
-    (: UDA / user-defined area :)
-    || fn:string-join(for $i in 1 to 576 return '20')
+    (: UDA / user-defined area - consider older STLXML files without UDA :)
+    || (if($gsi/UDA) then gsi-user-defined-area($gsi/UDA) else fn:string-join(for $i in 1 to 576 return '20'))
   return xs:hexBinary($s)
 };
 
@@ -140,6 +140,11 @@ declare function tti-time-code($v as xs:string?) as item()? {
     ! bin:pack-integer(., 1, 'LE')
     ! xs:hexBinary(.)
   ) return fn:string-join($s ! xs:string(.), '')
+};
+
+(: convert UDA from STLXML to STL :)
+declare function gsi-user-defined-area($v as element(UDA)) as item()? {
+  xs:base64Binary($v) ! bin:pad-right(., 576 - bin:length(.), 32) ! xs:hexBinary(.)
 };
 
 (: convert TF (with user data) from STLXML to STL :)

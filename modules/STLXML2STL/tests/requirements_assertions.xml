@@ -109,8 +109,11 @@ limitations under the License.
     <requirement name="requirement-0285-001" description="Editor's Contact Details mapping">
         <text gsi_offset="0" tti_offset="0" field_offset="341" size="32">open.source@irt.de</text>
     </requirement>
-    <requirement name="requirement-0286-001" description="User-Defined Area mapping">
+    <requirement name="requirement-0286-001" description="User-Defined Area mapping (field not present)">
         <text gsi_offset="0" tti_offset="0" field_offset="448" size="576"/>
+    </requirement>
+    <requirement name="requirement-0286-002" description="User-Defined Area mapping (field in use)">
+        <text gsi_offset="0" tti_offset="0" field_offset="448" size="576">This is test data within the UDA field.</text>
     </requirement>
     <requirement name="requirement-0287-001" description="Unused Bytes handling">
         <text gsi_offset="0" tti_offset="0" field_offset="373" size="75"/>

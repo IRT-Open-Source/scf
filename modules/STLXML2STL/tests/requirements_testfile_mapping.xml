@@ -48,6 +48,7 @@ limitations under the License.
 	<requirement name="requirement-0284-001" file="testfile_generic.xml"/>
 	<requirement name="requirement-0285-001" file="testfile_generic.xml"/>
 	<requirement name="requirement-0286-001" file="testfile_generic.xml"/>
+	<requirement name="requirement-0286-002" file="requirement-0286-002.xml"/>
 	<requirement name="requirement-0287-001" file="testfile_generic.xml"/>
 	<requirement name="requirement-0288-001" file="testfile_generic.xml"/>
 	<requirement name="requirement-0289-001" file="testfile_generic.xml"/>
@@ -83,6 +84,7 @@ limitations under the License.
 
 	<requirement name="requirement-0334-001" file="testfile_tti_newline.xml"/>
 	<requirement name="requirement-0335-001" file="testfile_generic.xml"/>
+	
 	<requirement name="requirement-0422-001" file="requirement-0422-001.xml"/>
 	<requirement name="requirement-0423-001" file="requirement-0423-001.xml"/>
 </requirements>
