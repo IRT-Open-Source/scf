@@ -24,6 +24,8 @@ limitations under the License.
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style" 
     xmlns:ebuttExt="urn:ebu:tt:extension"
     xmlns:exslt="http://exslt.org/common"
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    exclude-result-prefixes="fn"
     version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
     <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
@@ -279,6 +281,8 @@ limitations under the License.
                 <xsl:apply-templates select="TN"/>
                 <xsl:apply-templates select="TCD"/>
                 <xsl:apply-templates select="SLR"/>
+                <ebuttm:documentCreationDate><xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/></ebuttm:documentCreationDate>
+                <ebuttm:documentRevisionDate><xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/></ebuttm:documentRevisionDate>
                 <ebuttm:documentRevisionNumber>0</ebuttm:documentRevisionNumber>
                 <xsl:apply-templates select="TNS"/>
                 <xsl:apply-templates select="MNC"/>
