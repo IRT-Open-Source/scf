@@ -69,12 +69,12 @@ limitations under the License.
                 <TCO>23595924</TCO>
                 <VP>23</VP>
                 <JC>02</JC>
-                <CF>01</CF>
+                <CF>00</CF>
                 <TF>
-                    <StartBox/>Some<space/>text<AlphaWhite/>
+               <StartBox/>
+               <StartBox/>Some<space/>text<AlphaWhite/>
                <Flash/>
                <Steady/>
-               <EndBox/>
                <NormalHeight/>
                <DoubleHeight/>
                <DoubleWidth/>
@@ -96,9 +96,9 @@ limitations under the License.
                <ReleaseMosaic/>
                <space/>
                <newline/>
-               <space/>
-                    <EndBox/>
-                </TF>
+               <EndBox/>
+               <EndBox/>
+            </TF>
             </TTI>
         </TTICONTAINER>
     </BODY>

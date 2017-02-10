@@ -179,9 +179,7 @@ limitations under the License.
         <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="4">20</binary>
         <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="6">20</binary>
     </requirement>
-    <requirement name="requirement-0302-001" description="Text Field mapping - Text">
-        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">C861C86FC875FB</binary>
-    </requirement>
+
     <requirement name="requirement-0303-001" description="AlphaBlack element mapping">
 		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">00</binary>
     </requirement>
@@ -234,6 +232,10 @@ limitations under the License.
         <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="30">8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
         <binary gsi_offset="1024" tti_offset="128" field_offset="16" byte_offset="30">8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
         <binary gsi_offset="1024" tti_offset="256" field_offset="16" byte_offset="31">8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F</binary>
+    </requirement>
+
+    <requirement name="requirement-0398-001" description="Text Field mapping - Characters">
+        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">C861C86FC875FB</binary>
     </requirement>
 
     <requirement name="requirement-0422-001" description="Text Field mapping - ignore undesired characters">

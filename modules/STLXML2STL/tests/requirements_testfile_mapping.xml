@@ -64,7 +64,7 @@ limitations under the License.
 	<requirement name="requirement-0299-001" file="testfile_generic.xml"/>
 
 	<requirement name="requirement-0301-001" file="requirement-0301-001.xml"/>
-	<requirement name="requirement-0302-001" file="requirement-0302-001.xml"/>
+
 	<requirement name="requirement-0303-001" file="testfile_tti_colors.xml"/>
 	<requirement name="requirement-0304-001" file="testfile_tti_colors.xml"/>
 	<requirement name="requirement-0305-001" file="testfile_tti_colors.xml"/>
@@ -84,6 +84,8 @@ limitations under the License.
 
 	<requirement name="requirement-0334-001" file="testfile_tti_newline.xml"/>
 	<requirement name="requirement-0335-001" file="testfile_generic.xml"/>
+
+	<requirement name="requirement-0398-001" file="requirement-0398-001.xml"/>
 	
 	<requirement name="requirement-0422-001" file="requirement-0422-001.xml"/>
 	<requirement name="requirement-0423-001" file="requirement-0423-001.xml"/>

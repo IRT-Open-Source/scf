@@ -63,11 +63,10 @@ limitations under the License.
                 <JC>02</JC>
                 <CF>00</CF>
                 <TF>
-               <StartBox/>Some
-                    text<AlphaWhite/>
+               <StartBox/>
+               <StartBox/>Some<space/>text<AlphaWhite/>
                <Flash/>
                <Steady/>
-               <EndBox/>
                <NormalHeight/>
                <DoubleHeight/>
                <DoubleWidth/>
@@ -75,8 +74,7 @@ limitations under the License.
                <MosaicBlack/>
                <MosaicRed/>
                <MosaicGreen/>
-               <MosaicYellow/>Some
-                    text<MosaicBlue/>
+               <MosaicYellow/>Some<space/>text<MosaicBlue/>
                <MosaicMagenta/>
                <MosaicCyan/>
                <MosaicWhite/>
@@ -90,7 +88,7 @@ limitations under the License.
                <ReleaseMosaic/>
                <space/>
                <newline/>
-               <space/>
+               <EndBox/>
                <EndBox/>
             </TF>
             </TTI>

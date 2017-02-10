@@ -71,10 +71,10 @@ limitations under the License.
                 <JC>02</JC>
                 <CF>00</CF>
                 <TF>
+               <StartBox/>
                <StartBox/>Some<space/>text<AlphaWhite/>
                <Flash/>
                <Steady/>
-               <EndBox/>
                <NormalHeight/>
                <DoubleHeight/>
                <DoubleWidth/>
@@ -96,7 +96,7 @@ limitations under the License.
                <ReleaseMosaic/>
                <space/>
                <newline/>
-               <space/>
+               <EndBox/>
                <EndBox/>
             </TF>
             </TTI>
