@@ -1,7 +1,7 @@
 # SCF
-The Subtitling Conversion Framework (SCF) is a set of modules for converting XML based subtitle formats. Main target is to build up a flexible and extensible transformation pipeline to convert EBU STL formats and EBU-TT subtitle formats.      
+The Subtitling Conversion Framework (SCF) is a set of modules for converting XML based subtitle formats. Main target is to build up a flexible and extensible transformation pipeline to convert EBU STL formats and EBU-TT subtitle formats.
 
-The SCF is an early Alpha release with the version 0.2.8.
+The SCF is an early Beta release with the version 0.9.0.
 
 ## License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer Rundfunktechnik 
@@ -43,7 +43,7 @@ Apart from the artefacts the module folder contains a folder with test files and
 
 ## DESCRIPTION
 ### Modules
-Currently the SCF has the following six core modules:
+Currently the SCF has the following seven core modules:
 
 * STMLXML-XSD 
 * STL2STLXML
@@ -57,10 +57,10 @@ Currently the SCF has the following six core modules:
 The STLXML W3C XML Schema is a tool to check if the XML representation of the EBU STL files conform to the expected structure. Files that don't conform will most probably fail the STLXML to EBU-TT conversion or will lead to unexpected results.
 
 #### STL2STLXML
-The STL2STLXML script decodes the EBU-STL file and exports it in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
+The STL2STLXML script decodes the EBU STL file and exports it in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
 
 #### STLXML2STL
-The STLXML2STL module converts an XML representation of EBU-STL to a binary file that conforms to EBU-STL.
+The STLXML2STL module converts an XML representation of EBU STL to a binary file that conforms to EBU STL.
 
 #### STLXML2EBU-TT
 The STMLXML2EBU-TT XSLT transforms an XML representation of an EBU STL file into an EBU-TT that conforms to EBU Tech 3350 (EBU-TT Part 1). It follows the guideline provided by EBU Tech 3360 version 0.9.

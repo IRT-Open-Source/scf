@@ -1,5 +1,5 @@
 # STLXML2STL
-The STLXML2STL module converts an XML representation of EBU-STL to a binary file that conforms to EBU-STL (EBU Tech 3264). The module is written in XQuery and designed to be executed with BaseX or Saxon XQuery processors.
+The STLXML2STL module converts an XML representation of EBU STL to a binary file that conforms to EBU STL (EBU Tech 3264). The module is written in XQuery and designed to be executed with BaseX or Saxon XQuery processors.
 
 ## Prerequisites
 [BaseX 8.4](http://basex.org/) or [Saxon Enterprise Edition (EE) 9.6.0.5](www.saxonica.com/) (tested with these versions).
@@ -24,10 +24,10 @@ basex -i input.xml stlxml2stl_helper.xq > output.stl
 ```
 
 ## Notes
-* Supported EBU-STL code pages (CPNs) for GSI data:
+* Supported EBU STL code pages (CPNs) for GSI data:
   * `850` (Multilingual)
 
-* Supported EBU-STL character code tables (CCTs) for TTI blocks:
+* Supported EBU STL character code tables (CCTs) for TTI blocks:
   * `00` (ISO 6937/2-1983 incl. diacritics)
 
 ## AUTHORS

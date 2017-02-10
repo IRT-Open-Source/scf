@@ -1,14 +1,14 @@
 # EBU-TT-D2EBU-TT-D-Basic-DE
 The implementation of the EBU-TT-D2EBU-TT-D-Basic-DE module is based on the use case of the distribution of subtitles to online services that uses the constrained EBU-TT-D format defined for the ARD Mediathek Portals. It takes as input an EBU-TT-D File that is conformant to the EBU-TT-D spec (EBU Tech 3380).
 
-##Prerequisites
+## Prerequisites
 - an XSLT 1.0 processor (e.g. SAXON 6.5.5 or higher)
 
-##Usage
+## Usage
 The EBU-TT-D2EBU-TT-D-Basic-DE.xslt has no parameters.
 
 ## DESCRIPTION
-This transformation assumes that the input EBU-TT-D file was created through the use of the SCF modules starting with an STL file.
+This transformation assumes that the input EBU-TT-D file was created through the use of the SCF modules starting with an EBU STL file.
 
 
 ## EXAMPLES

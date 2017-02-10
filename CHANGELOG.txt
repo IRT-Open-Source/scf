@@ -1,4 +1,39 @@
 -----------------------------
+Version 0.9.0
+-----------------------------
+GENERAL
+- CHANGED: Comments, correction of typos, code improvement
+- ADDED: Test files
+- DELETED: Test files
+
+STL2STLXML
+- ADDED #31: Option to disable merging of TTI blocks of same subtitle
+- ADDED #30: Mapping of UDA
+- ADDED #28: Mapping of User Data
+- ADDED #27: Mapping of comments
+- FIXED #29: Mapping of empty subtitles (TF only contains 0x8F)
+- FIXED #36: Consider Teletext control codes/0x8F also for non-850 CPNs
+- FIXED #37: Don't abort on CPNs not allowed by EBU STL
+- CHANGED: Documentation
+
+STLXML2EBU-TT
+- ADDED #34: Mapping of CD/RD/RN
+- ADDED #30: Mapping of UDA
+- ADDED #28: Mapping of User Data
+- ADDED #35: Add offsetInFrames parameter
+- ADDED #38: Use separate tt:div per SGN value
+- ADDED #40: Set documentCreationDate/documentRevisionDate
+- FIXED #26: Discard out-of-boxing text only if boxing is present
+- FIXED #32: Consider also TCP when applying timecode offset
+- CHANGED: Documentation
+
+STLXML2STL
+- ADDED #30: Mapping of UDA
+- ADDED #28: Mapping of User Data
+- ADDED #27: Mapping of comments
+- ADDED: Documentation
+
+-----------------------------
 Version 0.2.8
 -----------------------------
 STLXML2STL

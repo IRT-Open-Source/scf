@@ -1,7 +1,7 @@
 # STLXML-XSD
 The STLXML W3C XML Schema is thought as a help for the further processing of STLXML files. STLXML files that don't validate against the STLXML Schema may lead to exceptions or unexpected results from modules that take STLXML files as input.
 
-##Prerequisites
+## Prerequisites
 - an XML validating parser (e.g. Xerces) or an schema aware XML editor 
 
 ## DESCRIPTION

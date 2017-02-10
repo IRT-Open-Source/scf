@@ -1,11 +1,11 @@
 # EBU-TT2EBU-TT-D
-The implementation of the EBU-TT2EBU-TT-D module is based on the use case of the distribution of subtitles to online services with EBU-TT-D subtitle files. It takes as input an EBU-TT File that is conformant to the EBU-TT Part 1 spec (EBU Tech 3350) and on the basis of the STL to EBU-TT mapping guideline.
+The implementation of the EBU-TT2EBU-TT-D module is based on the use case of the distribution of subtitles to online services with EBU-TT-D subtitle files. It takes as input an EBU-TT File that is conformant to the EBU-TT Part 1 spec (EBU Tech 3350) and on the basis of the EBU STL to EBU-TT mapping guideline.
 
-##Prerequisites
+## Prerequisites
 - an XSLT 1.0 processor (e.g. SAXON 6.5.5 or higher)
 
-##Usage
-The EBU-TT2EBU-TT-D.xslt provides the following parameter:
+## Usage
+The EBU-TT2EBU-TT-D.xslt provides the following parameters:
 
      - offsetInSeconds
        Defines the time-offset that's used for the begin and end attributes in seconds
@@ -16,7 +16,7 @@ The EBU-TT2EBU-TT-D.xslt provides the following parameter:
        
 
 ## DESCRIPTION
-This transformation assumes that the input EBU-TT file is based on an EBU-STL file and the transformation followed the guidelines of EBU Tech 3360. 
+This transformation assumes that the input EBU-TT file is based on an EBU STL file and the transformation followed the guidelines of EBU Tech 3360. 
 
 
 ## EXAMPLES
