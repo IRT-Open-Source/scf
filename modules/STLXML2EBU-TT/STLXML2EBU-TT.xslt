@@ -22,6 +22,7 @@ limitations under the License.
     xmlns:tts="http://www.w3.org/ns/ttml#styling" 
     xmlns:ttm="http://www.w3.org/ns/ttml#metadata" 
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style" 
+    xmlns:ebuttExt="urn:ebu:tt:extension"
     xmlns:exslt="http://exslt.org/common"
     version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
@@ -290,6 +291,9 @@ limitations under the License.
                 <xsl:apply-templates select="EN"/>
                 <xsl:apply-templates select="ECD"/>
             </ebuttm:documentMetadata>
+            <xsl:apply-templates select="CD"/>
+            <xsl:apply-templates select="RD"/>
+            <xsl:apply-templates select="RN"/>
         </tt:metadata>
         <tt:styling>
             <!--@ Create tt:style element defining the defaultStyle -->
@@ -541,7 +545,84 @@ limitations under the License.
             </ebuttm:documentEditorsContactDetails>
         </xsl:if>
     </xsl:template>
+
+    <xsl:template match="CD">
+        <!--** Element containing information about the Creation Date. Steps: -->
+        <!--@ Check for the element containing only numerical content -->
+        <xsl:if test="string-length(normalize-space(.)) &gt; 0 and number(.) = number(.)">
+            <!--@ Split content-string in year, month and day; ebuttExt:stlCreationDate is always a xs:date -->
+            <xsl:variable name="year" select="substring(normalize-space(.), 1, 2)"/>
+            <xsl:variable name="month" select="substring(normalize-space(.), 3, 2)"/>
+            <xsl:variable name="day" select="substring(normalize-space(.), 5, 2)"/>
+            <xsl:choose>
+                <!--@ Check validity for YYMMDD date -->
+                <xsl:when test="string-length(normalize-space(.)) = 6 and
+                    number($month) &gt;= 0 and number($month) &lt; 13 and
+                    number($day) &gt;= 0 and number($day) &lt; 32">
+                    <!--@ Create ebuttExt:stlCreationDate element with the checked content -->
+                    <ebuttExt:stlCreationDate>
+                        <!--@ Prepend century -->
+                        <xsl:choose>
+                            <xsl:when test="number($year) &lt; 80">20</xsl:when>
+                            <xsl:otherwise>19</xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:value-of select="concat($year, '-', $month, '-', $day)"/>
+                    </ebuttExt:stlCreationDate>
+                </xsl:when>
+                <!--@ Interrupt, if the CD element's value is invalid -->
+                <xsl:otherwise>
+                    <xsl:message terminate="yes">
+                        CD is always set as date with format yymmdd.
+                    </xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>        
+        </xsl:if>
+    </xsl:template>
     
+    <xsl:template match="RD">
+        <!--** Element containing information about the Revision Date. Steps: -->
+        <!--@ Check for the element containing only numerical content -->
+        <xsl:if test="string-length(normalize-space(.)) &gt; 0 and number(.) = number(.)">
+            <!--@ Split content-string in year, month and day; ebuttExt:stlRevisionDate is always a xs:date -->
+            <xsl:variable name="year" select="substring(normalize-space(.), 1, 2)"/>
+            <xsl:variable name="month" select="substring(normalize-space(.), 3, 2)"/>
+            <xsl:variable name="day" select="substring(normalize-space(.), 5, 2)"/>
+            <xsl:choose>
+                <!--@ Check validity for YYMMDD date -->
+                <xsl:when test="string-length(normalize-space(.)) = 6 and
+                    number($month) &gt;= 0 and number($month) &lt; 13 and
+                    number($day) &gt;= 0 and number($day) &lt; 32">
+                    <!--@ Create ebuttExt:stlRevisionDate element with the checked content -->
+                    <ebuttExt:stlRevisionDate>
+                        <!--@ Prepend century -->
+                        <xsl:choose>
+                            <xsl:when test="number($year) &lt; 80">20</xsl:when>
+                            <xsl:otherwise>19</xsl:otherwise>
+                        </xsl:choose>
+                        <xsl:value-of select="concat($year, '-', $month, '-', $day)"/>
+                    </ebuttExt:stlRevisionDate>
+                </xsl:when>
+                <!--@ Interrupt, if the RD element's value is invalid -->
+                <xsl:otherwise>
+                    <xsl:message terminate="yes">
+                        RD is always set as date with format yymmdd.
+                    </xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>        
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="RN">
+        <!--** Element containing information about the Revision Number. Steps: -->
+        <!--@ Check if content is either empty or only consists of spaces -->
+        <xsl:if test="string-length(normalize-space(.)) &gt; 0 and number(normalize-space(.)) = number(normalize-space(.))">
+            <!--@ Create ebuttExt:stlRevisionNumber element with the normalized content -->
+            <ebuttExt:stlRevisionNumber>
+                <xsl:value-of select="number(normalize-space(.))"/>
+            </ebuttExt:stlRevisionNumber>
+        </xsl:if>
+    </xsl:template>
+
     <xsl:template match="BODY">
         <!--** Container for the TTICONTAINER element. Steps: -->
         <xsl:param name="frameRate"/>
