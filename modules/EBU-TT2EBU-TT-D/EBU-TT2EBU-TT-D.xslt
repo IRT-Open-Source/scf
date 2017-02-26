@@ -166,9 +166,18 @@ limitations under the License.
     
     <xsl:template match="tt:metadata">
         <!--** Container element containing metadata. Steps: -->
-        <tt:metadata>
-            <xsl:apply-templates select="ebuttm:documentMetadata"/>            
-        </tt:metadata>
+    	   <!--@ Copy metadata just for the head (but not in content elements) -->
+        <xsl:choose>
+            <xsl:when test="parent::tt:head">
+        		      <tt:metadata>
+        			         <xsl:apply-templates select="ebuttm:documentMetadata"/>            
+        		      </tt:metadata>        		
+        	   </xsl:when>
+        	   <!--@ Ignore metadata outside of head and apply template to first sibling -->        	
+        	  <xsl:otherwise>
+    	           <xsl:apply-templates select="following-sibling::node()[1]"/>    	
+           </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="ebuttm:documentMetadata">

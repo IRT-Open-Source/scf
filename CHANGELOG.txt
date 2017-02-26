@@ -1,4 +1,10 @@
 -----------------------------
+Version 0.9.1
+-----------------------------
+EBU-TT2EBU-TT-D
+- FIXED #43: Subtitle content does not get pruned
+
+-----------------------------
 Version 0.9.0
 -----------------------------
 GENERAL
