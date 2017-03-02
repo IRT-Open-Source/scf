@@ -21,11 +21,12 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
+    <ns uri="http://www.irt.de/scf" prefix="scf"/>
     <title>Testing mapping of user data in TTI block.</title>
     <pattern id="UserDataTTI">
         <rule context="/">
-            <assert test="//proprietaryUserData=false()">
-                The element proprietaryUserData must not be present in the file.
+            <assert test="//scf:stlUserData=false()">
+                The element scf:stlUserData must not be present in the file.
             </assert> 
         </rule>
     </pattern>            

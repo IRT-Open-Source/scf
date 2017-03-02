@@ -25,6 +25,7 @@ limitations under the License.
     xmlns:ebuttExt="urn:ebu:tt:extension"
     xmlns:exslt="http://exslt.org/common"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
+    xmlns:scf="http://www.irt.de/scf"
     exclude-result-prefixes="fn"
     version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
@@ -891,10 +892,10 @@ limitations under the License.
             end="{$end}">
             <xsl:if test="string-length($user_data) != 0">
                 <tt:metadata>
-                    <!--** store user data in proprietaryUserData element -->
-                    <proprietaryUserData>
+                    <!--** store user data in stlUserData element of SCF namespace -->
+                    <scf:stlUserData>
                         <xsl:value-of select="$user_data"/>
-                    </proprietaryUserData>
+                    </scf:stlUserData>
                 </tt:metadata>
             </xsl:if>
             <xsl:apply-templates select="child::*[1]">

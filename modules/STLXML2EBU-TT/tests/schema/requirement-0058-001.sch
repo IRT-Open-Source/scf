@@ -21,14 +21,15 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
+    <ns uri="http://www.irt.de/scf" prefix="scf"/>
     <title>Testing mapping of user data in TTI block.</title>
     <pattern id="UserDataTTI">
         <rule context="/">
-            <assert test="tt:tt/tt:body/tt:div/tt:p[2]/tt:metadata/proprietaryUserData">
-                The element proprietaryUserData must be present in the tt:metadata element of the second tt:p element.
+            <assert test="tt:tt/tt:body/tt:div/tt:p[2]/tt:metadata/scf:stlUserData">
+                The element scf:stlUserData must be present in the tt:metadata element of the second tt:p element.
             </assert> 
         </rule>
-        <rule context="tt:tt/tt:body/tt:div/tt:p[2]/tt:metadata/proprietaryUserData">
+        <rule context="tt:tt/tt:body/tt:div/tt:p[2]/tt:metadata/scf:stlUserData">
             <assert test=". = 'DQsLQmxvY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==DoooooovY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw=='">
                 Expected value: "DQsLQmxvY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==DoooooovY2tfRkUKCo+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pjw==". Value from test: "<value-of select="."/>"
             </assert> 
