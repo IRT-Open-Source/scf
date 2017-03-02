@@ -69,6 +69,7 @@ limitations under the License.
         <xs:element ref="PUB"/>
         <xs:element ref="EN"/>
         <xs:element ref="ECD"/>
+        <xs:element ref="UDA"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -234,6 +235,14 @@ limitations under the License.
   <xs:element name="PUB" type="String32"/>
   <xs:element name="EN" type="String32"/>
   <xs:element name="ECD" type="String32"/>
+  <xs:element name="UDA">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <!-- 576 bytes coded in Base64 -->
+        <xs:maxLength value="768"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
   <xs:element name="BODY">
     <xs:complexType>
       <xs:sequence>
