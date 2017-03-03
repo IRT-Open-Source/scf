@@ -1,4 +1,13 @@
 -----------------------------
+Version 0.9.2
+-----------------------------
+STLXML-XSD
+- FIXED #41: Missing UDA field
+
+STLXML2EBU-TT
+- FIXED #42: Namespace of TTI block user data
+
+-----------------------------
 Version 0.9.1
 -----------------------------
 EBU-TT2EBU-TT-D
