@@ -23,10 +23,12 @@ limitations under the License.
     xmlns:ttm="http://www.w3.org/ns/ttml#metadata" 
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style" 
     xmlns:ebuttExt="urn:ebu:tt:extension"
-    xmlns:exslt="http://exslt.org/common"
+    xmlns:exsltCommon="http://exslt.org/common"
+    xmlns:exsltSet="http://exslt.org/sets"
+    xmlns:exsltDate="http://exslt.org/dates-and-times"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
     xmlns:scf="http://www.irt.de/scf"
-    exclude-result-prefixes="fn"
+    exclude-result-prefixes="exsltCommon exsltSet exsltDate fn"
     version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
     <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
@@ -272,6 +274,23 @@ limitations under the License.
     <xsl:template match="GSI">
         <!--** Container for Metadata information for all the document's subtitles. Steps: -->
         <xsl:param name="frameRate"/>
+        <xsl:variable name="currentDateFormatted">
+            <xsl:choose><!-- branch depending on available functions, as XSLT 1.0 support is not sufficient here -->
+                <!-- EXSLT -->
+                <xsl:when test="function-available('exsltDate:year') and function-available('exsltDate:month-in-year') and function-available('exsltDate:day-in-month')">
+                    <xsl:value-of select="concat(format-number(exsltDate:year(), '0000'), '-', format-number(exsltDate:month-in-year(), '00'), '-', format-number(exsltDate:day-in-month(), '00'))"/>
+                </xsl:when>
+                <!-- XSLT 2.0 -->
+                <xsl:when test="system-property('xsl:version') >= 2.0">
+                    <xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/>
+                </xsl:when>
+                <!-- neither -->
+                <xsl:otherwise>
+                    <xsl:message terminate="yes">The required functions of neither EXSLT nor XSLT 2.0 are available. These are needed to set the ebuttm:documentCreationDate/ebuttm:documentRevisionDate field values.</xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
         <tt:metadata>
             <ebuttm:documentMetadata>
                 <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
@@ -284,8 +303,8 @@ limitations under the License.
                 <xsl:apply-templates select="TN"/>
                 <xsl:apply-templates select="TCD"/>
                 <xsl:apply-templates select="SLR"/>
-                <ebuttm:documentCreationDate><xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/></ebuttm:documentCreationDate>
-                <ebuttm:documentRevisionDate><xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/></ebuttm:documentRevisionDate>
+                <ebuttm:documentCreationDate><xsl:value-of select="$currentDateFormatted"/></ebuttm:documentCreationDate>
+                <ebuttm:documentRevisionDate><xsl:value-of select="$currentDateFormatted"/></ebuttm:documentRevisionDate>
                 <ebuttm:documentRevisionNumber>0</ebuttm:documentRevisionNumber>
                 <xsl:apply-templates select="TNS"/>
                 <xsl:apply-templates select="MNC"/>
@@ -317,7 +336,7 @@ limitations under the License.
                 tts:fontSize="1c 1c"
                 tts:lineHeight="normal"/>
             <!--@ Create all others supported styles -->
-            <xsl:copy-of select="exslt:node-set($styleTemplates)/tt:styling/tt:style"/>
+            <xsl:copy-of select="exsltCommon:node-set($styleTemplates)/tt:styling/tt:style"/>
             <tt:style xml:id="textAlignLeft" tts:textAlign="start"/>
             <tt:style xml:id="textAlignCenter" tts:textAlign="center"/>
             <tt:style xml:id="textAlignRight" tts:textAlign="end"/>
@@ -607,21 +626,52 @@ limitations under the License.
     <xsl:template match="BODY">
         <!--** Container for the TTICONTAINER element. Steps: -->
         <xsl:param name="frameRate"/>
-        <!--@ Create tt:body and tt:div elements for every used SGN (in document order) -->
+        <!--@ Create tt:body and handle every used SGN (in document order) -->
         <tt:body>
             <!--@ Select all subtitle TTI blocks -->
             <xsl:variable name="tti_all" select="TTICONTAINER/TTI[number(CF) != 1 and normalize-space(translate(EBN, $smallcase, $uppercase)) != 'FE']"/>
-            <xsl:for-each select="fn:distinct-values($tti_all/SGN)">
-                <tt:div style="defaultStyle" xml:id="{concat('SGN', .)}">
-                    <!--@ Match children with the respective SGN (in document order) -->
-                    <xsl:variable name="sgn" select="."/>
-                    <xsl:apply-templates select="$tti_all[SGN = $sgn]">
-                        <!--** Tunnel parameters needed for value calculation of decending elements -->
-                        <xsl:with-param name="frameRate" select="$frameRate"/>
-                    </xsl:apply-templates>
-                </tt:div>                
-            </xsl:for-each>
+            <xsl:choose><!-- branch depending on available functions, as XSLT 1.0 is not sufficient here -->
+                <!-- EXSLT -->
+                <xsl:when test="function-available('exsltSet:distinct')">
+                    <xsl:for-each select="exsltSet:distinct($tti_all/SGN)">
+                        <xsl:call-template name="handleSgn">
+                            <xsl:with-param name="tti_all" select="$tti_all"/>
+                            <!--** Tunnel parameters needed for value calculation of decending elements -->
+                            <xsl:with-param name="frameRate" select="$frameRate"/>
+                        </xsl:call-template>
+                    </xsl:for-each>
+                </xsl:when>
+                <!-- XSLT 2.0 -->
+                <xsl:when test="system-property('xsl:version') >= 2.0">
+                    <xsl:for-each select="fn:distinct-values($tti_all/SGN)">
+                        <xsl:call-template name="handleSgn">
+                            <xsl:with-param name="tti_all" select="$tti_all"/>
+                            <!--** Tunnel parameters needed for value calculation of decending elements -->
+                            <xsl:with-param name="frameRate" select="$frameRate"/>
+                        </xsl:call-template>
+                    </xsl:for-each>
+                </xsl:when>
+                <!-- neither -->
+                <xsl:otherwise>
+                    <xsl:message terminate="yes">The required functions of neither EXSLT nor XSLT 2.0 are available. These are needed to retrieve the distinct TTI block SGN values.</xsl:message>
+                </xsl:otherwise>
+            </xsl:choose>
         </tt:body>
+    </xsl:template>
+    
+    <xsl:template name="handleSgn">
+        <!--** Handles a specific SGN value. Steps:-->
+        <xsl:param name="tti_all"/>
+        <xsl:param name="frameRate"/>
+        <!--@ Create tt:div element for SGN -->
+        <tt:div style="defaultStyle" xml:id="{concat('SGN', .)}">
+            <!--@ Match children with the respective SGN (in document order) -->
+            <xsl:variable name="sgn" select="."/>
+            <xsl:apply-templates select="$tti_all[SGN = $sgn]">
+                <!--** Tunnel parameters needed for value calculation of decending elements -->
+                <xsl:with-param name="frameRate" select="$frameRate"/>
+            </xsl:apply-templates>
+        </tt:div>                
     </xsl:template>
 
     <xsl:template match="TTI">
@@ -1756,14 +1806,14 @@ limitations under the License.
         <xsl:param name="stlControlCode"/>
         <xsl:choose>
             <!--@ Terminate when there's no ttmlNamedColor given for the respective stlControlCode -->
-            <xsl:when test="not(exslt:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
+            <xsl:when test="not(exsltCommon:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor)">
                 <xsl:message terminate="yes">
                     There is no ttmlNamedColor element given for the stlControlCode <xsl:value-of select="$stlControlCode"/>.
                 </xsl:message>
             </xsl:when>
             <!--@ Return ttmlNamedColor otherwise -->
             <xsl:otherwise>
-                <xsl:value-of select="exslt:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
+                <xsl:value-of select="exsltCommon:node-set($colorMappings)/colorMappings/colorMapping[stlControlCode = $stlControlCode]/ttmlNamedColor"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1786,14 +1836,14 @@ limitations under the License.
         </xsl:variable>
         <xsl:choose>
             <!--@ Terminate if there's no xml:id attribute belonging to a style with the respective settings for fore- and background -->
-            <xsl:when test="not(exslt:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
+            <xsl:when test="not(exsltCommon:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id)">
                 <xsl:message terminate="yes">
                     No tt:style was found with foreground: <xsl:value-of select="$foreground_ttml"/> and background: <xsl:value-of select="$background_ttml"/>.
                 </xsl:message>
             </xsl:when>
             <!--@ Return the xml:id attribute's value otherwise -->
             <xsl:otherwise>
-                <xsl:value-of select="exslt:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>        
+                <xsl:value-of select="exsltCommon:node-set($styleTemplates)/tt:styling/tt:style[@tts:color = $foreground_ttml and @tts:backgroundColor = $background_ttml]/@xml:id"/>        
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

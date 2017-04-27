@@ -10,7 +10,7 @@ on GitHub is subject to the [Apache 2.0 license] (LICENSE).
 ## Prerequisites
 For the XSLT modules an XSLT processor that is conformant to XSLT 1.0 is needed. You could use for example a [saxon xslt processor](http://saxon.sourceforge.net/) from version 6.5.5. 
 
-The STLXML2EBU-TT module requires in addition EXSLT support.    
+The STLXML2EBU-TT module requires in addition EXSLT support (or alternatively XSLT 2.0 support).
 
 To validate an STLXML with the STLXML W3C XML Schema an XML Schema 1.0 parser is required. You could use for example [xerces XML parser and validator] (http://xerces.apache.org/). 
 
