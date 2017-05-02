@@ -90,8 +90,8 @@ A schematron file that tests the output of a module that gets the test file "req
 ### Documentation
 A [documentation draft](documentation/scf-draft-documentation.pdf) of all modules can be found in the folder documentation.
 
-Furthermore each module contains in a documentation folder the requirements for the implementation and the current status. 
-    
+Furthermore each module contains in a documentation folder the requirements for the implementation and the current status.
+All modules are implemented solely according to that requirements. Thus any further features (e.g. conversion of non-Teletext subtitles) are not (intentionally) supported.
 
 ## AUTHORS
 Development: Tilman Eberspächer, Andreas Tai, Barbara Fichte, Dominik Garsche, Stefan Pöschel, Peter tho Pesch, Lukas Kircher
