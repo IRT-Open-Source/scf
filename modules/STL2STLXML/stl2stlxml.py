@@ -411,8 +411,8 @@ class STL:
         # Number of TTI Blocks
         self.numberOfTTI = int(GSI['TNB'])
         
-        # Output UDA as base64
-        GSI['UDA'] = base64.b64encode(GSI['UDA'])
+        # Output UDA as base64 (without trailing spaces)
+        GSI['UDA'] = base64.b64encode(GSI['UDA'].rstrip(" "))
 
     def _readTTI(self, fileHandle):
         eofReached = False
