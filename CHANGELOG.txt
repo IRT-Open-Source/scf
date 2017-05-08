@@ -1,4 +1,12 @@
 -----------------------------
+Version 0.9.4
+-----------------------------
+GENERAL
+- FIXED #47: Clarify requirements meaning in README
+STL2STLXML
+- FIXED #45: Trailing UDA spaces
+
+-----------------------------
 Version 0.9.3
 -----------------------------
 STLXML2EBU-TT
