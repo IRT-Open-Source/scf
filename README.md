@@ -1,7 +1,7 @@
 # SCF
 The Subtitling Conversion Framework (SCF) is a set of modules for converting XML based subtitle formats. Main target is to build up a flexible and extensible transformation pipeline to convert EBU STL formats and EBU-TT subtitle formats.
 
-The SCF is an early Beta release with the version 0.9.4.
+The SCF is an early Beta release with the version 0.9.5.
 
 ## License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer Rundfunktechnik 
