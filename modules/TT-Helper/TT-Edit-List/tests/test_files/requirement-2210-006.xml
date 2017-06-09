@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- Testing "Append edit list" with two edits (timebase smpte) -->
+<tt:tt xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+    xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
+    xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style"
+    xmlns:scfm="http://www.irt.de/scf/metadata" ttp:timeBase="smpte" ttp:frameRate="25"
+    ttp:cellResolution="50 30" xml:lang="en">
+    <tt:head>
+        <tt:metadata>
+            <ebuttm:documentMetadata>
+                <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
+            </ebuttm:documentMetadata>
+            <scfm:parameter>
+                <scfm:name>editlist</scfm:name>
+                <scfm:value>tests/test_editlists/requirement-2210-006_list.xml</scfm:value>
+            </scfm:parameter>
+        </tt:metadata>
+        <tt:styling>
+            <tt:style xml:id="defaultStyle" tts:textDecoration="none" tts:fontWeight="normal"
+                tts:fontStyle="normal" tts:backgroundColor="transparent" tts:color="white"
+                tts:textAlign="center" tts:fontFamily="monospaceSansSerif" tts:fontSize="1c 1c"
+                tts:lineHeight="normal"/>
+        </tt:styling>
+        <tt:layout>
+            <tt:region xml:id="defaultRegion" tts:displayAlign="after" tts:padding="0c"
+                tts:writingMode="lrtb" tts:origin="10% 10%" tts:extent="80% 80%"/>
+        </tt:layout>
+    </tt:head>
+    <tt:body>
+        <tt:div xml:id="SGN0" style="defaultStyle">
+            <tt:p xml:id="sub1" region="defaultRegion" begin="00:00:01:01" end="00:00:03:06">Test
+                subtitle 1</tt:p>
+            <tt:p xml:id="sub2" region="defaultRegion" begin="00:00:15:15" end="00:00:18:23">Test
+                subtitle 2</tt:p>
+            <tt:p xml:id="sub3" region="defaultRegion" begin="00:00:40:10" end="00:00:44:03">Test
+                subtitle 3</tt:p>
+            <tt:p xml:id="sub4" region="defaultRegion" begin="00:01:50:10" end="00:01:53:03">Test
+                subtitle 4</tt:p>
+        </tt:div>
+    </tt:body>
+</tt:tt>

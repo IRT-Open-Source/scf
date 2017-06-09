@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editlist>
+    <edit>
+        <in>00:00:01.000</in>
+        <out>00:00:16.000</out>
+    </edit>
+    <edit>
+        <in>00:00:18.000</in>
+        <out>00:00:20.000</out>
+    </edit>
+</editlist>
