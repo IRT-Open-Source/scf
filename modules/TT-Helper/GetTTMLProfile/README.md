@@ -1,7 +1,7 @@
 # GetTTMLProfile
 The implementation of the GetTTMLProfile helper module takes a TTML File
 and outputs based on the profile signalling in the document the profile
-identifier as defined in [https://www.w3.org/wiki/TTML/ProfileRegistry](https://www.w3.org/wiki/TTML/ProfileRegistry).
+identifier as defined in [https://www.w3.org/TR/ttml-profile-registry/](https://www.w3.org/TR/ttml-profile-registry/).
 
 This is a first prototypical implementation and is expected to change.
 

@@ -1,7 +1,8 @@
 # TT-Filter-Styles-No-References
 The TT-Filter-Styles-No-References modules takes as input a TTML or
-EBU-TT document. tt:style elements that are not referenced by a content
-element are pruned from the output document.
+EBU-TT document. tt:style elements that are referenced neither by a
+content element nor via nested styling are pruned from the output
+document.
 
 ## Prerequisites
 - an XSLT 1.0 processor (e.g. Saxon 6.5.5 or higher)
