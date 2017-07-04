@@ -1,5 +1,7 @@
 # STL2STLXML
-The STL2STLXML module converts a binary file that conforms to EBU STL (EBU Tech 3264) into an XML representation of EBU STL. The module is written in Python.
+The STL2STLXML module converts a binary file that conforms to EBU STL
+(EBU Tech 3264) into an XML representation of EBU STL. The module is
+written in Python.
 
 ## Prerequisites
 Python 2.7.x
@@ -18,17 +20,20 @@ Python 2.7.x
 
 
 ## DESCRIPTION
-Decodes the EBU STL file and exports it in a XML representation that can be used for further processing with XML technologies or for debugging purposes.
+Decodes the EBU STL file and exports it in an XML representation that
+can be used for further processing with XML technologies or for
+debugging purposes.
 
 ## EXAMPLES
     python stl2stlxml.py test.stl -x test.xml
 
 ## AUTHORS
 Development: Michael Meier, Andreas Tai, Stefan Pöschel
+
 QC: Tilman Eberspächer, Barbara Fichte, Peter tho Pesch
 
-stl2stlxml.py is derived from the  "to_srt.py" work which
-is developed and provided by Yann Coupin (see [https://github.com/yanncoupin/stl2srt](https://github.com/yanncoupin/stl2srt))
+`stl2stlxml.py` is derived from the "to_srt.py" work which is developed
+and provided by Yann Coupin (see https://github.com/yanncoupin/stl2srt)
 
 ## RESOURCES
-EBU STL (EBU Tech 3264) https://tech.ebu.ch/docs/tech/tech3264.pdf
+* [EBU STL (EBU Tech 3264)](https://tech.ebu.ch/docs/tech/tech3264.pdf)

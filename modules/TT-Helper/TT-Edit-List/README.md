@@ -1,15 +1,25 @@
 # TT-Edit-List
-The TT-Edit-List module takes as input an EBU-TT document. Furthermore either a pair of IN/OUT timecodes or an edit list where such timecodes have to be specified. The input document is modified by the XSLT according to the IN/OUT timecodes and output with accordingly adjusted, zero-based (besides the optional `addOffset` parameter; see below) timecodes. Subtitles that stretch across multiple edits are not split but shortened accordingly.
+The TT-Edit-List module takes as input an EBU-TT document. Furthermore
+either a pair of IN/OUT timecodes or an edit list where such timecodes
+have to be specified. The input document is modified by the XSLT
+according to the IN/OUT timecodes and output with accordingly adjusted,
+zero-based (besides the optional `addOffset` parameter; see below)
+timecodes. Subtitles that stretch across multiple edits are not split
+but shortened accordingly.
 
-The IN timecode of the first edit corresponds to the new Start-of-Programme. The Start-of-Programme of the output document is at `00:00:00.000` resp. `00:00:00:00` (besides the optional `addOffset` parameter; see below).
+The IN timecode of the first edit corresponds to the new
+Start-of-Programme. The Start-of-Programme of the output document is at
+`00:00:00.000` resp. `00:00:00:00` (besides the optional `addOffset`
+parameter; see below).
 
-Within the input document, timing information is only required/processed on `tt:p` element level.
+Within the input document, timing information is only required/processed
+on `tt:p` element level.
 
 ## Prerequisites
-- an XSLT 1.0 processor with EXSLT support (e.g. SAXON 6.5.5 or higher, or xsltproc)
+- an XSLT 1.0 processor with EXSLT support (e.g. Saxon 6.5.5 or higher, or xsltproc)
 
 ## Usage
-TT-Edit-List.xslt has the following parameters:
+`TT-Edit-List.xslt` has the following parameters:
 
     - tcIn
         A timecode that defines the IN timecode of a single edit that shall be applied to the input document.
@@ -32,11 +42,17 @@ TT-Edit-List.xslt has the following parameters:
 It is mandatory to specify either `tcIn`/`tcOut` or `editlist`.
 
 ## Edit list format
-Instead of specifying an IN and an OUT timecode, it is possible to specify multiple edits by using an edit list according to the format described here.
+Instead of specifying an IN and an OUT timecode, it is possible to
+specify multiple edits by using an edit list according to the format
+described here.
 
-The edit list follows a simple XML format that contains one or more edits. Each edit consists of an IN and an OUT timecode.  The timebase and framerate (if applicable) of the timecodes must be the same as in the input document.
-  
-The IN timecode of an edit must not precede the OUT timecode of the previous edit (if existent).
+The edit list follows a simple XML format that contains one or more
+edits. Each edit consists of an IN and an OUT timecode. The timebase and
+framerate (if applicable) of the timecodes must be the same as in the
+input document.
+
+The IN timecode of an edit must not precede the OUT timecode of the
+previous edit (if existent).
 
 Example file:
 ```xml
@@ -59,9 +75,11 @@ Example file:
 
 ## Example I
 
-This example demonstrates the modification of a document (with `media` timebase) according to a single edit.
+This example demonstrates the modification of a document (with `media`
+timebase) according to a single edit.
 
-To save space, the shown input/output documents are partly incomplete (indicated by `...`).
+To save space, the shown input/output documents are partly incomplete
+(indicated by `...`).
 
 ### Input document `input_media.xml`
 ```xml
@@ -116,9 +134,13 @@ To save space, the shown input/output documents are partly incomplete (indicated
 
 ## Example II
 
-This example demonstrates the modification of a document (with `smpte` timebase) according to an edit list. Furthermore the `addOffset` parameter is used to keep the (otherwise at `00:00:00:00`) Start-of-Programme at `10:00:00:00`.
+This example demonstrates the modification of a document (with `smpte`
+timebase) according to an edit list. Furthermore the `addOffset`
+parameter is used to keep the (otherwise at `00:00:00:00`)
+Start-of-Programme at `10:00:00:00`.
 
-To save space, the shown input/output documents are partly incomplete (indicated by `...`).
+To save space, the shown input/output documents are partly incomplete
+(indicated by `...`).
 
 ### Input document `input_smpte.xml`
 ```xml
