@@ -950,13 +950,13 @@ limitations under the License.
             </xsl:if>
             <xsl:apply-templates select="child::*[1]">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
-                <xsl:with-param name="boxStarted" select="false()"/>
+                <xsl:with-param name="boxStarted" select="'no'"/>
                 <xsl:with-param name="buffer" select="''"/>
                 <xsl:with-param name="foreground" select="'AlphaWhite'"/>
                 <xsl:with-param name="background" select="'AlphaBlack'"/>
-                <xsl:with-param name="spanCreated" select="false()"/>
-                <xsl:with-param name="oldBackground" select="'AlphaBlack'"/>
-                <xsl:with-param name="oldForeground" select="'AlphaWhite'"/>
+                <xsl:with-param name="spanCreated" select="'no'"/>
+                <xsl:with-param name="bufferBackground" select="'AlphaBlack'"/>
+                <xsl:with-param name="bufferForeground" select="'AlphaWhite'"/>
             </xsl:apply-templates>
             <!--@ Calculate the amount of lines already used by the subtitle itself -->
             <xsl:variable name="lines" >
@@ -995,155 +995,163 @@ limitations under the License.
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="StartBox">
-        <!--** Indicates the beginning of an STL box. Steps: -->
+    <xsl:template match="StartBox|EndBox">
+        <!--** Indicates the beginning or end of an STL box. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="boxStarted" select="'no'"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <!--@ If current StartBox element is followed by another one, the current one doesn't create a tt:span -->
-        <xsl:choose>
-            <xsl:when test="string-length(normalize-space($buffer)) = 0">
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="buffer" select="$buffer"/>
-                    <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ If the buffer has content and a Box was already started, create a tt:span element -->
-            <xsl:when test="string-length($buffer) != 0 and $boxStarted = true()">
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$foreground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ Call next sibling. StartBox and EndBox do not force a new span element. -->
+        <xsl:apply-templates select="following-sibling::node()[1]">
+            <!--** Tunnel parameters needed for value calculation of following elements -->
+            <xsl:with-param name="foreground" select="$foreground"/>
+            <xsl:with-param name="background" select="$background"/>
+            <!--** Append a space to the buffer. This should usually have no effect, but if two boxes are in the same line (without style change), it puts a space between them. -->
+            <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
+            <!--**  If element is a StartBox, set boxStartet to true, otherwise set it to false. -->
+            <xsl:with-param name="boxStarted">
                 <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                            <xsl:apply-templates select="following-sibling::node()[1]">
-                                <!--** Tunnel parameters needed for value calculation of following elements; use empty buffer
-                                    as the current buffer has already been written -->
-                                <xsl:with-param name="foreground" select="$foreground"/>
-                                <xsl:with-param name="background" select="$background"/>
-                                <xsl:with-param name="buffer" select="''"/>
-                                <xsl:with-param name="boxStarted" select="true()"/>
-                                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                                <xsl:with-param name="spanCreated" select="true()"/>
-                                <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                                <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                            </xsl:apply-templates>
-                        </tt:span>
+                    <xsl:when test="self::StartBox">
+                        <xsl:value-of select="'yes'"/>
                     </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
                     <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                            <xsl:apply-templates select="following-sibling::node()[1]">
-                                <!--** Tunnel parameters needed for value calculation of following elements; use empty buffer
-                                    as the current buffer has already been written -->
-                                <xsl:with-param name="foreground" select="$foreground"/>
-                                <xsl:with-param name="background" select="$background"/>
-                                <xsl:with-param name="buffer" select="''"/>
-                                <xsl:with-param name="boxStarted" select="true()"/>
-                                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                                <xsl:with-param name="spanCreated" select="true()"/>
-                                <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                                <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                            </xsl:apply-templates>
-                        </tt:span>
+                        <xsl:value-of select="'no'"/>
                     </xsl:otherwise>
                 </xsl:choose>
-            </xsl:when> 
-        </xsl:choose>
+            </xsl:with-param>
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
+        </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="text()" name="text">
+    <xsl:template match="text()">
         <!--** Matches all text-nodes between the control codes. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="boxStarted" select="'no'"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <!--@ Append normalized text-node to the current buffer -->
-        <xsl:variable name="bufferAdded" select="concat($buffer, string(normalize-space(.)))"/>
-        <xsl:if test="count(following-sibling::node()) = 0 and string-length(normalize-space($buffer)) &gt; 0">
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ Check if text node is outside of boxing. If so, terminate. -->
+        <xsl:if test="not($boxStarted = 'yes' or not(../StartBox or ../EndBox) or string(normalize-space(.)) = '')">
+            <xsl:message terminate="yes">
+                There shall be no text outside of boxing (found text: '<xsl:value-of select="string(normalize-space(.))"/>')!
+            </xsl:message>
+        </xsl:if>
+        <!--@ Check if buffer needs to be written to a span. This should usually be the case when this text node is not the first one.
+              Set to 'yes' when foreground or background changed and when buffer contains text.-->
+        <xsl:variable name="oldBufferWritten">
+            <xsl:if test="string-length(normalize-space($buffer)) &gt; 0
+                and not( $bufferForeground = $foreground 
+                and $bufferBackground = $background )">
+                <!-- Set oldBufferWritten to 'yes' in order to indicate that a span was created. -->
+                <xsl:value-of select="'yes'"/>
+            </xsl:if>
+        </xsl:variable>
+        <!--@ If buffer needs to be written, write it. -->
+        <xsl:if test="$oldBufferWritten = 'yes'">
             <xsl:call-template name="writeBuffer">
-                <xsl:with-param name="background" select="$background"/>
-                <xsl:with-param name="buffer" select="$bufferAdded"/>
+                <xsl:with-param name="foreground" select="$bufferForeground"/>
+                <xsl:with-param name="background" select="$bufferBackground"/>
+                <xsl:with-param name="buffer" select="$buffer"/>
                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                <xsl:with-param name="foreground" select="$foreground"/>
                 <xsl:with-param name="spanCreated" select="$spanCreated"/>
             </xsl:call-template>
         </xsl:if>
+        <!--@ Prepare new buffer -->
+        <xsl:variable name="newBuffer">
+            <xsl:choose>
+                <!--** When (old) buffer has been writte, put only current text node into the new buffer. -->
+                <xsl:when test="$oldBufferWritten = 'yes'">
+                    <xsl:value-of select="string(normalize-space(.))"/>
+                </xsl:when>
+                <!--** Otherwise append current text node to buffer. This should be the case when the style did not change, or if buffer did not contain text. -->
+                <xsl:otherwise>
+                    <xsl:value-of select="concat($buffer, string(normalize-space(.)))"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <!--@ check if current node is the last text node in the TTI TextField. If so, write the new buffer directly into a new span element. This is necessary in order to write the last text node into a span. Following siblings still need to be called in order to process e.g. newline elements. -->
+        <xsl:variable name="newBufferWritten">
+            <xsl:if test="not(following-sibling::text())
+                and string-length(normalize-space($newBuffer)) &gt; 0">
+                <!-- Set oldBufferWritten to '1' in order to indicate that a span was written and that the new buffer must be cleared. -->
+                <xsl:value-of select="'yes'"/>
+            </xsl:if>
+        </xsl:variable>
+        <!--@ If new buffer needs to be written, write it -->
+        <xsl:if test="$newBufferWritten = 'yes'">
+            <xsl:call-template name="writeBuffer">
+                <xsl:with-param name="foreground" select="$foreground"/>
+                <xsl:with-param name="background" select="$background"/>
+                <xsl:with-param name="buffer" select="$newBuffer"/>
+                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+                <xsl:with-param name="spanCreated">
+                    <xsl:choose>
+                        <xsl:when test="$oldBufferWritten = 'yes'">
+                            <xsl:value-of select="'yes'"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$spanCreated"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+        <!--@ Call next sibling -->
         <xsl:apply-templates select="following-sibling::node()[1]">
-            <!--** Tunnel parameters needed for value calculation of following elements; forward updated buffer -->
+            <!--** In all cases when text node was processed, the foreground and background colors need to be reset. -->
+            <xsl:with-param name="bufferForeground" select="$foreground"/>
+            <xsl:with-param name="bufferBackground" select="$background"/>
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
-            <xsl:with-param name="boxStarted" select="$boxStarted"/>
-            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-            <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="oldBackground" select="$oldBackground"/>
-            <xsl:with-param name="oldForeground" select="$oldForeground"/>
             <xsl:with-param name="buffer">
                 <xsl:choose>
-                    <!--** Add to output if within boxing OR no boxing at all OR if just indent -->
-                    <xsl:when test="$boxStarted or not(../StartBox or ../EndBox) or string(normalize-space(.)) = ''">
-                        <xsl:value-of select="$bufferAdded"/>
+                    <!--** When the new buffer has been writen already, clear buffer. -->
+                    <xsl:when test="$newBufferWritten = 'yes'">
+                        <xsl:value-of select="''"/>
                     </xsl:when>
-                    <!--** Otherwise terminate -->
+                    <!-- Otherwise pass new buffer to the next sibling. -->
                     <xsl:otherwise>
-                        <xsl:message terminate="yes">
-                            There shall be no text outside of boxing (found text: '<xsl:value-of select="string(normalize-space(.))"/>')!
-                        </xsl:message>
+                        <xsl:value-of select="$newBuffer"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:with-param>
+            <xsl:with-param name="boxStarted" select="$boxStarted"/>
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <!--** When a span has been created set spanCreated to true. Otherwise pass old value. -->
+            <xsl:with-param name="spanCreated">
+                <xsl:choose>
+                    <xsl:when test="$oldBufferWritten = 'yes' or $newBufferWritten = 'yes'">
+                        <xsl:value-of select="'yes'"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$spanCreated"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:with-param>
         </xsl:apply-templates>
     </xsl:template>
-    
+
     <xsl:template match="space">
         <!--** Represents a space (' ') between text-nodes (i.e. single words). Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="boxStarted" select="'no'"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <!--@ Append a space to the current buffer -->
-        <xsl:variable name="bufferAdded" select="concat($buffer, ' ')"/>
-        <!--@ When a box was started, meaning the space element is located either between two StartBoxes or between a StartBox 
-            and an EndBox, process the space element by forwarding the appended buffer-->
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ Call next sibling -->
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <xsl:with-param name="foreground" select="$foreground"/>
@@ -1151,13 +1159,15 @@ limitations under the License.
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="oldBackground" select="$oldBackground"/>
-            <xsl:with-param name="oldForeground" select="$oldForeground"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
+            <!--** When a box was started, meaning the space element is located either between two StartBoxes or between a StartBox 
+            and an EndBox, process the space element by forwarding the appended buffer -->
             <xsl:with-param name="buffer">
                 <xsl:choose>
                     <!--** Add to output if within boxing or no boxing at all -->
                     <xsl:when test="$boxStarted or not(../StartBox or ../EndBox)">
-                        <xsl:value-of select="$bufferAdded"/>
+                        <xsl:value-of select="concat($buffer, ' ')"/>
                     </xsl:when>
                     <!--** Otherwise ignore -->
                     <xsl:otherwise>
@@ -1172,62 +1182,41 @@ limitations under the License.
         <!--** Indicates a linebreak. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="boxStarted" select="'no'"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <!--@ If the buffer is not empty, write it. However, this should not occur as it is assumed that every logical line ends with an EndBox element
-            that writes the buffer -->
-        <xsl:if test="string-length($buffer) &gt; 0">
-            <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-            <xsl:variable name="colorStyle">
-                <xsl:call-template name="getStyle">
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                </xsl:call-template>
-            </xsl:variable>
-            <xsl:variable name="style">
-                <xsl:choose>
-                    <xsl:when test="$doubleHeight">
-                        <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$colorStyle"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:choose>
-                <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                <xsl:when test="$spanCreated">
-                    <tt:span
-                        style="{$style}">
-                        <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                    </tt:span>
-                </xsl:when>
-                <!--** Otherwise write the normalized content of the buffer -->
-                <xsl:otherwise>
-                    <tt:span
-                        style="{$style}">
-                        <xsl:value-of select="normalize-space($buffer)"/>
-                    </tt:span>
-                </xsl:otherwise>
-            </xsl:choose>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ If the buffer is not empty, write it. -->
+        <xsl:if test="string-length(normalize-space($buffer)) &gt; 0">
+            <xsl:call-template name="writeBuffer">
+                <xsl:with-param name="foreground" select="$foreground"/>
+                <xsl:with-param name="background" select="$background"/>   
+                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+                <xsl:with-param name="spanCreated" select="$spanCreated"/>
+                <xsl:with-param name="buffer" select="$buffer"/>
+            </xsl:call-template>
         </xsl:if>
-        <xsl:if test="name(following-sibling::*[1]) != 'newline'">
+        <!--@ If no further newline element is directly following as next sibling, write br element. Consecutive newline elements will only create one br element. -->
+        <xsl:if test="name(following-sibling::node()[1]) != 'newline'">
             <tt:br/>
         </xsl:if>
+        <!--@ Call next sibling -->
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <xsl:with-param name="foreground" select="'AlphaWhite'"/>
             <xsl:with-param name="background" select="'AlphaBlack'"/>
-            <xsl:with-param name="boxStarted" select="false()"/>
+            <!--** A newline always terminates the box. -->
+            <xsl:with-param name="boxStarted" select="'no'"/>
+            <!--** After a newline, the buffer is always empty. -->
             <xsl:with-param name="buffer" select="''"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-            <xsl:with-param name="spanCreated" select="false()"/>
-            <xsl:with-param name="oldBackground" select="$oldBackground"/>
-            <xsl:with-param name="oldForeground" select="$oldForeground"/>
+            <!--** After a newline, spanCreated is always false. -->
+            <xsl:with-param name="spanCreated" select="'no'"/>
+            <!--** Buffer colors will be set correctly when the next text node is processed. -->
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>        
     </xsl:template>
     
@@ -1235,107 +1224,86 @@ limitations under the License.
         <!--** Indicates the use of double height text in this line. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="boxStarted" select="'no'"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight" select="true()"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <xsl:if test="count(following-sibling::node()) = 0 and string-length(normalize-space($buffer)) &gt; 0">
-            <xsl:call-template name="writeBuffer">
-                <xsl:with-param name="background" select="$background"/>
-                <xsl:with-param name="buffer" select="$buffer"/>
-                <xsl:with-param name="doubleHeight" select="true()"/>
-                <xsl:with-param name="foreground" select="$foreground"/>
-                <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            </xsl:call-template>
-        </xsl:if>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ Call next sibling -->
         <xsl:apply-templates select="following-sibling::node()[1]">
-            <!--** Tunnel parameters needed for value calculation of following elements -->
+            <!--** Tunnel parameters needed for value calculation of following elements. Set doubleHeight to true. -->
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="buffer" select="$buffer"/>
+            <!--** Set double height to true. -->
             <xsl:with-param name="doubleHeight" select="true()"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="oldBackground" select="$oldBackground"/>
-            <xsl:with-param name="oldForeground" select="$oldForeground"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="NewBackground|BlackBackground">
+        <!--** Sets the new background color to the current foreground color (AlphaWhiteOnAlphaBlack -> AlphaWhiteOnAlphaWhite) -->
+        <xsl:param name="foreground" select="'AlphaWhite'"/>
+        <xsl:param name="background" select="'AlphaBlack'"/>
+        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="buffer" select="''"/>
+        <xsl:param name="bufferBackground"/>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="doubleHeight"/>
+        <xsl:param name="spanCreated"/>
+        <!--@ Call next sibling. -->
+        <xsl:apply-templates select="following-sibling::node()[1]">
+            <!--** Tunnel parameters needed for value calculation of following elements -->
+            <xsl:with-param name="foreground" select="$foreground"/>
+            <!--** Update background color -->
+            <xsl:with-param name="background">
+                <xsl:choose>
+                    <!-- If this is a BlackBackground command change background color to black. -->
+                    <xsl:when test="self::BlackBackground">
+                        <xsl:value-of select="'AlphaBlack'"/>
+                    </xsl:when>
+                    <!-- Otherwise change background color to current foreground color. -->
+                    <xsl:otherwise>
+                        <xsl:value-of select="$foreground"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:with-param>
+            <xsl:with-param name="boxStarted" select="$boxStarted"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/> 
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/> 
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            <xsl:with-param name="buffer" select="$buffer"/>
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="EndBox">
-        <!--** Indicates the end of a Box that was started by a StartBox element. Steps: -->
+    <xsl:template match="AlphaBlack|AlphaRed|AlphaGreen|AlphaYellow|AlphaBlue|AlphaMagenta|AlphaCyan|AlphaWhite">
+        <!--** Matches all color control codes that change the current foreground coloring. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
+        <xsl:param name="boxStarted" select="'no'"/>
         <xsl:param name="buffer" select="''"/>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <xsl:choose>
-            <!--@ If the buffer is not empty, write its content in a tt:span -->
-            <xsl:when test="string-length(normalize-space($buffer)) &gt; 0">
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$foreground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="boxStarted" select="false()"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ If the buffer is empty, just pass on the parameters -->
-            <xsl:otherwise>
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:otherwise>
-        </xsl:choose>
+        <!--@ Call next sibling. -->
+        <xsl:apply-templates select="following-sibling::node()[1]">
+            <!--** Tunnel parameters needed for value calculation of following elements -->
+            <!--** Update foreground color -->
+            <xsl:with-param name="foreground" select="name(.)"/>
+            <xsl:with-param name="background" select="$background"/>   
+            <xsl:with-param name="boxStarted" select="$boxStarted"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            <xsl:with-param name="buffer" select="$buffer"/>
+        </xsl:apply-templates>
     </xsl:template>
     
     <xsl:template name="writeBuffer">
@@ -1363,7 +1331,7 @@ limitations under the License.
         </xsl:variable>
         <xsl:choose>
             <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-            <xsl:when test="$spanCreated">
+            <xsl:when test="$spanCreated = 'yes'">
                 <tt:span
                     style="{$style}">
                     <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
@@ -1375,428 +1343,6 @@ limitations under the License.
                     style="{$style}">
                     <xsl:value-of select="normalize-space($buffer)"/>
                 </tt:span>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="BlackBackground">
-        <!--** Directly sets the background to AlphaBlack without using a NewBackground element and an AlphaBlack element. Steps: -->
-        <xsl:param name="foreground" select="'AlphaWhite'"/>
-        <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
-        <xsl:param name="buffer" select="''"/>
-        <xsl:param name="doubleHeight"/>
-        <xsl:param name="spanCreated"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <xsl:choose>
-            <!--@ If the current background is already black, just pass on the parameters with the correct buffer -->
-            <xsl:when test="$background = 'AlphaBlack'">
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                    <xsl:with-param name="buffer">
-                        <xsl:choose>
-                            <!--@ If the following node is a text node, a box has been started and the current buffer doesn't end with a space (' '), append a space (' ');
-                                this has to be done as control codes act as spaces in STL -->
-                            <xsl:when test="following-sibling::node()[1][self::text()] and $boxStarted and not(substring($buffer, string-length($buffer)) = ' ')">
-                                <xsl:value-of select="concat($buffer, ' ')"/>
-                            </xsl:when>
-                            <!--@ Otherwise just pass on the unchanged buffer -->
-                            <xsl:otherwise>
-                                <xsl:value-of select="$buffer"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:with-param>
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ If the current background is not already black, write the buffer with the current styling and pass on 'AlphaBlack' as new
-                currently used background color -->
-            <xsl:otherwise>
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$foreground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <!--@ Match the following sibling node with 'AlphaBlack' as newly set background and with a space in the buffer -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="'AlphaBlack'"/>
-                    <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="oldBackground" select="$background"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="NewBackground">
-        <!--** Sets the new background color to the current foreground color (AlphaWhiteOnAlphaBlack -> AlphaWhiteOnAlphaWhite) -->
-        <xsl:param name="foreground" select="'AlphaWhite'"/>
-        <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
-        <xsl:param name="buffer" select="''"/>
-        <xsl:param name="oldBackground"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="doubleHeight"/>
-        <xsl:param name="spanCreated"/>
-        <xsl:choose>
-            <!--@ If background and foreground don't have the same color, write a new tt:span with the currently used 
-                styling and pass on the params with the correct buffer -->
-            <xsl:when test="($foreground != $background) and string-length(normalize-space($buffer)) != 0">
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$foreground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <!--@ Match following sibling node with the background set to the current foreground, append a space (' ') to the 
-                    buffer if necessary -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$foreground"/>
-                    <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="oldBackground" select="$background"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="(name(following-sibling::node()[1]) != $oldForeground) and string-length(normalize-space($buffer)) != 0 and (string-length(normalize-space(following-sibling::node())) &gt; 0) and $background != $oldBackground and $foreground != $oldForeground">
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$oldForeground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <!--@ Match following sibling node with the background set to the current foreground, append a space (' ') to the 
-                    buffer if necessary -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$foreground"/>
-                    <xsl:with-param name="boxStarted" select="true()"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                    <xsl:with-param name="oldBackground" select="$background"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ If background and foreground have the same color, just pass on the parameters -->
-            <xsl:otherwise>
-                <!--@ Match following sibling node, append a space (' ') to the buffer if necessary -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="$foreground"/>
-                    <xsl:with-param name="background" select="$foreground"/>
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="buffer">
-                        <xsl:choose>
-                            <xsl:when test="substring($buffer, string-length($buffer)) = ' '">
-                                <xsl:value-of select="$buffer"/>
-                            </xsl:when>
-                            <xsl:when test="$boxStarted = true()">
-                                <xsl:value-of select="concat($buffer, ' ')"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:with-param>
-                    <xsl:with-param name="oldBackground" select="$background"/>
-                    <xsl:with-param name="oldForeground" select="$oldForeground"/>
-                </xsl:apply-templates>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="AlphaBlack|AlphaRed|AlphaGreen|AlphaYellow|AlphaBlue|AlphaMagenta|AlphaCyan|AlphaWhite">
-        <!--** Matches all color control codes that change the current foreground coloring. Steps: -->
-        <xsl:param name="foreground" select="'AlphaWhite'"/>
-        <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="false()"/>
-        <xsl:param name="buffer" select="''"/>
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
-        <xsl:param name="doubleHeight"/>
-        <xsl:param name="spanCreated"/>
-        <xsl:choose>
-            <!--@ If the next element is a NewBackground element, the buffer is not empty and the current background is not equal
-                to the current element, write a tt:span element with the current styling and pass on the current color element 
-                as new foreground with the correct buffer -->
-            <xsl:when test="name(following-sibling::*[1]) = 'NewBackground' and string-length($buffer) &gt; 0 and $background != name(.)">
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$foreground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <!--@ Match following sibling node with the foreground set to the current element's name, write space (' ') in buffer
-                    if necessary -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <!--** Tunnel parameters needed for value calculation of following elements -->
-                    <xsl:with-param name="foreground" select="name(.)"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$foreground"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="buffer" select="''" />
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ If the preceding element is a NewBackground element and the background used before was the same color
-                as the current element, just pass on the parameters with the current color as new foreground -->
-            <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and ($oldBackground = name(.) or $background = name(.))">
-                <!--@ Match following sibling node with the foreground set to the current element's name -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <xsl:with-param name="foreground" select="name(.)"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="buffer" select="$buffer"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$foreground"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:when test="name(preceding-sibling::*[1]) = 'NewBackground' and string-length(normalize-space($buffer)) != 0 and ($background = $oldBackground and $oldForeground != name(.))">
-                <!--@ Match following sibling node with the foreground set to the current element's name -->
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$oldForeground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <xsl:with-param name="foreground" select="name(.)"/>
-                    <xsl:with-param name="background" select="$background"/>   
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$foreground"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ If the current foreground is not the same color as this element represents and the current style is not the same as the 
-                old style, the buffer is normalized not empty,
-                the current background is not the old background and the following element is not a NewBackground element, 
-                write a tt:span element with the current styling and pass on this element's color as new foreground with the correct buffer -->
-            <xsl:when test="not(name(following-sibling::*[1]) = 'NewBackground') and (string-length(normalize-space($buffer)) != 0) and not(name(.) = $oldForeground and $background = $oldBackground) and $foreground != name(.)">
-                <!--@ Call getStyle template to get the xml:id attribute's value of the respective style -->
-                <xsl:variable name="colorStyle">
-                    <xsl:call-template name="getStyle">
-                        <xsl:with-param name="background" select="$background"/>
-                        <xsl:with-param name="foreground" select="$foreground"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:variable name="style">
-                    <xsl:choose>
-                        <xsl:when test="$doubleHeight">
-                            <xsl:value-of select="concat($colorStyle, ' ', 'doubleHeight')"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$colorStyle"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <xsl:choose>
-                    <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-                    <xsl:when test="$spanCreated">
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
-                        </tt:span>
-                    </xsl:when>
-                    <!--** Otherwise write the normalized content of the buffer -->
-                    <xsl:otherwise>
-                        <tt:span
-                            style="{$style}">
-                            <xsl:value-of select="normalize-space($buffer)"/>
-                        </tt:span>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <xsl:with-param name="foreground" select="name(.)"/>
-                    <xsl:with-param name="background" select="$background"/>   
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="oldForeground" select="$foreground"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="true()"/>
-                    <xsl:with-param name="buffer" select="''"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <!--@ In all other cases just pass on this element as new foreground color with the correct buffer -->
-            <xsl:otherwise>
-                <!--@ Match the following sibling node, append space (' ') to the buffer if necessary -->
-                <xsl:apply-templates select="following-sibling::node()[1]">
-                    <xsl:with-param name="foreground" select="name(.)"/>
-                    <xsl:with-param name="background" select="$background"/>
-                    <xsl:with-param name="boxStarted" select="$boxStarted"/>
-                    <xsl:with-param name="oldForeground" select="$foreground"/>
-                    <xsl:with-param name="oldBackground" select="$oldBackground"/>
-                    <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                    <xsl:with-param name="spanCreated" select="$spanCreated"/>
-                    <xsl:with-param name="buffer">
-                        <xsl:choose>
-                            <xsl:when test="following-sibling::node()[1][self::text()] and $boxStarted and not(substring($buffer, string-length($buffer)) = ' ')">
-                                <xsl:value-of select="concat($buffer, ' ')"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="$buffer"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:with-param>
-                </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1847,7 +1393,7 @@ limitations under the License.
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <xsl:template match="*">
         <!--** Just prevents the transformation from stopping by encountering non-supported elements by handing the parameters over to 
         the next sibling -->
@@ -1857,18 +1403,18 @@ limitations under the License.
         <xsl:param name="buffer" select="''" />
         <xsl:param name="doubleHeight" />
         <xsl:param name="spanCreated" />
-        <xsl:param name="oldForeground"/>
-        <xsl:param name="oldBackground"/>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
         <!--@ Match the following sibling node -->
         <xsl:apply-templates select="following-sibling::node()[1]">
             <xsl:with-param name="foreground" select="$foreground" />
-            <xsl:with-param name="background" select="'AlphaBlack'" />
+            <xsl:with-param name="background" select="$background" />
             <xsl:with-param name="boxStarted" select="$boxStarted" />
             <xsl:with-param name="buffer" select="$buffer" />
             <xsl:with-param name="doubleHeight" select="$doubleHeight" />
             <xsl:with-param name="spanCreated" select="$spanCreated" />
-            <xsl:with-param name="oldBackground" select="$oldBackground"/>
-            <xsl:with-param name="oldForeground" select="$oldForeground"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>
     </xsl:template>
    
