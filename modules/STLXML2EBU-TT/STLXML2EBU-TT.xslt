@@ -1030,8 +1030,31 @@ limitations under the License.
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="text()">
-        <!--** Matches all text-nodes between the control codes. Steps: -->
+    <xsl:template match="text()[normalize-space(.) = '']">
+        <!--** Match text nodes with no text. Just pass parameters -->
+        <xsl:param name="foreground" select="'AlphaWhite'"/>
+        <xsl:param name="background" select="'AlphaBlack'"/>
+        <xsl:param name="boxStarted" select="false()" />
+        <xsl:param name="buffer" select="''" />
+        <xsl:param name="doubleHeight" />
+        <xsl:param name="spanCreated" />
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ Match the following sibling node -->
+        <xsl:apply-templates select="following-sibling::node()[1]">
+            <xsl:with-param name="foreground" select="$foreground" />
+            <xsl:with-param name="background" select="$background" />
+            <xsl:with-param name="boxStarted" select="$boxStarted" />
+            <xsl:with-param name="buffer" select="$buffer" />
+            <xsl:with-param name="doubleHeight" select="$doubleHeight" />
+            <xsl:with-param name="spanCreated" select="$spanCreated" />
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="text()[normalize-space(.) != '']">
+        <!--** Matches all text-nodes between the control codes that contain text. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="buffer" select="''"/>
@@ -1081,7 +1104,7 @@ limitations under the License.
         </xsl:variable>
         <!--@ check if current node is the last text node in the TTI TextField. If so, write the new buffer directly into a new span element. This is necessary in order to write the last text node into a span. Following siblings still need to be called in order to process e.g. newline elements. -->
         <xsl:variable name="newBufferWritten">
-            <xsl:if test="not(following-sibling::text())
+            <xsl:if test="not(following-sibling::text()[normalize-space(.) != ''])
                 and string-length(normalize-space($newBuffer)) &gt; 0">
                 <!-- Set oldBufferWritten to '1' in order to indicate that a span was written and that the new buffer must be cleared. -->
                 <xsl:value-of select="'yes'"/>
@@ -1236,7 +1259,8 @@ limitations under the License.
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
-            <xsl:with-param name="buffer" select="$buffer"/>
+            <!--** Add a space character -->
+            <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
             <!--** Set double height to true. -->
             <xsl:with-param name="doubleHeight" select="true()"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
@@ -1277,7 +1301,8 @@ limitations under the License.
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/> 
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="buffer" select="$buffer"/>
+            <!--** Add a space character -->
+            <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -1302,7 +1327,8 @@ limitations under the License.
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
-            <xsl:with-param name="buffer" select="$buffer"/>
+            <!--** Add a space character -->
+            <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -1396,7 +1422,7 @@ limitations under the License.
 
     <xsl:template match="*">
         <!--** Just prevents the transformation from stopping by encountering non-supported elements by handing the parameters over to 
-        the next sibling -->
+        the next sibling. -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="false()" />
