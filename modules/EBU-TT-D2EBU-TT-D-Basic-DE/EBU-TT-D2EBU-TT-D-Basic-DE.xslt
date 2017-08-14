@@ -420,7 +420,7 @@ limitations under the License.
                     <xsl:call-template name="translateHexvalue">
                         <xsl:with-param name="color">
                             <xsl:call-template name="styleColor">
-                                <xsl:with-param name="newStyle" select="concat(@style, ' ', $inheritedStyle)" />
+                                <xsl:with-param name="newStyle" select="concat(../@style, ' ', $inheritedStyle)" />
                             </xsl:call-template>
                         </xsl:with-param>
                     </xsl:call-template>
