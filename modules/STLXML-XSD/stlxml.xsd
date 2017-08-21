@@ -277,7 +277,7 @@ limitations under the License.
     <xs:simpleType>
       <xs:restriction base="xs:nonNegativeInteger">
         <xs:minInclusive value="0"/>
-        <xs:maxExclusive value="255"/>
+        <xs:maxInclusive value="255"/>
       </xs:restriction>
     </xs:simpleType>
   </xs:element>
@@ -285,7 +285,7 @@ limitations under the License.
     <xs:simpleType>
       <xs:restriction base="xs:nonNegativeInteger">
         <xs:minInclusive value="0"/>
-        <xs:maxExclusive value="65535"/>
+        <xs:maxInclusive value="65535"/>
       </xs:restriction>
     </xs:simpleType>
   </xs:element>
