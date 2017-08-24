@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!-- Testing DSN Element - fail: number too big -->
+<StlXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <HEAD>
+    <GSI>
+      <CPN>850</CPN>
+      <DFC>STL25.01</DFC>
+      <DSC>2</DSC>
+      <CCT>00</CCT>
+      <LC>08</LC>
+      <OPT>IRT Testsendung                 </OPT>
+      <OET>IRT Testfolge                   </OET>
+      <TPT>IRT Test Programme              </TPT>
+      <TET>IRT Test Episode                </TET>
+      <TN>Open Source Translator          </TN>
+      <TCD>open.source@irt.de              </TCD>
+      <SLR>ABC-4711        </SLR>
+      <CD>151217</CD>
+      <RD>151217</RD>
+      <RN> 0</RN>
+      <TNB>1    </TNB>
+      <TNS>1    </TNS>
+      <TNG>1  </TNG>
+      <MNC>40</MNC>
+      <MNR>23</MNR>
+      <TCS>1</TCS>
+      <TCP>10000000</TCP>
+      <TCF>10000000</TCF>
+      <TND>1</TND>
+      <DSN>10</DSN>
+      <CO>DEU</CO>
+      <PUB>Institut für Rundfunktechnik    </PUB>
+      <EN>Open Source Editor              </EN>
+      <ECD>open.source@irt.de              </ECD>
+      <UDA></UDA>
+    </GSI>
+  </HEAD>
+  <BODY>
+    <TTICONTAINER>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000100</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>
+          <StartBox/>
+          <StartBox/>
+          <DoubleHeight/>
+          Text
+          <EndBox/>
+          <EndBox/>
+        </TF>
+      </TTI>
+    </TTICONTAINER>
+  </BODY>
+</StlXml>
