@@ -12,6 +12,14 @@ style 'A' would be pruned in a second transformation (applied to the
 output document of the first transformation), because style 'B' is 
 not longer present so there is no reference left.
 
+Example: Even when style "B" is pruned and the reference from style "B" is the only reference to style "A", the style with id "A" will not be pruned.
+```
+[...]
+   <tt:style xml:id="B" style="A" tts:color="red" />
+   <tt:style xml:id="A" tts:color="green" />
+[...]
+```
+
 ## Prerequisites
 - an XSLT 1.0 processor (e.g. Saxon 6.5.5 or higher)
 
