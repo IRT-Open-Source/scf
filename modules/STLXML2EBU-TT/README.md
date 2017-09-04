@@ -23,6 +23,9 @@ as well, the transformation terminates with a respective error message.
     - offsetInFrames
         A SMPTE timecode that defines the time-offset that's used for the TCP, TCI and TCO elements (default is 00:00:00:00). Thus this offset will be subtracted from the mentioned element's values.
 
+    - offsetTCP
+        If set to 1, the TCP value is used as the time-offset that's used for the TCP, TCI and TCO elements (default is 0). Thus this offset will be subtracted from the mentioned element's values.
+
     - timeBase
         Either the value 'smpte' or 'media'. It sets explicitly the ttp:timeBase attribute (default is 'smpte')
 

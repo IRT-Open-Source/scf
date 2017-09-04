@@ -35,6 +35,8 @@ limitations under the License.
     <xsl:param name="offsetInSeconds" select="0"/>
     <!--** The Offset in frames used for the Time Code In and Time Code Out values in this STLXML file -->
     <xsl:param name="offsetInFrames" select="'00:00:00:00'"/>
+    <!--** If set to 1, the TCP value is used as offset for the Time Code In and Time Code Out values in this STLXML file -->
+    <xsl:param name="offsetTCP" select="0"/>
     <!--** Format that shall be used for the Time Code; supported by this transformation are 'smpte' and 'media' -->
     <xsl:param name="timeBase" select="'smpte'"/>
     <!--** Provides the tt:style elements the mapped color is located in -->
@@ -866,8 +868,33 @@ limitations under the License.
                 ) + number(substring($offsetinFramesAbs, 10, 2))
             "/>
         
+        <!--@ Convert TCP offset in frames into frames count, if needed -->
+        <xsl:variable name="offsetTCPValue">
+            <xsl:choose>
+                <xsl:when test="number($offsetTCP) eq 1">
+                    <xsl:variable name="tcp" select="normalize-space(/StlXml/HEAD/GSI/TCP)"/>
+                    <xsl:if test="string-length($tcp) ne 8">
+                        <xsl:message terminate="yes">
+                            The TCP field has a wrong length.
+                        </xsl:message>
+                    </xsl:if>
+                    
+                    <xsl:value-of select="
+                        number($frameRate) * (
+                            number(substring($tcp, 1, 2)) * 3600 +
+                            number(substring($tcp, 3, 2)) * 60 +
+                            number(substring($tcp, 5, 2))
+                        ) + number(substring($tcp, 7, 2))
+                        "/>
+                </xsl:when>
+                <xsl:otherwise>
+                    0
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
         <!--@ Calculate the value in frames of the current timestamp after applying the offsets -->
-        <xsl:variable name="targetStampValueInFrames" select="$stampValueInFrames - $offsetInSeconds * number($frameRate) - $offsetinFramesValue"/>
+        <xsl:variable name="targetStampValueInFrames" select="$stampValueInFrames - $offsetInSeconds * number($frameRate) - $offsetinFramesValue - $offsetTCPValue"/>
         <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
         <xsl:if test="$targetStampValueInFrames &lt; 0">
             <xsl:message terminate="yes">
