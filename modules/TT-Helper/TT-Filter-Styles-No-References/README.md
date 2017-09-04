@@ -12,11 +12,59 @@ style 'A' would be pruned in a second transformation (applied to the
 output document of the first transformation), because style 'B' is 
 not longer present so there is no reference left.
 
-Example: Even when style "B" is pruned and the reference from style "B" is the only reference to style "A", the style with id "A" will not be pruned.
+Example: 
+
+Sample file before transformation: Style C is the only style, that is actually used. Style A is only referenced by style B. Style B is not referenced at all.
 ```
 [...]
-   <tt:style xml:id="B" style="A" tts:color="red" />
-   <tt:style xml:id="A" tts:color="green" />
+  <tt:head>
+    <tt:styling>
+	  <tt:style xml:id="B" style="A" tts:color="red" />
+	  <tt:style xml:id="A" tts:color="green" />
+	  <tt:style xml:id="C" tts:color="black" />
+	</tt:styling>
+	[...]
+  </tt:head>
+  <tt:body>
+  	<tt:div>
+  	  <tt:p style="C" ... >My subtitle.</tt:p>
+  	</tt:div>   
+  </tt:body>
+[...]
+```
+
+After the first run: Even though style "B" is pruned and the reference from style "B" is the only reference to style "A", the style with id "A" will not be pruned.
+```
+[...]
+  <tt:head>
+    <tt:styling>
+	  <tt:style xml:id="A" tts:color="green" />
+	  <tt:style xml:id="C" tts:color="black" />
+	</tt:styling>
+	[...]
+  </tt:head>
+  <tt:body>
+  	<tt:div>
+  	  <tt:p style="C" ... >My subtitle.</tt:p>
+  	</tt:div>   
+  </tt:body>
+[...]
+```
+
+After the second run: After a second run, style A would be pruned as well.
+```
+[...]
+  <tt:head>
+    <tt:styling>
+	  <tt:style xml:id="C" tts:color="black" />
+	</tt:styling>
+	[...]
+  </tt:head>
+  <tt:body>
+  	<tt:div>
+  	  <tt:p style="C" ... >My subtitle.</tt:p>
+  	</tt:div>   
+  </tt:body>
 [...]
 ```
 
