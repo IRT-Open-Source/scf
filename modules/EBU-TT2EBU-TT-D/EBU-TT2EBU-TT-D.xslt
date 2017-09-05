@@ -36,7 +36,7 @@ limitations under the License.
                     The parameters offsetInFrames and offsetInSeconds are specified at the same time. 
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$offsetInFrames and (number(translate($offsetInFrames, ':', '')) != number(translate($offsetInFrames, ':', '')))">
+            <xsl:when test="$offsetInFrames and (translate($offsetInFrames, '0123456789:', '') != '')">
                 <!--@ Interrupt transformation if content contains non-numerical values -->
                 <xsl:message terminate="yes">
                     The value for the parameter offsetInFrames contains non-numerical values. 
@@ -60,16 +60,10 @@ limitations under the License.
                     and seconds shall be between 00 and 59 and with a framerate of 25 the framerate shall be between 00 and 24 (begin and end of the intervals are included).  
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$offsetInSeconds and (number($offsetInSeconds) != number($offsetInSeconds))">
+            <xsl:when test="$offsetInSeconds and (translate($offsetInSeconds, '0123456789-', '') != '')">
                 <!--@ Interrupt transformation if content contains non-numerical values -->
                 <xsl:message terminate="yes">
-                    The  value of the parameter offsetInSeconds contains non-numerical values.
-                </xsl:message>
-            </xsl:when>
-            <xsl:when test="contains($offsetInSeconds, '.')">
-                <!--@ Interrupt transformation if content contains fraction -->
-                <xsl:message terminate="yes">
-                    The value for the parameter offsetInSeconds contains the character '.'. Fractions are not supported for the parameter offsetInSeconds.
+                    The  value of the parameter offsetInSeconds contains non-numerical values. Fractions are not supported for the parameter offsetInSeconds.
                 </xsl:message>
             </xsl:when>
         </xsl:choose>

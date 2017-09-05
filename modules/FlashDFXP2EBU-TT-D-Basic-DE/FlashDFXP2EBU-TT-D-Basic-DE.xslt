@@ -33,6 +33,17 @@ limitations under the License.
     <xsl:param name="subtitleIDPrefix">sub</xsl:param>
     <xsl:param name="subtitleIDStart">0</xsl:param>
     <xsl:template match="/">
+        <!--@ check if input parameter are valid. color mapping parameter are not checked since a wrong value just leads to a mapping to the default color.-->
+        <xsl:if test="not(translate(normalize-space($subtitleIDStart),'0123456789','') = '')">
+            <xsl:message terminate="yes">
+                The value for the parameter subtitleIDStart must be a number. Fractions are not supported.
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test="translate( substring(normalize-space($subtitleIDPrefix),1,1) , '0123456789', '') = ''">
+            <xsl:message terminate="yes">
+                The value for the parameter subtitleIDPrefix must not start with a digit.
+            </xsl:message>
+        </xsl:if>
         <!-- The complete head of the EBU-TT-D-Basic-DE content is static  -->
         <xsl:comment> Profile: EBU-TT-D-Basic-DE </xsl:comment>
         <tt:tt xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
