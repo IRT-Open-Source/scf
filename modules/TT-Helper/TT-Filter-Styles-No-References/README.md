@@ -7,15 +7,21 @@ document.
 Note that a style 'A' will not be pruned when it is referred by a 
 style 'B' (and only by 'B'), even when style 'B' is pruned itself by 
 the transformation. In this case, style 'A' would still be present 
-an not be referenced by any element after the transformation. However, 
+and not be referenced by any element after the transformation. However, 
 style 'A' would be pruned in a second transformation (applied to the 
 output document of the first transformation), because style 'B' is 
-not longer present so there is no reference left.
+no longer present so there is no reference left.
 
 Example: 
 
-Sample file before transformation: Style C is the only style, that is actually used. Style A is only referenced by style B. Style B is not referenced at all.
-```
+Sample file before transformation: 
+
+* Style C is the only style, that is actually used. 
+* Style B is not referenced at all.
+* Style A is only referenced by style B. 
+
+
+```xml
 [...]
   <tt:head>
     <tt:styling>
@@ -33,8 +39,14 @@ Sample file before transformation: Style C is the only style, that is actually u
 [...]
 ```
 
-After the first run: Even though style "B" is pruned and the reference from style "B" is the only reference to style "A", the style with id "A" will not be pruned.
-```
+After the first run: 
+
+* Style C is still present.
+* Style B is pruned.
+* Even though style "B" is pruned and the reference from style "B" is the 
+ only reference to style "A", the style with id "A" will not be pruned.
+
+```xml
 [...]
   <tt:head>
     <tt:styling>
@@ -51,8 +63,12 @@ After the first run: Even though style "B" is pruned and the reference from styl
 [...]
 ```
 
-After the second run: After a second run, style A would be pruned as well.
-```
+After the second run: 
+
+* Style C is still present.
+* After a second run, style A would be pruned as well.
+
+```xml
 [...]
   <tt:head>
     <tt:styling>
