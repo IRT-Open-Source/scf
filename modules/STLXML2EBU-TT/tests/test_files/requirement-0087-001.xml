@@ -63,7 +63,7 @@ limitations under the License.
                 <JC>02</JC>
                 <CF>00</CF>
                 <TF>
-                    <StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><space/><space/><StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><space/><newline/>
+                    <StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><space/><space/><StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><space/><StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><newline/>
                 </TF>
             </TTI>
         </TTICONTAINER>

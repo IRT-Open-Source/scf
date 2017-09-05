@@ -954,7 +954,7 @@ limitations under the License.
                 <xsl:with-param name="buffer" select="''"/>
                 <xsl:with-param name="foreground" select="'AlphaWhite'"/>
                 <xsl:with-param name="background" select="'AlphaBlack'"/>
-                <xsl:with-param name="spanCreated" select="'no'"/>
+                <xsl:with-param name="spanCreated" select="false()"/>
                 <xsl:with-param name="bufferBackground" select="'AlphaBlack'"/>
                 <xsl:with-param name="bufferForeground" select="'AlphaWhite'"/>
             </xsl:apply-templates>
@@ -1010,9 +1010,9 @@ limitations under the License.
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
-            <!--** Append a space to the buffer. This should usually have no effect, but if two boxes are in the same line (without style change), it puts a space between them. -->
+            <!--** Append a space to the buffer. This should usually have no effect, since the buffer is normalized later. -->
             <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
-            <!--**  Set boxStartet to true. -->
+            <!--** Set boxStartet to true. -->
             <xsl:with-param name="boxStarted" select="true()"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
@@ -1032,7 +1032,8 @@ limitations under the License.
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
         <!--@ Write buffer, if not empty -->
-        <xsl:if test="string-length(normalize-space($buffer)) &gt; 0">
+        <xsl:variable name="writeBuffer" select="string-length(normalize-space($buffer)) &gt; 0"/>
+        <xsl:if test="$writeBuffer">
             <xsl:call-template name="writeBuffer">
                 <xsl:with-param name="foreground" select="$bufferForeground"/>
                 <xsl:with-param name="background" select="$bufferBackground"/>
@@ -1051,7 +1052,7 @@ limitations under the License.
             <!--** Set boxStarted to false. -->
             <xsl:with-param name="boxStarted" select="false()"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-            <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            <xsl:with-param name="spanCreated" select="$writeBuffer or $spanCreated"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
         </xsl:apply-templates>
@@ -1138,16 +1139,7 @@ limitations under the License.
                 <xsl:with-param name="background" select="$background"/>
                 <xsl:with-param name="buffer" select="$newBuffer"/>
                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
-                <xsl:with-param name="spanCreated">
-                    <xsl:choose>
-                        <xsl:when test="$writeOldBuffer">
-                            <xsl:value-of select="'yes'"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$spanCreated"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:with-param>
+                <xsl:with-param name="spanCreated" select="$writeOldBuffer or $spanCreated"/>
             </xsl:call-template>
         </xsl:if>
         <!--@ Call next sibling -->
@@ -1172,16 +1164,7 @@ limitations under the License.
             <xsl:with-param name="boxStarted" select="$boxStarted"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <!--** When a span has been created set spanCreated to true. Otherwise pass old value. -->
-            <xsl:with-param name="spanCreated">
-                <xsl:choose>
-                    <xsl:when test="$writeOldBuffer or $writeNewBuffer">
-                        <xsl:value-of select="'yes'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$spanCreated"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:with-param>
+            <xsl:with-param name="spanCreated" select="$writeOldBuffer or $writeNewBuffer or $spanCreated"/>
         </xsl:apply-templates>
     </xsl:template>
 
@@ -1257,7 +1240,7 @@ limitations under the License.
             <xsl:with-param name="buffer" select="''"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <!--** After a newline, spanCreated is always false. -->
-            <xsl:with-param name="spanCreated" select="'no'"/>
+            <xsl:with-param name="spanCreated" select="false()"/>
             <!--** Buffer colors will be set correctly when the next text node is processed. -->
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
             <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
@@ -1378,7 +1361,7 @@ limitations under the License.
         </xsl:variable>
         <xsl:choose>
             <!--** If a span was created prior to this, set a leading space before the normalized content of the buffer -->
-            <xsl:when test="$spanCreated = 'yes'">
+            <xsl:when test="$spanCreated">
                 <tt:span
                     style="{$style}">
                     <xsl:value-of select="concat(' ',normalize-space($buffer))"/>
