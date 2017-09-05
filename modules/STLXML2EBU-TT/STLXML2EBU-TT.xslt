@@ -950,7 +950,7 @@ limitations under the License.
             </xsl:if>
             <xsl:apply-templates select="child::*[1]">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
-                <xsl:with-param name="boxStarted" select="'no'"/>
+                <xsl:with-param name="boxStarted" select="false()"/>
                 <xsl:with-param name="buffer" select="''"/>
                 <xsl:with-param name="foreground" select="'AlphaWhite'"/>
                 <xsl:with-param name="background" select="'AlphaBlack'"/>
@@ -999,7 +999,7 @@ limitations under the License.
         <!--** Indicates the beginning of an STL box. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
@@ -1013,7 +1013,7 @@ limitations under the License.
             <!--** Append a space to the buffer. This should usually have no effect, but if two boxes are in the same line (without style change), it puts a space between them. -->
             <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
             <!--**  Set boxStartet to true. -->
-            <xsl:with-param name="boxStarted" select="'yes'"/>
+            <xsl:with-param name="boxStarted" select="true()"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
@@ -1025,7 +1025,7 @@ limitations under the License.
         <!--** Indicates the end of an STL box. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
@@ -1049,7 +1049,7 @@ limitations under the License.
             <!--** Reset buffer. -->
             <xsl:with-param name="buffer" select="''"/>
             <!--** Set boxStarted to false. -->
-            <xsl:with-param name="boxStarted" select="'no'"/>
+            <xsl:with-param name="boxStarted" select="false()"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
@@ -1085,29 +1085,26 @@ limitations under the License.
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="buffer" select="''"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
         <!--@ Check if text node is outside of boxing. If so, terminate. -->
-        <xsl:if test="not($boxStarted = 'yes' or not(../StartBox or ../EndBox))">
+        <xsl:if test="not($boxStarted or not(../StartBox or ../EndBox))">
             <xsl:message terminate="yes">
                 There shall be no text outside of boxing (found text: '<xsl:value-of select="string(normalize-space(.))"/>')!
             </xsl:message>
         </xsl:if>
         <!--@ Check if buffer needs to be written to a span. This should usually be the case when this text node is not the first one.
-              Set to 'yes' when foreground or background changed and when buffer contains text.-->
-        <xsl:variable name="oldBufferWritten">
-            <xsl:if test="string-length(normalize-space($buffer)) &gt; 0
-                and not( $bufferForeground = $foreground 
-                and $bufferBackground = $background )">
-                <!-- Set oldBufferWritten to 'yes' in order to indicate that a span was created. -->
-                <xsl:value-of select="'yes'"/>
-            </xsl:if>
-        </xsl:variable>
+              Set to true, when foreground or background changed and when buffer contains text.-->
+        <xsl:variable name="writeOldBuffer" select="
+            string-length(normalize-space($buffer)) &gt; 0
+            and not( $bufferForeground = $foreground 
+            and $bufferBackground = $background )"/>
+        
         <!--@ If buffer needs to be written, write it. -->
-        <xsl:if test="$oldBufferWritten = 'yes'">
+        <xsl:if test="$writeOldBuffer">
             <xsl:call-template name="writeBuffer">
                 <xsl:with-param name="foreground" select="$bufferForeground"/>
                 <xsl:with-param name="background" select="$bufferBackground"/>
@@ -1120,7 +1117,7 @@ limitations under the License.
         <xsl:variable name="newBuffer">
             <xsl:choose>
                 <!--** When (old) buffer has been writte, put only current text node into the new buffer. -->
-                <xsl:when test="$oldBufferWritten = 'yes'">
+                <xsl:when test="$writeOldBuffer">
                     <xsl:value-of select="string(normalize-space(.))"/>
                 </xsl:when>
                 <!--** Otherwise append current text node to buffer. This should be the case when the style did not change, or if buffer did not contain text. -->
@@ -1129,16 +1126,13 @@ limitations under the License.
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <!--@ check if current node is the last text node in the TTI TextField. If so, write the new buffer directly into a new span element. This is necessary in order to write the last text node into a span. Following siblings still need to be called in order to process e.g. newline elements. -->
-        <xsl:variable name="newBufferWritten">
-            <xsl:if test="not(following-sibling::text()[normalize-space(.) != ''])
-                and string-length(normalize-space($newBuffer)) &gt; 0">
-                <!-- Set oldBufferWritten to '1' in order to indicate that a span was written and that the new buffer must be cleared. -->
-                <xsl:value-of select="'yes'"/>
-            </xsl:if>
-        </xsl:variable>
+        <!--@ Check if current node is the last text node in the TTI TextField. If so, the new buffer will be written directly into a new span element. This is necessary in order to write the last text node into a span, when the subtitle line is not terminated by an EndBox or newline element. Following siblings still need to be called in order to process e.g. newline elements. -->
+        <xsl:variable name="writeNewBuffer" select="
+            not(following-sibling::text()[normalize-space(.) != ''])
+            and string-length(normalize-space($newBuffer)) &gt; 0"/>
+        
         <!--@ If new buffer needs to be written, write it -->
-        <xsl:if test="$newBufferWritten = 'yes'">
+        <xsl:if test="$writeNewBuffer">
             <xsl:call-template name="writeBuffer">
                 <xsl:with-param name="foreground" select="$foreground"/>
                 <xsl:with-param name="background" select="$background"/>
@@ -1146,7 +1140,7 @@ limitations under the License.
                 <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
                 <xsl:with-param name="spanCreated">
                     <xsl:choose>
-                        <xsl:when test="$oldBufferWritten = 'yes'">
+                        <xsl:when test="$writeOldBuffer">
                             <xsl:value-of select="'yes'"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -1166,7 +1160,7 @@ limitations under the License.
             <xsl:with-param name="buffer">
                 <xsl:choose>
                     <!--** When the new buffer has been writen already, clear buffer. -->
-                    <xsl:when test="$newBufferWritten = 'yes'">
+                    <xsl:when test="$writeNewBuffer">
                         <xsl:value-of select="''"/>
                     </xsl:when>
                     <!-- Otherwise pass new buffer to the next sibling. -->
@@ -1180,7 +1174,7 @@ limitations under the License.
             <!--** When a span has been created set spanCreated to true. Otherwise pass old value. -->
             <xsl:with-param name="spanCreated">
                 <xsl:choose>
-                    <xsl:when test="$oldBufferWritten = 'yes' or $newBufferWritten = 'yes'">
+                    <xsl:when test="$writeOldBuffer or $writeNewBuffer">
                         <xsl:value-of select="'yes'"/>
                     </xsl:when>
                     <xsl:otherwise>
@@ -1195,7 +1189,7 @@ limitations under the License.
         <!--** Represents a space (' ') between text-nodes (i.e. single words). Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
@@ -1232,7 +1226,7 @@ limitations under the License.
         <!--** Indicates a linebreak. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight"/>
         <xsl:param name="spanCreated"/>
@@ -1258,7 +1252,7 @@ limitations under the License.
             <xsl:with-param name="foreground" select="'AlphaWhite'"/>
             <xsl:with-param name="background" select="'AlphaBlack'"/>
             <!--** A newline always terminates the box. -->
-            <xsl:with-param name="boxStarted" select="'no'"/>
+            <xsl:with-param name="boxStarted" select="false()"/>
             <!--** After a newline, the buffer is always empty. -->
             <xsl:with-param name="buffer" select="''"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
@@ -1274,7 +1268,7 @@ limitations under the License.
         <!--** Indicates the use of double height text in this line. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="doubleHeight" select="true()"/>
         <xsl:param name="spanCreated"/>
@@ -1300,7 +1294,7 @@ limitations under the License.
         <!--** Sets the new background color to the current foreground color (AlphaWhiteOnAlphaBlack -> AlphaWhiteOnAlphaWhite) -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="bufferBackground"/>
         <xsl:param name="bufferForeground"/>
@@ -1337,7 +1331,7 @@ limitations under the License.
         <!--** Matches all color control codes that change the current foreground coloring. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
-        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="boxStarted" select="false()"/>
         <xsl:param name="buffer" select="''"/>
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
