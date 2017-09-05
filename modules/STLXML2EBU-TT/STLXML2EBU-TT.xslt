@@ -1265,7 +1265,8 @@ limitations under the License.
             <xsl:with-param name="boxStarted" select="false()"/>
             <!--** After a newline, the buffer is always empty. -->
             <xsl:with-param name="buffer" select="''"/>
-            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <!--** doubleHeight is reset to the default value 'false'. -->
+            <xsl:with-param name="doubleHeight" select="false()"/>
             <!--** After a newline, spanCreated is always false. -->
             <xsl:with-param name="spanCreated" select="false()"/>
             <!--** Buffer colors will be set correctly when the next text node is processed. -->
