@@ -38,15 +38,5 @@ limitations under the License.
                 Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"
             </assert>
         </rule>
-        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[2]">
-            <assert test="@style = 'WhiteOnBlack'">
-                Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"
-            </assert>
-        </rule>
-        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[3]">
-            <assert test="@style = 'WhiteOnBlack'">
-                Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"
-            </assert>
-        </rule>
     </pattern>            
 </schema>

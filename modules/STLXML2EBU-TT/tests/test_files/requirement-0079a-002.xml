@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing StartBox element mapping with three StartBox elements and with referencing a style with the appropriate background and foreground color-->
+<!-- Testing NewForeground element with AlphaWhite -->
 <StlXml>
     <HEAD>
         <GSI>
@@ -63,7 +63,9 @@ limitations under the License.
                 <JC>02</JC>
                 <CF>00</CF>
                 <TF>
-                    <StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><space/><space/><StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><space/><StartBox/><StartBox/>Test<space/>Text<space/><EndBox/><EndBox/><newline/>
+                    <StartBox/><AlphaGreen/>AlphaGreen<space/>on<space/>AlphaBlack<AlphaWhite/>
+               AlphaWhite<space/>on<space/>AlphaBlack
+					<EndBox/>
                 </TF>
             </TTI>
         </TTICONTAINER>

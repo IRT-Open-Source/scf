@@ -21,26 +21,24 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing StartBox element mapping with three StartBox elements and with referencing a style with the appropriate background and foreground color</title>
+    <title>Testing NewForeground element with AlphaWhite</title>
     <pattern id="FirstTimeStamps">
         <rule context="/">
-            <assert test="tt:tt/tt:body/tt:div/tt:p/tt:span">
-                The tt:span element must be present.
+            <assert test="tt:tt/tt:body/tt:div/tt:p">
+                The tt:p element must be present.
             </assert> 
-        </rule>       
-        <rule context="/">
             <assert test="tt:tt/tt:body/tt:div/tt:p/tt:span/@style">
                 The style attribute must be present.
             </assert> 
-        </rule>      
+        </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p">
-            <assert test="count(tt:span) = 3">
-                Expected value: "3" Value from test: "<value-of select="count(tt:span)"/>"
+            <assert test="count(tt:span) = 2">
+                Expected value: "2" Value from test: "<value-of select="count(tt:span)"/>"
             </assert>
         </rule>
-        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[1]">
+        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[2]">
             <assert test="@style = 'WhiteOnBlack'">
-                Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"
+                Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"    
             </assert>
         </rule>
     </pattern>            

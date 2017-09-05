@@ -21,18 +21,16 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing StartBox element mapping with three StartBox elements and with referencing a style with the appropriate background and foreground color</title>
+    <title>Testing NewForeground element with AlphaBlack with a previous NewBackground and text directly after NewBackground and new foreground color = old background color</title>
     <pattern id="FirstTimeStamps">
         <rule context="/">
-            <assert test="tt:tt/tt:body/tt:div/tt:p/tt:span">
-                The tt:span element must be present.
+            <assert test="tt:tt/tt:body/tt:div/tt:p">
+                The tt:p element must be present.
             </assert> 
-        </rule>       
-        <rule context="/">
             <assert test="tt:tt/tt:body/tt:div/tt:p/tt:span/@style">
                 The style attribute must be present.
             </assert> 
-        </rule>      
+        </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p">
             <assert test="count(tt:span) = 3">
                 Expected value: "3" Value from test: "<value-of select="count(tt:span)"/>"
@@ -41,6 +39,16 @@ limitations under the License.
         <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[1]">
             <assert test="@style = 'WhiteOnBlack'">
                 Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"
+            </assert>
+        </rule>
+        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[2]">
+            <assert test="@style = 'GreenOnGreen'">
+                Expected value: "GreenOnGreen" Value from test: "<value-of select="@style"/>"
+            </assert>
+        </rule>
+        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[3]">
+            <assert test="@style = 'BlackOnGreen'">
+                Expected value: "BlackOnGreen" Value from test: "<value-of select="@style"/>"
             </assert>
         </rule>
     </pattern>            

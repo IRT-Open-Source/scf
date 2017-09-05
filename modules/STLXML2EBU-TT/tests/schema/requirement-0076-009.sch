@@ -16,32 +16,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"
-        queryBinding="xslt"
+        queryBinding="xslt2"
         schemaVersion="ISO19757-3">
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing StartBox element mapping with three StartBox elements and with referencing a style with the appropriate background and foreground color</title>
-    <pattern id="FirstTimeStamps">
+    <title>Testing Control Codes mapping for BlackBackground</title>
+    <pattern id="CC_BlackBackground">
         <rule context="/">
             <assert test="tt:tt/tt:body/tt:div/tt:p/tt:span">
-                The tt:span element must be present.
-            </assert> 
-        </rule>       
-        <rule context="/">
-            <assert test="tt:tt/tt:body/tt:div/tt:p/tt:span/@style">
-                The style attribute must be present.
-            </assert> 
-        </rule>      
+                The p element must be present.
+            </assert>
+        </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p">
-            <assert test="count(tt:span) = 3">
-                Expected value: "3" Value from test: "<value-of select="count(tt:span)"/>"
+            <assert test="count(tt:span) = 2">
+                Expected value: '2'. Value from test: <value-of select="count(tt:span)"/>
             </assert>
         </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[1]">
-            <assert test="@style = 'WhiteOnBlack'">
-                Expected value: "WhiteOnBlack" Value from test: "<value-of select="@style"/>"
-            </assert>
+            <assert test="/tt:tt/tt:head/tt:styling/tt:style[
+                @tts:backgroundColor='white']
+                [tokenize(normalize-space(current()/@style), ' ') = @xml:id]">
+                Expected a referenced style with attribute tts:backgroundColor='white' in first span. Referenced styles: "<value-of select="@style"/>"
+            </assert> 
+        </rule>
+        <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[2]">
+            <assert test="/tt:tt/tt:head/tt:styling/tt:style[
+                @tts:backgroundColor='black']
+                [tokenize(normalize-space(current()/@style), ' ') = @xml:id]">
+                Expected a referenced style with attribute tts:backgroundColor='black' in second span. Referenced styles: "<value-of select="@style"/>"
+            </assert> 
         </rule>
     </pattern>            
 </schema>
