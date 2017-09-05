@@ -933,7 +933,7 @@ limitations under the License.
                     <xsl:value-of select="'textAlignRight'"/>
                 </xsl:when>
             </xsl:choose>
-        </xsl:variable>
+        </xsl:variable> 
         <tt:p
             xml:id="{concat('sub', $SN)}"
             style="{$style}"
@@ -995,8 +995,8 @@ limitations under the License.
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="StartBox|EndBox">
-        <!--** Indicates the beginning or end of an STL box. Steps: -->
+    <xsl:template match="StartBox">
+        <!--** Indicates the beginning of an STL box. Steps: -->
         <xsl:param name="foreground" select="'AlphaWhite'"/>
         <xsl:param name="background" select="'AlphaBlack'"/>
         <xsl:param name="boxStarted" select="'no'"/>
@@ -1005,24 +1005,51 @@ limitations under the License.
         <xsl:param name="spanCreated"/>
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
-        <!--@ Call next sibling. StartBox and EndBox do not force a new span element. -->
+        <!--@ Call next sibling. Set 'boxStarted' to true. -->
         <xsl:apply-templates select="following-sibling::node()[1]">
             <!--** Tunnel parameters needed for value calculation of following elements -->
             <xsl:with-param name="foreground" select="$foreground"/>
             <xsl:with-param name="background" select="$background"/>
             <!--** Append a space to the buffer. This should usually have no effect, but if two boxes are in the same line (without style change), it puts a space between them. -->
             <xsl:with-param name="buffer" select="concat($buffer, ' ')"/>
-            <!--**  If element is a StartBox, set boxStartet to true, otherwise set it to false. -->
-            <xsl:with-param name="boxStarted">
-                <xsl:choose>
-                    <xsl:when test="self::StartBox">
-                        <xsl:value-of select="'yes'"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="'no'"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:with-param>
+            <!--**  Set boxStartet to true. -->
+            <xsl:with-param name="boxStarted" select="'yes'"/>
+            <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+            <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
+            <xsl:with-param name="bufferForeground" select="$bufferForeground"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="EndBox">
+        <!--** Indicates the end of an STL box. Steps: -->
+        <xsl:param name="foreground" select="'AlphaWhite'"/>
+        <xsl:param name="background" select="'AlphaBlack'"/>
+        <xsl:param name="boxStarted" select="'no'"/>
+        <xsl:param name="buffer" select="''"/>
+        <xsl:param name="doubleHeight"/>
+        <xsl:param name="spanCreated"/>
+        <xsl:param name="bufferForeground"/>
+        <xsl:param name="bufferBackground"/>
+        <!--@ Write buffer, if not empty -->
+        <xsl:if test="string-length(normalize-space($buffer)) &gt; 0">
+            <xsl:call-template name="writeBuffer">
+                <xsl:with-param name="foreground" select="$bufferForeground"/>
+                <xsl:with-param name="background" select="$bufferBackground"/>
+                <xsl:with-param name="buffer" select="$buffer"/>
+                <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
+                <xsl:with-param name="spanCreated" select="$spanCreated"/>
+            </xsl:call-template>
+        </xsl:if>
+        <!--@ Call next sibling. Reset 'buffer' and 'boxStarted'. -->
+        <xsl:apply-templates select="following-sibling::node()[1]">
+            <!--** Tunnel parameters needed for value calculation of following elements -->
+            <xsl:with-param name="foreground" select="$foreground"/>
+            <xsl:with-param name="background" select="$background"/>
+            <!--** Reset buffer. -->
+            <xsl:with-param name="buffer" select="''"/>
+            <!--** Set boxStarted to false. -->
+            <xsl:with-param name="boxStarted" select="'no'"/>
             <xsl:with-param name="doubleHeight" select="$doubleHeight"/>
             <xsl:with-param name="spanCreated" select="$spanCreated"/>
             <xsl:with-param name="bufferBackground" select="$bufferBackground"/>
@@ -1064,7 +1091,7 @@ limitations under the License.
         <xsl:param name="bufferForeground"/>
         <xsl:param name="bufferBackground"/>
         <!--@ Check if text node is outside of boxing. If so, terminate. -->
-        <xsl:if test="not($boxStarted = 'yes' or not(../StartBox or ../EndBox) or string(normalize-space(.)) = '')">
+        <xsl:if test="not($boxStarted = 'yes' or not(../StartBox or ../EndBox))">
             <xsl:message terminate="yes">
                 There shall be no text outside of boxing (found text: '<xsl:value-of select="string(normalize-space(.))"/>')!
             </xsl:message>

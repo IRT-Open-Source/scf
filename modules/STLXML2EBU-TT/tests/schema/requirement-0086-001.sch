@@ -29,8 +29,8 @@ limitations under the License.
             </assert> 
         </rule>        
         <rule context="tt:tt/tt:body/tt:div/tt:p">
-            <assert test="count(tt:span) = 1">
-                Expected value: "1" Value from test: "<value-of select="count(tt:span)"/>"
+            <assert test="count(tt:span) = 3">
+                Expected value: "3" Value from test: "<value-of select="count(tt:span)"/>"
             </assert>
         </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p/tt:span[1]">
