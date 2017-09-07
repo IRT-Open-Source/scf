@@ -1253,7 +1253,7 @@ limitations under the License.
             </xsl:call-template>
         </xsl:if>
         <!--@ If no further newline element is directly following as next sibling, write br element. Consecutive newline elements will only create one br element. -->
-        <xsl:if test="name(following-sibling::node()[1]) != 'newline'">
+        <xsl:if test="name(following-sibling::node()[not(self::text() and normalize-space(.)='')][1]) != 'newline'">
             <tt:br/>
         </xsl:if>
         <!--@ Call next sibling -->
