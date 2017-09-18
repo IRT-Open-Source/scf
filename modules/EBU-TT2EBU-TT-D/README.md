@@ -14,15 +14,14 @@ The `EBU-TT2EBU-TT-D.xslt` provides the following parameters:
     - offsetInSeconds
       Defines the time-offset that's used for the begin and end attributes in seconds.
       If the parameter is set, this offset is subtracted from all
-      `begin` and `end` attributes' values. Only positive values are
-      supported.
+      `begin` and `end` attributes' values.
 
     - offsetInFrames
       Defines the time-offset that's used for the begin and end attributes in the format
       "HH:MM:SS:FF" (where H = hours, M = minutes, S = seconds and F = frames).
       If the parameter is set, this offset is subtracted from all
       `begin` and `end` attributes' values. Only positive values are
-      supported. Only positive values are supported.
+      supported.
 
 If the use of any of the offset parameters results in a negative time
 expression, the processing is aborted.
