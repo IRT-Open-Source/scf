@@ -4,7 +4,7 @@ converting XML based subtitle formats. Main target is to build up a
 flexible and extensible transformation pipeline to convert EBU STL
 formats and EBU-TT subtitle formats.
 
-The SCF is an early Beta release with the version 0.9.5.
+The SCF is a stable release with the version 1.0
 
 ## License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer
@@ -63,6 +63,9 @@ Currently the SCF has the following seven core modules:
 * EBU-TT2EBU-TT-D
 * EBU-TT-D2EBU-TT-D-Basic-DE
 * FlashDFXP2EBU-TT-D-Basic-DE
+
+Additionally there are various helper submodules that can be found in the
+folder "TT-Helper". These modules solve smaller transformation tasks.
 
 #### STLXML-XSD
 The STLXML W3C XML Schema is a tool to check if the XML representation
@@ -135,9 +138,9 @@ Development: Tilman Eberspächer, Andreas Tai, Barbara Fichte,
 Dominik Garsche, Stefan Pöschel, Peter tho Pesch, Lukas Kircher
 
 Test files: Barbara Fichte, Lilli Weiss, Tilman Eberspächer,
-Stefan Pöschel
+Stefan Pöschel, Peter tho Pesch
 
-QC: Barbara Fichte, Peter tho Pesch
+QC: Stefan Pöschel, Barbara Fichte, Peter tho Pesch
 
 
 ## RESOURCES
