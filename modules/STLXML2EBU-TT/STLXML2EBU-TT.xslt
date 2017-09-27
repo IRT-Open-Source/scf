@@ -988,11 +988,11 @@ limitations under the License.
             <!--@ Calculate the amount of lines already used by the subtitle itself -->
             <xsl:variable name="lines" >
                 <xsl:choose>
-                    <xsl:when test="count(child::*[name(.) = 'DoubleHeight']) &gt; 0 and count(child::*[name(.) = 'newline']) &gt; 0">
-                        <xsl:value-of select="4"/>
-                    </xsl:when>
-                    <xsl:when test="count(child::*[name(.) = 'DoubleHeight']) &gt; 0 and count(child::*[name(.) = 'newline']) = 0">
-                        <xsl:value-of select="2"/>
+                    <!-- It is assumed here that 
+                          1. all subtitle lines in a TextField are of the same height, either DoubleHeight or SingleHeight
+                          2. every newline-Element adds a new subtitle row -->
+                    <xsl:when test="count(child::*[name(.) = 'DoubleHeight']) &gt; 0">
+                        <xsl:value-of select="2 * (1 + count(child::*[name(.) = 'newline']))"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="1 + count(child::*[name(.) = 'newline'])"/>
