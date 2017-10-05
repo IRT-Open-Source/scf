@@ -14,23 +14,22 @@ STLXML-XSD
 
 STLXML2EBU-TT
 - ADDED #12: offsetTCP parameter
-- ADDED: Test files for further color change (corner) cases
-- ADDED: Test files for further Control Codes
-- CHANGED: Refactor TF field processing
+- ADDED: Additional test files for subtitle color changes
+- ADDED: Additional test files for Teletext Control Codes
+- CHANGED: Refactor processing of the TF (Text Field) element
 - FIXED: Color change corner case (non-White to White in same line)
 - FIXED: Line number calculation when double height is used
 - FIXED: Reset doubleHeight status on new line
 - FIXED: Convert multiple newline elements into a single tt:br element
-- FIXED: Test files for StartBox/EndBox mapping
 
 EBU-TT2EBU-TT-D
-- ADDED: offsetInSeconds/offsetInFrames parameter validation
+- ADDED: validation for parameters offsetInSeconds and offsetInFrames
 
 EBU-TT-D2EBU-TT-D-Basic-DE
 - FIXED: Style inheritance of anonymous spans
 
 FlashDFXP2EBU-TT-D-Basic-DE
-- ADDED: subtitleIDPrefix/subtitleIDStart parameter validation
+- ADDED: validation for parameters subtitleIDPrefix and subtitleIDStart
 
 -----------------------------
 Version 0.9.5
