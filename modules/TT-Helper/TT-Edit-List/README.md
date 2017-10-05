@@ -12,6 +12,11 @@ Start-of-Programme. The Start-of-Programme of the output document is at
 `00:00:00.000` resp. `00:00:00:00` (besides the optional `addOffset`
 parameter; see below).
 
+Note that any document metadata of the input document is copied without
+modification to the output document. So the content of e.g. the
+`ebuttm:documentStartOfProgramme` or the `ebuttm:documentTotalNumberOfSubtitles`
+field (if present) remains unchanged.
+
 Within the input document, timing information is only required/processed
 on `tt:p` element level.
 
