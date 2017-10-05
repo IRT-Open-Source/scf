@@ -1,4 +1,38 @@
 -----------------------------
+Version 1.0
+-----------------------------
+
+GENERAL
+- CHANGED/FIXED: Documentation/READMEs
+- CHANGED: Requirements added
+- CHANGED: Requirements splitted (if partly implemented)
+- CHANGED: Requirements modified (e.g. priority adjusted)
+
+STLXML-XSD
+- ADDED: Test files
+- FIXED: Upper bound of SNG/SN fields off-by-one error
+
+STLXML2EBU-TT
+- ADDED #12: offsetTCP parameter
+- ADDED: Test files for further color change (corner) cases
+- ADDED: Test files for further Control Codes
+- CHANGED: Refactor TF field processing
+- FIXED: Color change corner case (non-White to White in same line)
+- FIXED: Line number calculation when double height is used
+- FIXED: Reset doubleHeight status on new line
+- FIXED: Convert multiple newline elements into a single tt:br element
+- FIXED: Test files for StartBox/EndBox mapping
+
+EBU-TT2EBU-TT-D
+- ADDED: offsetInSeconds/offsetInFrames parameter validation
+
+EBU-TT-D2EBU-TT-D-Basic-DE
+- FIXED: Style inheritance of anonymous spans
+
+FlashDFXP2EBU-TT-D-Basic-DE
+- ADDED: subtitleIDPrefix/subtitleIDStart parameter validation
+
+-----------------------------
 Version 0.9.5
 -----------------------------
 TT-Edit-List
