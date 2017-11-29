@@ -278,17 +278,17 @@ limitations under the License.
         <xsl:param name="frameRate"/>
         <xsl:variable name="currentDateFormatted">
             <xsl:choose><!-- branch depending on available functions, as XSLT 1.0 support is not sufficient here -->
-                <!-- EXSLT -->
-                <xsl:when test="function-available('exsltDate:year') and function-available('exsltDate:month-in-year') and function-available('exsltDate:day-in-month')">
-                    <xsl:value-of select="concat(format-number(exsltDate:year(), '0000'), '-', format-number(exsltDate:month-in-year(), '00'), '-', format-number(exsltDate:day-in-month(), '00'))"/>
-                </xsl:when>
                 <!-- XSLT 2.0 -->
                 <xsl:when test="system-property('xsl:version') >= 2.0">
                     <xsl:value-of select="fn:format-date(fn:current-date(), '[Y0001]-[M01]-[D01]')"/>
                 </xsl:when>
+                <!-- EXSLT -->
+                <xsl:when test="function-available('exsltDate:year') and function-available('exsltDate:month-in-year') and function-available('exsltDate:day-in-month')">
+                    <xsl:value-of select="concat(format-number(exsltDate:year(), '0000'), '-', format-number(exsltDate:month-in-year(), '00'), '-', format-number(exsltDate:day-in-month(), '00'))"/>
+                </xsl:when>
                 <!-- neither -->
                 <xsl:otherwise>
-                    <xsl:message terminate="yes">The required functions of neither EXSLT nor XSLT 2.0 are available. These are needed to set the ebuttm:documentCreationDate/ebuttm:documentRevisionDate field values.</xsl:message>
+                    <xsl:message terminate="yes">The required functions of neither XSLT 2.0 nor EXSLT are available. These are needed to set the ebuttm:documentCreationDate/ebuttm:documentRevisionDate field values.</xsl:message>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
