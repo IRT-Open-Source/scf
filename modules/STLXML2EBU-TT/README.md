@@ -7,12 +7,13 @@ specification (EBU Tech 3350). The conversion is based on the guideline
 provided in EBU Tech 3360 (see Resources).
 
 ## Prerequisites
-- an XSLT 1.0 processor with EXSLT support (e.g. Saxon 6.5.5 or higher, or xsltproc)
+- an XSLT 1.0 processor with EXSLT support (e.g. Saxon 6.5.5 or higher, or `xsltproc`), or
+- an XSLT 2.0 processor
 
-Note that there are XSLT processors that do not support all of the
-required EXSLT functions (or no EXSLT at all). In this case
-the stylesheet uses equal XSLT 2.0 functions as fallback. If this fails
-as well, the transformation terminates with a respective error message.
+Note that there are XSLT processors that do not support XSLT 2.0. In
+this case the stylesheet uses equivalent EXSLT functions as fallback.
+If this fails as well, the transformation terminates with a respective
+error message.
 
 ## USAGE
 `STLXML2EBU-TT.xslt` has the following parameters:
