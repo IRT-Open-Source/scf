@@ -666,7 +666,10 @@ limitations under the License.
         <xsl:param name="tti_all"/>
         <xsl:param name="frameRate"/>
         <!--@ Create tt:div element for SGN -->
-        <tt:div style="defaultStyle" xml:id="{concat('SGN', .)}">
+        <tt:div style="defaultStyle">
+            <xsl:attribute name="xml:id"><!-- AVT cannot be used for xml:id -->
+                <xsl:value-of select="concat('SGN', .)"/>
+            </xsl:attribute>
             <!--@ Match children with the respective SGN (in document order) -->
             <xsl:variable name="sgn" select="."/>
             <xsl:apply-templates select="$tti_all[SGN = $sgn]">
@@ -871,9 +874,9 @@ limitations under the License.
         <!--@ Convert TCP offset in frames into frames count, if needed -->
         <xsl:variable name="offsetTCPValue">
             <xsl:choose>
-                <xsl:when test="number($offsetTCP) eq 1">
+                <xsl:when test="number($offsetTCP) = 1">
                     <xsl:variable name="tcp" select="normalize-space(/StlXml/HEAD/GSI/TCP)"/>
-                    <xsl:if test="string-length($tcp) ne 8">
+                    <xsl:if test="string-length($tcp) = 8">
                         <xsl:message terminate="yes">
                             The TCP field has a wrong length.
                         </xsl:message>
@@ -962,11 +965,13 @@ limitations under the License.
             </xsl:choose>
         </xsl:variable> 
         <tt:p
-            xml:id="{concat('sub', $SN)}"
             style="{$style}"
             region="bottomAligned"
             begin="{$begin}"
             end="{$end}">
+            <xsl:attribute name="xml:id"><!-- AVT cannot be used for xml:id -->
+                <xsl:value-of select="concat('sub', $SN)"/>
+            </xsl:attribute>
             <xsl:if test="string-length($user_data) != 0">
                 <tt:metadata>
                     <!--** store user data in stlUserData element of SCF namespace -->
