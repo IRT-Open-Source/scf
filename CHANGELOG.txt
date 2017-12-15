@@ -1,4 +1,15 @@
 -----------------------------
+Version 1.1
+-----------------------------
+
+STLXML2EBU-TT
+- FIXED #49: xsltproc execution
+- CHANGED: Prioritize XSLT 2.0 over EXSLT
+
+EBU-TT2STLXML
+- ADDED: Module EBU-TT2STLXML (beta)
+
+-----------------------------
 Version 1.0
 -----------------------------
 
