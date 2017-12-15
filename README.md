@@ -15,8 +15,8 @@ For the XSLT modules an XSLT processor that is conformant to XSLT 1.0 is
 needed. You could use for example a [Saxon XSLT processor](http://saxon.sourceforge.net/)
 from version 6.5.5.
 
-The STLXML2EBU-TT module requires in addition EXSLT support (or
-alternatively XSLT 2.0 support).
+The STLXML2EBU-TT and EBU-TT2STLXML modules require XSLT 2.0 support
+(or instead EXSLT support).
 
 To validate an STLXML document with the STLXML W3C XML Schema an
 XML Schema 1.0 parser is required. You could use for example
@@ -59,7 +59,8 @@ Currently the SCF has the following seven core modules:
 * STLXML-XSD
 * STL2STLXML
 * STLXML2STL
-* STMLXML2EBU-TT
+* STLXML2EBU-TT
+* EBU-TT2STLXML
 * EBU-TT2EBU-TT-D
 * EBU-TT-D2EBU-TT-D-Basic-DE
 * FlashDFXP2EBU-TT-D-Basic-DE
@@ -86,6 +87,11 @@ binary file that conforms to EBU STL.
 The STLXML2EBU-TT XSLT transforms an XML representation of an EBU STL
 file into an EBU-TT file that conforms to EBU Tech 3350 (EBU-TT Part 1).
 It follows the guideline provided by EBU Tech 3360 version 0.9.
+
+#### EBU-TT2STLXML (beta)
+The EBU-TT2STLXML XSLT converts EBU-TT Part 1 files that have been
+created according to EBU Tech 3360 into an XML representation of an
+EBU STL file.
 
 #### EBU-TT2EBU-TT-D
 The EBU-TT2EBU-TT-D XSLT converts EBU-TT Part 1 files that have been
