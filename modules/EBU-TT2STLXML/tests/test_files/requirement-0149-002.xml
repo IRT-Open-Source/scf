@@ -30,7 +30,7 @@ limitations under the License.
             <scfm:parameters xmlns:scfm="http://www.irt.de/scf/metadata">
                 <scfm:parameter>
                     <scfm:name>doubleHeight</scfm:name>
-                    <scfm:value>true</scfm:value>
+                    <scfm:value>double</scfm:value>
                 </scfm:parameter>
             </scfm:parameters>
             <ebuttm:documentMetadata>
