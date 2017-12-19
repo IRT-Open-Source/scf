@@ -807,12 +807,10 @@ limitations under the License.
                 <!--@ Set converted end as value -->
                 <xsl:value-of select="$convertedend"/>
             </TCO>
-            <!--@ Create VP element, not mapped in this version -->
+            <!--@ Create VP element and calculate correct value -->
             <VP>
                 <xsl:call-template name="get_VerticalPosition">
-                    <xsl:with-param name="br_count" select="count(tt:br)"/>
                     <xsl:with-param name="doubleHeight" select="$calculated_doubleHeight"/>
-                    <xsl:with-param name="line_count" select="count(tt:br[name(preceding-sibling::*[1]) = 'tt:span'])"/>
                 </xsl:call-template>
             </VP>
             <!--@ Create JC element, not mapped in this version -->
@@ -961,16 +959,22 @@ limitations under the License.
     
     <xsl:template name="get_VerticalPosition">
         <!--** Calculates the value for the VP element in the resulting STLXML file -->  
-        <xsl:param name="br_count"/>
         <xsl:param name="doubleHeight"/>
-        <xsl:param name="line_count"/>
-        <!--@ Value is equal to maximum line minus the amount of br elements; if double height is used, also subtract the number of lines -->
+        <!-- Select the last element that contains subtitle text(span or text) -->
+        <xsl:variable name="lastSubElement" select="(child::node()[ self::tt:span or (string-length(normalize-space(self::text())) &gt; 0) ])[last()]"/>
+        <!-- Count number of subtitle lines. If the p-element is empty, num_lines will be equal to 1. -->
+        <xsl:variable name="num_lines" select="count($lastSubElement/preceding-sibling::tt:br) + 1"/>
+        <!--@ Calulate line number of the first subtitle line (= VP value in STLXML). --> 
+        <!-- Notes: - double height expand the subtitle height BELOW the selected line. -->
+        <!--        - the term '$num-lines - 1' or '$num-lines*2 - 1' express the number of lines to be substracted from 23 according to the space that is required by the subtitle text. -->
+        <!--        - the term 'count($lastSubElement/following-sibling::tt:br)' express the number of lines to be substracted from 23 according to br-elements that move the subtitle text up. -->
         <xsl:choose>
             <xsl:when test="$doubleHeight = 'true'">
-                <xsl:value-of select="23 - (number($br_count) + $line_count)"/>
+                <xsl:variable name="sub_lines_to_substract" select="$num_lines*2 - 1"/>
+                <xsl:value-of select="23 - ($num_lines*2 - 1) - count($lastSubElement/following-sibling::tt:br)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="23 - number($br_count)"/>
+                <xsl:value-of select="23 - ($num_lines - 1) - count($lastSubElement/following-sibling::tt:br)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1442,15 +1446,19 @@ limitations under the License.
         <xsl:param name="inheritedForeground"/>
         <xsl:param name="inheritedBackground"/>
         <xsl:param name="calculatedDoubleHeight"/>
-        <xsl:choose>
-            <!--@ Write two adjacent newline elements when doubleHeight was chosen / calculated -->
-            <xsl:when test="$calculatedDoubleHeight = 'true'">
-                <newline/><newline/>
-            </xsl:when>
-            <xsl:otherwise>
-                <newline/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <!--@ if further subtitle lines follow (span or text elements), write newline-element(s) -->
+        <xsl:if test="count(following-sibling::node()[ self::tt:span or (string-length(normalize-space(self::text())) &gt; 0) ]) &gt; 0">
+            <xsl:choose>
+                <!--@ Write two adjacent newline elements when doubleHeight was chosen / calculated -->
+                <xsl:when test="$calculatedDoubleHeight = 'true'">
+                    <newline/><newline/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <newline/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
+        
         <xsl:choose>
             <!--@ If the following node is text not contained within a tt:span element, apply text-template to it -->
             <xsl:when test="following-sibling::node()[1][self::text() and string-length(normalize-space(.)) &gt; 0]">
