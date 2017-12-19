@@ -846,6 +846,12 @@ limitations under the License.
                     <StartBox/>
                     <StartBox/>
                     <xsl:apply-templates select="child::node()[not(self::tt:metadata)][1]"/>
+                    <!--@ If the next element is a tt:br element or this is the last element. write the EndBox elements -->
+                    <xsl:variable name="this_text_node" select="child::node()[not(self::tt:metadata)][1]"/>
+                    <xsl:if test="$this_text_node/following-sibling::*[1]/self::tt:br or count($this_text_node/following-sibling::*) = 0">
+                        <EndBox/>
+                        <EndBox/>
+                    </xsl:if>
                 </xsl:if>
                 <!--@ As the text template only calls itself recursively, apply the next fitting template after the text has been processed. -->
                 <xsl:apply-templates select="child::*[not(self::tt:metadata)][1]">
@@ -1155,7 +1161,7 @@ limitations under the License.
         
         <!--@ If the current tt:span element is either the first node or the first node in a new line and doubleHeight was chosen / calculated,
             write a preceding doubleHeight element -->
-        <xsl:variable name="prev_sibling" select="preceding-sibling::node()[not(self::tt:metadata)][1]"/>
+        <xsl:variable name="prev_sibling" select="preceding-sibling::node()[not(self::tt:metadata)][not(self::text()) or string-length(normalize-space(.)) &gt; 0][1]"/>
         <xsl:if test="(not($prev_sibling) or $prev_sibling/self::tt:br) and $calculatedDoubleHeight = 'true'">
             <DoubleHeight/>
         </xsl:if>
@@ -1187,7 +1193,7 @@ limitations under the License.
             </xsl:call-template>
         </xsl:if>
         <!--@ If this tt:span element is either the very first node or the first node in a new line, write the StartBox elements -->
-        <xsl:if test="count(preceding-sibling::node()[string-length(normalize-space(.)) &gt; 0]) = 0 or preceding-sibling::node()[1]/self::tt:br">
+        <xsl:if test="not($prev_sibling) or $prev_sibling/self::tt:br">
             <StartBox/>
             <StartBox/>
         </xsl:if>
