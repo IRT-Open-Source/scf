@@ -876,7 +876,7 @@ limitations under the License.
             <xsl:choose>
                 <xsl:when test="number($offsetTCP) = 1">
                     <xsl:variable name="tcp" select="normalize-space(/StlXml/HEAD/GSI/TCP)"/>
-                    <xsl:if test="string-length($tcp) = 8">
+                    <xsl:if test="string-length($tcp) != 8">
                         <xsl:message terminate="yes">
                             The TCP field has a wrong length.
                         </xsl:message>
