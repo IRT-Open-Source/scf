@@ -1,0 +1,205 @@
+image: $scf_ci_image
+
+before_script:
+  # add deployment keys
+  - echo "$id_rsa_deploy_ro" >  ~/.ssh/id_rsa_deploy_ro
+  - chmod 600 ~/.ssh/id_rsa_deploy_ro
+  # Get scf_test_driver repo (last commit only)
+  - git clone --depth 1 $scf_ci_repo_test_driver scf_test_driver
+
+after_script:
+  # remove deployment keys
+  - rm ~/.ssh/id_rsa_deploy_ro
+
+
+# Test pipeline 1: STL -> STLXML -> EBU-TT -> EBU-TT-D -> EBU-TT-D-Basic-DE
+test_pipeline_1:
+  tags:
+    - docker
+  stage: test
+  script:
+    # STL -> STLXML
+    - modules/STL2STLXML/stl2stlxml.py -p -x 2_STLXML.xml misc/ci/test_pipeline_1/1_STL.stl
+    - diff misc/ci/test_pipeline_1/2_STLXML.xml 2_STLXML.xml
+    # STLXML -> EBU-TT (result is patched to be reproducible)
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:2_STLXML.xml -xsl:modules/STLXML2EBU-TT/STLXML2EBU-TT.xslt -o:3_EBU-TT_tmp.xml
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:3_EBU-TT_tmp.xml -xsl:misc/ci/make_reproducible_EBU-TT.xsl -o:3_EBU-TT.xml
+    - diff misc/ci/test_pipeline_1/3_EBU-TT.xml 3_EBU-TT.xml
+    # EBU-TT -> EBU-TT-D
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:3_EBU-TT.xml -xsl:modules/EBU-TT2EBU-TT-D/EBU-TT2EBU-TT-D.xslt -o:4_EBU-TT-D.xml
+    - diff misc/ci/test_pipeline_1/4_EBU-TT-D.xml 4_EBU-TT-D.xml
+    # EBU-TT-D -> EBU-TT-D-Basic-DE
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:4_EBU-TT-D.xml -xsl:modules/EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt -o:5_EBU-TT-D-Basic-DE.xml
+    - diff misc/ci/test_pipeline_1/5_EBU-TT-D-Basic-DE.xml 5_EBU-TT-D-Basic-DE.xml
+
+tests_STL2STLXML:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_stl2stlxml.sh
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_STLXML2STL:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_stlxml2stl.sh
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_STLXML2EBU-TT:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh STLXML2EBU-TT STLXML2EBU-TT STLXML2EBU-TT.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_EBU-TT2STLXML:
+  # to be started by hand, as module has beta status!
+  when: manual
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh EBU-TT2STLXML EBU-TT2STLXML EBU-TT2STLXML.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_EBU-TT2EBU-TT-D:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh EBU-TT2EBU-TT-D EBU-TT2EBU-TT-D EBU-TT2EBU-TT-D.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_EBU-TT-D2EBU-TT-D-Basic-DE:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh EBU-TT-D2EBU-TT-D-Basic-DE EBU-TT-D2EBU-TT-D-Basic-DE EBU-TT-D2EBU-TT-D-Basic-DE.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_FlashDFXP2EBU-TT-D-Basic-DE:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh FlashDFXP2EBU-TT-D-Basic-DE FlashDFXP2EBU-TT-D-Basic-DE FlashDFXP2EBU-TT-D-Basic-DE.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_STLXML_XSD:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_stlxml-xsd.sh
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+# TT-Helper modules
+tests_Helper_DFXP2TTML:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh DFXP2TTML TT-Helper/DFXP2TTML DFXP2TTML.xsl
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_Helper_GetTTMLProfile:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh GetTTMLProfile TT-Helper/GetTTMLProfile GetTTMLProfile.xsl
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_Helper_TT-Edit-List:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh TT-Edit-List TT-Helper/TT-Edit-List TT-Edit-List.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_Helper_TT-Filter-Styles-No-References:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh TT-Filter-Styles-No-References TT-Helper/TT-Filter-Styles-No-References TT-Filter-Styles-No-References.xslt
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
+tests_Helper_TTML2DFXP:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_standard.sh TTML2DFXP TT-Helper/TTML2DFXP TTML2DFXP.xsl
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure

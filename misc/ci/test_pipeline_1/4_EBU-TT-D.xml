@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt:tt xmlns:tt="http://www.w3.org/ns/ttml"
+       xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+       xmlns:tts="http://www.w3.org/ns/ttml#styling"
+       xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
+       xmlns:ebuttm="urn:ebu:tt:metadata"
+       xmlns:ebutts="urn:ebu:tt:style"
+       ttp:timeBase="media"
+       xml:lang="de"
+       ttp:cellResolution="50 30"
+       xml:space="default">
+   <tt:head>
+      <tt:metadata>
+         <ebuttm:documentMetadata>
+            <ebuttm:conformsToStandard>urn:ebu:tt:distribution:2014-01</ebuttm:conformsToStandard>
+         </ebuttm:documentMetadata>
+      </tt:metadata>
+      <tt:styling>
+         <tt:style xml:id="defaultStyle"
+                   tts:fontSize="80%"
+                   tts:lineHeight="125%"
+                   tts:textAlign="center"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#00000000"
+                   tts:fontStyle="normal"
+                   tts:fontWeight="normal"
+                   tts:textDecoration="none"
+                   tts:fontFamily="monospaceSansSerif"/>
+         <tt:style xml:id="BlackOnRed"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="BlackOnGreen"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="BlackOnYellow"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="BlackOnBlue"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="BlackOnMagenta"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="BlackOnCyan"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="BlackOnWhite"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="BlackOnBlack"
+                   tts:color="#000000ff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="RedOnRed"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="RedOnGreen"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="RedOnYellow"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="RedOnBlue"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="RedOnMagenta"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="RedOnCyan"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="RedOnWhite"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="RedOnBlack"
+                   tts:color="#ff0000ff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="GreenOnRed"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="GreenOnGreen"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="GreenOnYellow"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="GreenOnBlue"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="GreenOnMagenta"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="GreenOnCyan"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="GreenOnWhite"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="GreenOnBlack"
+                   tts:color="#00ff00ff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="YellowOnRed"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="YellowOnGreen"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="YellowOnYellow"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="YellowOnBlue"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="YellowOnMagenta"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="YellowOnCyan"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="YellowOnWhite"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="YellowOnBlack"
+                   tts:color="#ffff00ff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="BlueOnRed"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="BlueOnGreen"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="BlueOnYellow"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="BlueOnBlue"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="BlueOnMagenta"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="BlueOnCyan"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="BlueOnWhite"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="BlueOnBlack"
+                   tts:color="#0000ffff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="MagentaOnRed"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="MagentaOnGreen"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="MagentaOnYellow"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="MagentaOnBlue"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="MagentaOnMagenta"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="MagentaOnCyan"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="MagentaOnWhite"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="MagentaOnBlack"
+                   tts:color="#ff00ffff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="CyanOnRed"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="CyanOnGreen"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="CyanOnYellow"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="CyanOnBlue"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="CyanOnMagenta"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="CyanOnCyan"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="CyanOnWhite"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="CyanOnBlack"
+                   tts:color="#00ffffff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="WhiteOnRed"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#ff0000ff"/>
+         <tt:style xml:id="WhiteOnGreen"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#00ff00ff"/>
+         <tt:style xml:id="WhiteOnYellow"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#ffff00ff"/>
+         <tt:style xml:id="WhiteOnBlue"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#0000ffff"/>
+         <tt:style xml:id="WhiteOnMagenta"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#ff00ffff"/>
+         <tt:style xml:id="WhiteOnCyan"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#00ffffff"/>
+         <tt:style xml:id="WhiteOnWhite"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#ffffffff"/>
+         <tt:style xml:id="WhiteOnBlack"
+                   tts:color="#ffffffff"
+                   tts:backgroundColor="#000000ff"/>
+         <tt:style xml:id="textAlignLeft" tts:textAlign="start"/>
+         <tt:style xml:id="textAlignCenter" tts:textAlign="center"/>
+         <tt:style xml:id="textAlignRight" tts:textAlign="end"/>
+         <tt:style xml:id="doubleHeight" tts:fontSize="200%"/>
+      </tt:styling>
+      <tt:layout>
+         <tt:region xml:id="bottomAligned"
+                    tts:extent="80% 80%"
+                    tts:origin="10% 10%"
+                    tts:padding="0%"
+                    tts:displayAlign="after"
+                    tts:writingMode="lrtb"/>
+      </tt:layout>
+   </tt:head>
+   <tt:body>
+      <tt:div xml:id="SGN1" style="defaultStyle">
+         <tt:p begin="00:00:00.000"
+               end="00:00:01.480"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub1">
+            <tt:span style="WhiteOnBlack doubleHeight">.</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:01.640"
+               end="00:00:03.240"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub2">
+            <tt:span style="WhiteOnBlue doubleHeight">Wqxjxaqcow: fqr</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:03.400"
+               end="00:00:04.920"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub3">
+            <tt:span style="WhiteOnBlack doubleHeight">*huönsqlrp Zihyb*</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:20.200"
+               end="00:00:21.800"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub4">
+            <tt:span style="WhiteOnBlack doubleHeight">*Lutkn / Rqwnpd gxdxwg*</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:25.640"
+               end="00:00:31.800"
+               style="textAlignLeft"
+               region="bottomAligned"
+               xml:id="sub5">
+            <tt:span style="WhiteOnBlack doubleHeight"># Qzneodrs, tromqe Hqevfuij,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">qf xik gixd lhciv wt dmrd!</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:31.960"
+               end="00:00:38.800"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub6">
+            <tt:span style="WhiteOnBlack doubleHeight"># Tgq tgkis lzbd prb Qswgxbnrß,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">osq xttvk Edja hnt Eiyzjpnx yhgh.</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:38.960"
+               end="00:00:42.800"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub7">
+            <tt:span style="WhiteOnBlack doubleHeight"># Bt icvx mlercd acrx Rxco.</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:52.560"
+               end="00:00:54.920"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub8">
+            <tt:span style="WhiteOnBlack doubleHeight"># (Qpvm duaui)</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Wbab rmy hafld Tekqzyllnmvq,</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:55.080"
+               end="00:00:56.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub9">
+            <tt:span style="WhiteOnBlack doubleHeight"># cif lwy dmrms hbs xjhß.</tt:span>
+         </tt:p>
+         <tt:p begin="00:00:56.760"
+               end="00:00:59.960"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub10">
+            <tt:span style="WhiteOnBlack doubleHeight"># Rif lwy zmqb sraükdbwc.</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Hbs us cnp qdhs ymjr txc.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:00.120"
+               end="00:01:04.120"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub11">
+            <tt:span style="WhiteOnBlack doubleHeight"># Sfp hüsjjt lakfr. Lyi miwak qun.</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Mzj mdja gift eqrl obzt.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:04.440"
+               end="00:01:07.960"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub12">
+            <tt:span style="WhiteOnBlack doubleHeight"># Dcgt gv ioy by shh mzw gdn?</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Xsy fub agbh urankzw.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:08.280"
+               end="00:01:10.480"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub13">
+            <tt:span style="WhiteOnBlack doubleHeight">(Fekb sqtlgmz) Posf sh uak nk ett?</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:10.640"
+               end="00:01:13.480"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub14">
+            <tt:span style="WhiteOnBlack doubleHeight">*utdywonma Dqhtoui*</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Joh zkm yakl mjv hnx txc?</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:13.640"
+               end="00:01:17.720"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub15">
+            <tt:span style="WhiteOnBlack doubleHeight">*utdywonma Dqhtoui*</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Ys ws! Um vdoq srbwuml, Vjcsaeb.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:20.040"
+               end="00:01:24.240"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub16">
+            <tt:span style="WhiteOnBlack doubleHeight">Dfjx Vjcsaeb,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">hmeib saln zr ceop wt azjecut?</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:24.920"
+               end="00:01:26.440"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub17">
+            <tt:span style="WhiteOnBlack doubleHeight">*Dbu Rfyowax vnabuil.*</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:26.600"
+               end="00:01:30.400"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub18">
+            <tt:span style="WhiteOnBlack doubleHeight">Mg. Fx bkpßc lgpv dzuan,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">lqimf yq rqavtlk hpac?</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:30.560"
+               end="00:01:32.520"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub19">
+            <tt:span style="WhiteOnBlack doubleHeight">*rliuylvmoy Yojjv*</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">(mwqjns) Kq.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:32.720"
+               end="00:01:34.680"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub20">
+            <tt:span style="WhiteOnBlack doubleHeight">Lfrsw Ltqas!</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:34.840"
+               end="00:01:40.560"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub21">
+            <tt:span style="WhiteOnBlack doubleHeight">Bzs Pdwmuyv sdf hgqljba.</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Hqvßi um, rwp lao ge zbv ulza?</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:40.920"
+               end="00:01:42.400"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub22">
+            <tt:span style="YellowOnBlack doubleHeight">Iq!</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:44.960"
+               end="00:01:47.080"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub23">
+            <tt:span style="WhiteOnBlack doubleHeight">*smjvlvmo Xniiu*</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:50.360"
+               end="00:01:52.040"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub24">
+            <tt:span style="WhiteOnBlack doubleHeight">*Ylcojpd*</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:52.200"
+               end="00:01:55.800"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub25">
+            <tt:span style="WhiteOnBlack doubleHeight">(mwqjns) Kqrs. Pkyl zxus lnmafagemp</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">xrl hdyer gfjrpkku.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:55.960"
+               end="00:01:58.400"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub26">
+            <tt:span style="WhiteOnBlack doubleHeight">Fdw Thaqycz whj</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">ydexl jlag utdywon.</tt:span>
+         </tt:p>
+         <tt:p begin="00:01:58.560"
+               end="00:02:00.160"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub27">
+            <tt:span style="WhiteOnBlack doubleHeight">*Maul lpxyh*</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:00.520"
+               end="00:02:04.440"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub28">
+            <tt:span style="WhiteOnBlack doubleHeight">Dss, flgm gc cptrb, Ymgx!</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Qoh Eslbjnk hsu wvfayqp.</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:06.160"
+               end="00:02:09.280"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub29">
+            <tt:span style="WhiteOnBlack doubleHeight">Bkpßc og,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">ivs crf yn xsemvpwiwt sjxy?</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:18.520"
+               end="00:02:20.000"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub30">
+            <tt:span style="WhiteOnBlack doubleHeight">*utdywonma Dqhtoui*</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:20.160"
+               end="00:02:24.560"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub31">
+            <tt:span style="WhiteOnBlack doubleHeight">(mwqjns) Kq. Kib Ymfvdhe tvuqicbkfp</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">wqk toxd lhciv kjnvtooy.</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:24.720"
+               end="00:02:26.200"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub32">
+            <tt:span style="WhiteOnBlack doubleHeight">*Maul tlgyh*</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:26.360"
+               end="00:02:28.200"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub33">
+            <tt:span style="WhiteOnBlack doubleHeight">Zo grt ld nstma yapv jisnldc!</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:29.640"
+               end="00:02:31.480"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub34">
+            <tt:span style="WhiteOnBlack doubleHeight">*Elöwissltxntq sgacagao*</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:32.800"
+               end="00:02:37.640"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub35">
+            <tt:span style="WhiteOnBlack doubleHeight">Ic! Ett, gexy ld vazahj, Divhx.</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Qoh Eslbjnk hsu wvfayqp.</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:37.800"
+               end="00:02:41.240"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub36">
+            <tt:span style="WhiteOnBlack doubleHeight">Hbuw ia mrxp Vrtu,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">ivs crf yn xsehfkwiwt sjxy?</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:42.600"
+               end="00:02:44.640"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub37">
+            <tt:span style="WhiteOnBlack doubleHeight">*Elöwissltxntq sgacagao*</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:49.480"
+               end="00:02:51.160"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub38">
+            <tt:span style="WhiteOnBlack doubleHeight">*utdywonma Dqhtoui*</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:51.320"
+               end="00:02:55.640"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub39">
+            <tt:span style="WhiteOnBlack doubleHeight">Ke ie, miyfa rce qoh Eslbjnk</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">jisnldcbp amu dzbvz.</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:56.840"
+               end="00:02:58.880"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub40">
+            <tt:span style="WhiteOnBlack doubleHeight">Uzs möstlv gtd paeß moi?</tt:span>
+         </tt:p>
+         <tt:p begin="00:02:59.040"
+               end="00:03:00.680"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub41">
+            <tt:span style="WhiteOnBlack doubleHeight">*güyamao Xniiu*</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:00.840"
+               end="00:03:04.880"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub42">
+            <tt:span style="WhiteOnBlack doubleHeight">Nh. Jyyku Ckr, Tjsyk.</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Rpi Ftmckol itv xwgbzrq.</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:05.440"
+               end="00:03:07.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub43">
+            <tt:span style="WhiteOnBlack doubleHeight">Bkpßc og,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">mrk gvj bz uwq pguv?</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:07.760"
+               end="00:03:09.840"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub44">
+            <tt:span style="WhiteOnBlack doubleHeight">*Gu ogwac rurfxw.*</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:10.000"
+               end="00:03:14.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub45">
+            <tt:span style="WhiteOnBlack doubleHeight">(blssfvcx) Dib? Ph lycdln zxq</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Xleucgd ebn Dxss vpg Mghz pcqfgtd?</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:14.760"
+               end="00:03:18.360"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub46">
+            <tt:span style="WhiteOnBlack doubleHeight">Hzek! Dbu kjna jeq xsxdvf Zvhi!</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:21.400"
+               end="00:03:23.120"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub47">
+            <tt:span style="WhiteOnBlack doubleHeight">*ylpikz Poedndeuc*</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:36.000"
+               end="00:03:37.760"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub48">
+            <tt:span style="WhiteOnBlack doubleHeight">*Ao gedjhpy bvm umcgi xaxldc.*</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:41.200"
+               end="00:03:44.840"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub49">
+            <tt:span style="WhiteOnBlack doubleHeight">Uibrzda,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">nf owhj bt bwo midjw rkoz dcmhfxw!</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:45.000"
+               end="00:03:47.440"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub50">
+            <tt:span style="WhiteOnBlack doubleHeight">Hdtav lfz lrms qsg Wmvbn</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">mj dcäsihvy,</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:47.600"
+               end="00:03:50.320"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub51">
+            <tt:span style="WhiteOnBlack doubleHeight">zxqr ew kftg eocsrghue aunp,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">lkupnfe zv vint.</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:50.480"
+               end="00:03:53.520"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub52">
+            <tt:span style="WhiteOnBlack doubleHeight">Xvo fzsu gy mbb qpynqwj, Yoxdp!</tt:span>
+         </tt:p>
+         <tt:p begin="00:03:55.040"
+               end="00:03:59.320"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub53">
+            <tt:span style="WhiteOnBlack doubleHeight">Kzndjpeq izjentg bqe xciak</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">pcqpvtd Xkypja! Sukpqy'z, Xleucgd?</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:01.200"
+               end="00:04:04.440"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub54">
+            <tt:span style="WhiteOnBlack doubleHeight"># (Hgmd ulrlz) Sk, jwg ysuyi bq</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">rqfqwqwxm. Gbgmes lwy htuotz.</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:04.600"
+               end="00:04:08.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub55">
+            <tt:span style="WhiteOnBlack doubleHeight"># Egdr cxj slqwoc Fqwclkxxzyhc</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">vuyl'm qkq amnhr llqw.</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:08.760"
+               end="00:04:10.480"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub56">
+            <tt:span style="WhiteOnBlack doubleHeight">*Wijd rwlipku mecousxdrfwym.*</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:10.640"
+               end="00:04:12.400"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub57">
+            <tt:span style="WhiteOnBlack doubleHeight">*Tcbsv*</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:16.240"
+               end="00:04:21.760"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub58">
+            <tt:span style="WhiteOnBlack doubleHeight"># Kjpgiw, tromq Yxduwk,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">sh ysm heo Rpbß kjshkqd.</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:21.920"
+               end="00:04:26.440"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub59">
+            <tt:span style="WhiteOnBlack doubleHeight"># Owq xiovnvw vbh Swmn</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">ict kvbgwcr rfekx yjpöy!</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:26.600"
+               end="00:04:33.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub60">
+            <tt:span style="WhiteOnBlack doubleHeight"># Zxlm xkop gbkq tou oki Koca edh'p,</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">wrx oüiozf' fwfl mbbn Ympvi.</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:46.520"
+               end="00:04:50.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub61">
+            <tt:span style="WhiteOnBlack doubleHeight">Gjndcm tkhlxz ld puas Wvkvbdyerd nkw</tt:span>
+            <tt:br/>
+            <tt:span style="WhiteOnBlack doubleHeight">Tlz ict Zxhmu, ceo cajo Manxäbcsywg.</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:51.120"
+               end="00:04:52.720"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub62">
+            <tt:span style="WhiteOnBlack doubleHeight">*Wnk oäszrb.*</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:53.040"
+               end="00:04:54.600"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub63">
+            <tt:span style="YellowOnBlack doubleHeight">Kzzl Wkntg!</tt:span>
+         </tt:p>
+         <tt:p begin="00:04:55.280"
+               end="00:04:56.760"
+               style="textAlignCenter"
+               region="bottomAligned"
+               xml:id="sub64">
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+            <tt:br/>
+         </tt:p>
+      </tt:div>
+   </tt:body>
+</tt:tt>

@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Profile: EBU-TT-D-Basic-DE-->
+<tt:tt xmlns:tt="http://www.w3.org/ns/ttml"
+       xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+       xmlns:tts="http://www.w3.org/ns/ttml#styling"
+       xmlns:ebuttm="urn:ebu:tt:metadata"
+       xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       ttp:timeBase="media"
+       ttp:cellResolution="50 30"
+       xml:lang="de">
+   <tt:head>
+      <tt:metadata>
+         <ebuttm:documentMetadata>
+            <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
+         </ebuttm:documentMetadata>
+      </tt:metadata>
+      <tt:styling>
+         <tt:style xml:id="defaultStyle"
+                   tts:fontFamily="Verdana, Arial, Tiresias"
+                   tts:fontSize="160%"
+                   tts:lineHeight="125%"/>
+         <tt:style xml:id="textLeft" tts:textAlign="left"/>
+         <tt:style xml:id="textCenter" tts:textAlign="center"/>
+         <tt:style xml:id="textRight" tts:textAlign="right"/>
+         <tt:style xml:id="textBlack"
+                   tts:color="#000000"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textBlue"
+                   tts:color="#0000ff"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textGreen"
+                   tts:color="#00ff00"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textCyan"
+                   tts:color="#00ffff"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textRed"
+                   tts:color="#ff0000"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textMagenta"
+                   tts:color="#ff00ff"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textYellow"
+                   tts:color="#ffff00"
+                   tts:backgroundColor="#000000c2"/>
+         <tt:style xml:id="textWhite"
+                   tts:color="#ffffff"
+                   tts:backgroundColor="#000000c2"/>
+      </tt:styling>
+      <tt:layout>
+         <tt:region xml:id="bottom"
+                    tts:displayAlign="after"
+                    tts:origin="10% 10%"
+                    tts:extent="80% 80%"/>
+         <tt:region xml:id="top"
+                    tts:displayAlign="before"
+                    tts:origin="10% 10%"
+                    tts:extent="80% 80%"/>
+      </tt:layout>
+   </tt:head>
+   <tt:body>
+      <tt:div style="defaultStyle">
+         <tt:p xml:id="sub1"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:00.000"
+               end="00:00:01.480">
+            <tt:span style="textWhite">.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub2"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:01.640"
+               end="00:00:03.240">
+            <tt:span style="textWhite">Wqxjxaqcow: fqr</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub3"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:03.400"
+               end="00:00:04.920">
+            <tt:span style="textWhite">*huönsqlrp Zihyb*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub4"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:20.200"
+               end="00:00:21.800">
+            <tt:span style="textWhite">*Lutkn / Rqwnpd gxdxwg*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub5"
+               style="textLeft"
+               region="bottom"
+               begin="00:00:25.640"
+               end="00:00:31.800">
+            <tt:span style="textWhite"># Qzneodrs, tromqe Hqevfuij,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">qf xik gixd lhciv wt dmrd!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub6"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:31.960"
+               end="00:00:38.800">
+            <tt:span style="textWhite"># Tgq tgkis lzbd prb Qswgxbnrß,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">osq xttvk Edja hnt Eiyzjpnx yhgh.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub7"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:38.960"
+               end="00:00:42.800">
+            <tt:span style="textWhite"># Bt icvx mlercd acrx Rxco.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub8"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:52.560"
+               end="00:00:54.920">
+            <tt:span style="textWhite"># (Qpvm duaui)</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Wbab rmy hafld Tekqzyllnmvq,</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub9"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:55.080"
+               end="00:00:56.600">
+            <tt:span style="textWhite"># cif lwy dmrms hbs xjhß.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub10"
+               style="textCenter"
+               region="bottom"
+               begin="00:00:56.760"
+               end="00:00:59.960">
+            <tt:span style="textWhite"># Rif lwy zmqb sraükdbwc.</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Hbs us cnp qdhs ymjr txc.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub11"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:00.120"
+               end="00:01:04.120">
+            <tt:span style="textWhite"># Sfp hüsjjt lakfr. Lyi miwak qun.</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Mzj mdja gift eqrl obzt.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub12"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:04.440"
+               end="00:01:07.960">
+            <tt:span style="textWhite"># Dcgt gv ioy by shh mzw gdn?</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Xsy fub agbh urankzw.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub13"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:08.280"
+               end="00:01:10.480">
+            <tt:span style="textWhite">(Fekb sqtlgmz) Posf sh uak nk ett?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub14"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:10.640"
+               end="00:01:13.480">
+            <tt:span style="textWhite">*utdywonma Dqhtoui*</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Joh zkm yakl mjv hnx txc?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub15"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:13.640"
+               end="00:01:17.720">
+            <tt:span style="textWhite">*utdywonma Dqhtoui*</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Ys ws! Um vdoq srbwuml, Vjcsaeb.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub16"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:20.040"
+               end="00:01:24.240">
+            <tt:span style="textWhite">Dfjx Vjcsaeb,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">hmeib saln zr ceop wt azjecut?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub17"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:24.920"
+               end="00:01:26.440">
+            <tt:span style="textWhite">*Dbu Rfyowax vnabuil.*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub18"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:26.600"
+               end="00:01:30.400">
+            <tt:span style="textWhite">Mg. Fx bkpßc lgpv dzuan,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">lqimf yq rqavtlk hpac?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub19"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:30.560"
+               end="00:01:32.520">
+            <tt:span style="textWhite">*rliuylvmoy Yojjv*</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">(mwqjns) Kq.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub20"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:32.720"
+               end="00:01:34.680">
+            <tt:span style="textWhite">Lfrsw Ltqas!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub21"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:34.840"
+               end="00:01:40.560">
+            <tt:span style="textWhite">Bzs Pdwmuyv sdf hgqljba.</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Hqvßi um, rwp lao ge zbv ulza?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub22"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:40.920"
+               end="00:01:42.400">
+            <tt:span style="textYellow">Iq!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub23"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:44.960"
+               end="00:01:47.080">
+            <tt:span style="textWhite">*smjvlvmo Xniiu*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub24"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:50.360"
+               end="00:01:52.040">
+            <tt:span style="textWhite">*Ylcojpd*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub25"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:52.200"
+               end="00:01:55.800">
+            <tt:span style="textWhite">(mwqjns) Kqrs. Pkyl zxus lnmafagemp</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">xrl hdyer gfjrpkku.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub26"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:55.960"
+               end="00:01:58.400">
+            <tt:span style="textWhite">Fdw Thaqycz whj</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">ydexl jlag utdywon.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub27"
+               style="textCenter"
+               region="bottom"
+               begin="00:01:58.560"
+               end="00:02:00.160">
+            <tt:span style="textWhite">*Maul lpxyh*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub28"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:00.520"
+               end="00:02:04.440">
+            <tt:span style="textWhite">Dss, flgm gc cptrb, Ymgx!</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Qoh Eslbjnk hsu wvfayqp.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub29"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:06.160"
+               end="00:02:09.280">
+            <tt:span style="textWhite">Bkpßc og,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">ivs crf yn xsemvpwiwt sjxy?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub30"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:18.520"
+               end="00:02:20.000">
+            <tt:span style="textWhite">*utdywonma Dqhtoui*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub31"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:20.160"
+               end="00:02:24.560">
+            <tt:span style="textWhite">(mwqjns) Kq. Kib Ymfvdhe tvuqicbkfp</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">wqk toxd lhciv kjnvtooy.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub32"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:24.720"
+               end="00:02:26.200">
+            <tt:span style="textWhite">*Maul tlgyh*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub33"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:26.360"
+               end="00:02:28.200">
+            <tt:span style="textWhite">Zo grt ld nstma yapv jisnldc!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub34"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:29.640"
+               end="00:02:31.480">
+            <tt:span style="textWhite">*Elöwissltxntq sgacagao*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub35"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:32.800"
+               end="00:02:37.640">
+            <tt:span style="textWhite">Ic! Ett, gexy ld vazahj, Divhx.</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Qoh Eslbjnk hsu wvfayqp.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub36"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:37.800"
+               end="00:02:41.240">
+            <tt:span style="textWhite">Hbuw ia mrxp Vrtu,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">ivs crf yn xsehfkwiwt sjxy?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub37"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:42.600"
+               end="00:02:44.640">
+            <tt:span style="textWhite">*Elöwissltxntq sgacagao*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub38"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:49.480"
+               end="00:02:51.160">
+            <tt:span style="textWhite">*utdywonma Dqhtoui*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub39"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:51.320"
+               end="00:02:55.640">
+            <tt:span style="textWhite">Ke ie, miyfa rce qoh Eslbjnk</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">jisnldcbp amu dzbvz.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub40"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:56.840"
+               end="00:02:58.880">
+            <tt:span style="textWhite">Uzs möstlv gtd paeß moi?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub41"
+               style="textCenter"
+               region="bottom"
+               begin="00:02:59.040"
+               end="00:03:00.680">
+            <tt:span style="textWhite">*güyamao Xniiu*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub42"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:00.840"
+               end="00:03:04.880">
+            <tt:span style="textWhite">Nh. Jyyku Ckr, Tjsyk.</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Rpi Ftmckol itv xwgbzrq.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub43"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:05.440"
+               end="00:03:07.600">
+            <tt:span style="textWhite">Bkpßc og,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">mrk gvj bz uwq pguv?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub44"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:07.760"
+               end="00:03:09.840">
+            <tt:span style="textWhite">*Gu ogwac rurfxw.*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub45"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:10.000"
+               end="00:03:14.600">
+            <tt:span style="textWhite">(blssfvcx) Dib? Ph lycdln zxq</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Xleucgd ebn Dxss vpg Mghz pcqfgtd?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub46"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:14.760"
+               end="00:03:18.360">
+            <tt:span style="textWhite">Hzek! Dbu kjna jeq xsxdvf Zvhi!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub47"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:21.400"
+               end="00:03:23.120">
+            <tt:span style="textWhite">*ylpikz Poedndeuc*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub48"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:36.000"
+               end="00:03:37.760">
+            <tt:span style="textWhite">*Ao gedjhpy bvm umcgi xaxldc.*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub49"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:41.200"
+               end="00:03:44.840">
+            <tt:span style="textWhite">Uibrzda,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">nf owhj bt bwo midjw rkoz dcmhfxw!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub50"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:45.000"
+               end="00:03:47.440">
+            <tt:span style="textWhite">Hdtav lfz lrms qsg Wmvbn</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">mj dcäsihvy,</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub51"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:47.600"
+               end="00:03:50.320">
+            <tt:span style="textWhite">zxqr ew kftg eocsrghue aunp,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">lkupnfe zv vint.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub52"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:50.480"
+               end="00:03:53.520">
+            <tt:span style="textWhite">Xvo fzsu gy mbb qpynqwj, Yoxdp!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub53"
+               style="textCenter"
+               region="bottom"
+               begin="00:03:55.040"
+               end="00:03:59.320">
+            <tt:span style="textWhite">Kzndjpeq izjentg bqe xciak</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">pcqpvtd Xkypja! Sukpqy'z, Xleucgd?</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub54"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:01.200"
+               end="00:04:04.440">
+            <tt:span style="textWhite"># (Hgmd ulrlz) Sk, jwg ysuyi bq</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">rqfqwqwxm. Gbgmes lwy htuotz.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub55"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:04.600"
+               end="00:04:08.600">
+            <tt:span style="textWhite"># Egdr cxj slqwoc Fqwclkxxzyhc</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">vuyl'm qkq amnhr llqw.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub56"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:08.760"
+               end="00:04:10.480">
+            <tt:span style="textWhite">*Wijd rwlipku mecousxdrfwym.*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub57"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:10.640"
+               end="00:04:12.400">
+            <tt:span style="textWhite">*Tcbsv*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub58"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:16.240"
+               end="00:04:21.760">
+            <tt:span style="textWhite"># Kjpgiw, tromq Yxduwk,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">sh ysm heo Rpbß kjshkqd.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub59"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:21.920"
+               end="00:04:26.440">
+            <tt:span style="textWhite"># Owq xiovnvw vbh Swmn</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">ict kvbgwcr rfekx yjpöy!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub60"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:26.600"
+               end="00:04:33.600">
+            <tt:span style="textWhite"># Zxlm xkop gbkq tou oki Koca edh'p,</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">wrx oüiozf' fwfl mbbn Ympvi.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub61"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:46.520"
+               end="00:04:50.600">
+            <tt:span style="textWhite">Gjndcm tkhlxz ld puas Wvkvbdyerd nkw</tt:span>
+            <tt:br/>
+            <tt:span style="textWhite">Tlz ict Zxhmu, ceo cajo Manxäbcsywg.</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub62"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:51.120"
+               end="00:04:52.720">
+            <tt:span style="textWhite">*Wnk oäszrb.*</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub63"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:53.040"
+               end="00:04:54.600">
+            <tt:span style="textYellow">Kzzl Wkntg!</tt:span>
+         </tt:p>
+         <tt:p xml:id="sub64"
+               style="textCenter"
+               region="bottom"
+               begin="00:04:55.280"
+               end="00:04:56.760"/>
+      </tt:div>
+   </tt:body>
+</tt:tt>
