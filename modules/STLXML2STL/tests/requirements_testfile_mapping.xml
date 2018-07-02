@@ -85,6 +85,8 @@ limitations under the License.
 	<requirement name="requirement-0334-001" file="testfile_tti_newline.xml"/>
 	<requirement name="requirement-0335-001" file="testfile_generic.xml"/>
 
+	<requirement name="requirement-0397-001" file="requirement-0397-001.xml"/>
+	<requirement name="requirement-0397-002" file="requirement-0397-002.xml"/>
 	<requirement name="requirement-0398-001" file="requirement-0398-001.xml"/>
 	
 	<requirement name="requirement-0422-001" file="requirement-0422-001.xml"/>
