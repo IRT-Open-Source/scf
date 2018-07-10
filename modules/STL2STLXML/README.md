@@ -18,6 +18,10 @@ Python 2.7.x
 
 -s, --separate_tti <i>Disable merging of multiple text TTI blocks of the same subtitle.</i>
 
+-a, --clear_uda <i>Clear the User-Defined Area (UDA) field of the GSI block.</i>
+
+-u, --discard_user_data <i>Discard all TTI blocks with User Data (EBN 0xFE).</i>
+
 
 ## DESCRIPTION
 Decodes the EBU STL file and exports it in an XML representation that
