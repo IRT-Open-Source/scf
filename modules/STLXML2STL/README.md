@@ -32,6 +32,7 @@ basex -i input.xml stlxml2stl_helper.xq > output.stl
 ## Notes
 * Supported EBU STL code pages (CPNs) for GSI data:
   * `850` (Multilingual)
+  * `437` (United states)
 
 * Supported EBU STL character code tables (CCTs) for TTI blocks:
   * `00` (ISO 6937/2-1983 incl. diacritics)
