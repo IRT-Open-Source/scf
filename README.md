@@ -16,7 +16,8 @@ needed. You could use for example a [Saxon XSLT processor](http://saxon.sourcefo
 from version 6.5.5.
 
 The STLXML2EBU-TT and EBU-TT2STLXML modules require XSLT 2.0 support
-(or instead EXSLT support).
+(or instead EXSLT support). The STLXML-SplitBlocks module requires
+XSLT 2.0 support.
 
 To validate an STLXML document with the STLXML W3C XML Schema an
 XML Schema 1.0 parser is required. You could use for example
@@ -54,10 +55,11 @@ output).
 ## DESCRIPTION
 
 ### Modules
-Currently the SCF has the following seven core modules:
+Currently the SCF has the following eight core modules:
 
 * STLXML-XSD
 * STL2STLXML
+* STLXML-SplitBlocks
 * STLXML2STL
 * STLXML2EBU-TT
 * EBU-TT2STLXML
@@ -78,6 +80,11 @@ lead to unexpected results.
 The STL2STLXML script decodes the EBU STL file and exports it in an XML
 representation that can be used for further processing with XML
 technologies or for debugging purposes.
+
+#### STLXML-SplitBlocks
+The STLXML-SplitBlocks module splits TTI blocks that exceed the maximum
+Text Field (TF) size in EBU STL. It should be applied to an STLXML file
+before processing that file with STLXML2STL.
 
 #### STLXML2STL
 The STLXML2STL module converts an XML representation of EBU STL to a
