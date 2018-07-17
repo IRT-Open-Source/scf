@@ -38,7 +38,7 @@ basex -i input.xml stlxml2stl_helper.xq > output.stl
   * `00` (ISO 6937/2-1983 incl. diacritics)
 
 ## AUTHORS
-Development: Lukas Kircher
+Development: Lukas Kircher, Stefan Pöschel
 
 QC: Stefan Pöschel
 
