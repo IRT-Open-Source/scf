@@ -299,7 +299,7 @@ declare variable $_:CCT-00 := map {
   
   '00A4': '24', (: ¤:)
   
-  '00A0': 'A0', (:   (NBSP):)
+  '00A0': 'A0', (:   (NBSP = NO-BREAK SPACE):)
   '00A1': 'A1', (: ¡:)
   '00A2': 'A2', (: ¢:)
   '00A3': 'A3', (: £:)
@@ -375,7 +375,7 @@ declare variable $_:CCT-00 := map {
   '00FE': 'FC', (: þ:)
   '0167': 'FD', (: ŧ:)
   '014B': 'FE', (: ŋ:)
-  '00AD': 'FF'  (: ­ (SHY):)
+  '00AD': 'FF'  (: ­ (SHY = SOFT HYPHEN):)
 };
 (: map Unicode code point to CP850 hex :)
 declare variable $_:CP850 := map {
