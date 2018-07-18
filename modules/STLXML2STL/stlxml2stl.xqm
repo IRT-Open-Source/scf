@@ -210,7 +210,7 @@ declare function tti-encode-text-field-chars($s as xs:string, $cct as xs:string)
     for $cp in $utf8-normalized-cps
     let $hex := bin:pack-integer($cp, 2) ! xs:hexBinary(.)
     (: use mapping for non-ascii characters :)
-    return if($hex ge xs:hexBinary('00A0')) then
+    return if(($hex ge xs:hexBinary('00A0')) or ($hex eq xs:hexBinary('0024'))) then
       ($_:CCT-00(xs:string($hex)), $_:DIACRITIC(xs:string($hex)))[1]
     else
       $hex ! fn:string(.) ! fn:substring(., 3, 2)
@@ -296,7 +296,16 @@ declare variable $_:DIACRITIC := map {
 };
 declare variable $_:CCT-00 := map {
   '000A': '8A', (: line break:)
-  '00A4': 'A8', (: ¤:)
+  
+  '00A4': '24', (: ¤:)
+  
+  '00A0': 'A0', (:   (NBSP):)
+  '00A1': 'A1', (: ¡:)
+  '00A2': 'A2', (: ¢:)
+  '00A3': 'A3', (: £:)
+  '0024': 'A4', (: $:)
+  '00A5': 'A5', (: ¥:)
+  '00A7': 'A7', (: §:)
   '2018': 'A9', (: ‘:)
   '201C': 'AA', (: “:)
   '00AB': 'AB', (: «:)
@@ -304,14 +313,24 @@ declare variable $_:CCT-00 := map {
   '2191': 'AD', (: ↑:)
   '2192': 'AE', (: →:)
   '2193': 'AF', (: ↓:)
+  
+  '00B0': 'B0', (: °:)
+  '00B1': 'B1', (: ±:)
+  '00B2': 'B2', (: ²:)
+  '00B3': 'B3', (: ³:)
   '00D7': 'B4', (: ×:)
+  '00B5': 'B5', (: µ:)
+  '00B6': 'B6', (: ¶:)
+  '00B7': 'B7', (: ·:)
   '00F7': 'B8', (: ÷:)
   '2019': 'B9', (: ’:)
   '201D': 'BA', (: ”:)
+  '00BB': 'BB', (: »:)
   '00BC': 'BC', (: ¼:)
   '00BD': 'BD', (: ½:)
   '00BE': 'BE', (: ¾:)
   '00BF': 'BF', (: ¿:)
+  
   '2015': 'D0', (: ―:)
   '00B9': 'D1', (: ¹:)
   '00AE': 'D2', (: ®:)
@@ -325,7 +344,7 @@ declare variable $_:CCT-00 := map {
   '215D': 'DE', (: ⅝:)
   '215E': 'DF', (: ⅞:)
   
-  '2126': 'E0', (: Ohm Ω:)
+  '03A9': 'E0', (: Ω:)
   '00C6': 'E1', (: Æ:)
   '0110': 'E2', (: Đ:)
   '00AA': 'E3', (: ª:)
@@ -340,6 +359,7 @@ declare variable $_:CCT-00 := map {
   '0166': 'ED', (: Ŧ:)
   '014A': 'EE', (: Ŋ:)
   '0149': 'EF', (: ŉ:)
+  
   '0138': 'F0', (: ĸ:)
   '00E6': 'F1', (: æ:)
   '0111': 'F2', (: đ:)
@@ -355,9 +375,7 @@ declare variable $_:CCT-00 := map {
   '00FE': 'FC', (: þ:)
   '0167': 'FD', (: ŧ:)
   '014B': 'FE', (: ŋ:)
-  '00AD': 'FF'  (: Soft hyphen:)
-  
-(:  ,'00FC': 'C875' (: ü:):)
+  '00AD': 'FF'  (: ­ (SHY):)
 };
 (: map Unicode code point to CP850 hex :)
 declare variable $_:CP850 := map {

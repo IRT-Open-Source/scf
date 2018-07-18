@@ -55,6 +55,102 @@ limitations under the License.
       <TTI>
         <SGN>0</SGN>
         <SN>0</SN>
+        <EBN>00</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF><space/>!"#¤%&amp;'()*+,-./0123456789:;&lt;=&gt;?<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>01</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>02</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>`abcdefghijklmnopqrstuvwxyz{|}~<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>03</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF> ¡¢£$¥§‘“«←↑→↓<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>04</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>°±²³×µ¶·÷’”»¼½¾¿<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>05</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>―¹®©™♪¬¦⅛⅜⅝⅞<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>06</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>ΩÆĐªĦĲĿŁØŒºÞŦŊŉ<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>07</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>ĸæđðħıĳŀłøœßþŧŋ­<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
         <EBN>ff</EBN>
         <CS>00</CS>
         <TCI>10000000</TCI>
@@ -62,7 +158,7 @@ limitations under the License.
         <VP>22</VP>
         <JC>02</JC>
         <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/>äöüß<EndBox/><EndBox/></TF>
+        <TF>ÄÖÜäöüáèô<newline/></TF>
       </TTI>
     </TTICONTAINER>
   </BODY>
