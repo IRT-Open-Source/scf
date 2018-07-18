@@ -252,12 +252,20 @@ limitations under the License.
         <binary gsi_offset="0" tti_offset="0" field_offset="176">C0C1C2C3C4C5C6C7C8C9CACBCCCDCECFD0D1D2D3D4D5D6D7D8D9DADBDCDDDEDF</binary>
         <binary gsi_offset="0" tti_offset="0" field_offset="341">E0E1E2E3E4E5E6E7E8E9EAEBECEDEEEFF0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF</binary>
     </requirement>
-    <requirement name="requirement-0398-001" description="Text Field mapping - Characters">
-        <binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">C861C86FC875FB</binary>
+    <requirement name="requirement-0398-001" description="Text Field mapping - Characters CCT 00">
+        <binary gsi_offset="1024" tti_offset="0"    field_offset="16" byte_offset="0">202122232425262728292A2B2C2D2E2F303132333435363738393A3B3C3D3E3F8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="128"  field_offset="16" byte_offset="0">404142434445464748494A4B4C4D4E4F505152535455565758595A5B5C5D5E5F8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="256"  field_offset="16" byte_offset="0">606162636465666768696A6B6C6D6E6F707172737475767778797A7B7C7D7E8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="384"  field_offset="16" byte_offset="0">A0A1A2A3A4A5A7A9AAABACADAEAF8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="512"  field_offset="16" byte_offset="0">B0B1B2B3B4B5B6B7B8B9BaBBBCBDBEBF8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="640"  field_offset="16" byte_offset="0">D0D1D2D3D4D5D6D7DCDDDEDF8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="768"  field_offset="16" byte_offset="0">E0E1E2E3E4E6E7E8E9EAEBECEDEEEF8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="896"  field_offset="16" byte_offset="0">F0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="1024" field_offset="16" byte_offset="0">C841C84FC855C861C86FC875C261C165C36F8A8F</binary>
     </requirement>
 
     <requirement name="requirement-0422-001" description="Text Field mapping - ignore undesired characters">
-		<binary gsi_offset="1024" tti_offset="0"   field_offset="16" byte_offset="3">546573740A0A8F</binary>
+		<binary gsi_offset="1024" tti_offset="0" field_offset="16" byte_offset="3">546573740A0A8F</binary>
     </requirement>
     
     <requirement name="requirement-0423-001" description="Text Field mapping - user data">
