@@ -1,4 +1,19 @@
 -----------------------------
+Version 1.2.0
+-----------------------------
+
+STL2STLXML
+- ADDED #44: Options to discard UDA and/or User Data TTI blocks
+
+STLXML-SplitBlocks
+- ADDED #52: Module STLXML-SplitBlocks
+
+STLXML2STL
+- ADDED: Code page 437 support
+- FIXED #51: Missing special characters in CCT 00
+- FIXED: Missing house character in code page 850
+
+-----------------------------
 Version 1.1.1
 -----------------------------
 
