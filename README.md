@@ -15,9 +15,8 @@ For the XSLT modules an XSLT processor that is conformant to XSLT 1.0 is
 needed. You could use for example a [Saxon XSLT processor](http://saxon.sourceforge.net/)
 from version 6.5.5.
 
-The STLXML2EBU-TT and EBU-TT2STLXML modules require XSLT 2.0 support
-(or instead EXSLT support). The STLXML-SplitBlocks module requires
-XSLT 2.0 support.
+The STLXML2EBU-TT, EBU-TT2STLXML and STLXML-SplitBlocks modules require XSLT 2.0 support. For
+the STLXML2EBU-TT and EBU-TT2STLXML modules EXSLT support can be used as fallback.
 
 To validate an STLXML document with the STLXML W3C XML Schema an
 XML Schema 1.0 parser is required. You could use for example
