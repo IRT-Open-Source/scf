@@ -4,6 +4,10 @@ binary file that conforms to EBU STL (EBU Tech 3264). The module is
 written in XQuery and designed to be executed with BaseX or Saxon XQuery
 processors.
 
+Note that the `STLXML-SplitBlocks` module should be applied to an STLXML
+file before using this module. See the README of that module for further
+details.
+
 ## Prerequisites
 [BaseX 8.4](http://basex.org/) or [Saxon Enterprise Edition (EE) 9.6.0.5](www.saxonica.com/) (tested with these versions).
 
@@ -32,12 +36,13 @@ basex -i input.xml stlxml2stl_helper.xq > output.stl
 ## Notes
 * Supported EBU STL code pages (CPNs) for GSI data:
   * `850` (Multilingual)
+  * `437` (United states)
 
 * Supported EBU STL character code tables (CCTs) for TTI blocks:
   * `00` (ISO 6937/2-1983 incl. diacritics)
 
 ## AUTHORS
-Development: Lukas Kircher
+Development: Lukas Kircher, Stefan Pöschel
 
 QC: Stefan Pöschel
 

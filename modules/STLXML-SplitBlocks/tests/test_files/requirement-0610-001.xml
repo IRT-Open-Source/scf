@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+Copyright 2018 Institut für Rundfunktechnik GmbH, Munich, Germany
 
 Licensed under the Apache License, Version 2.0 (the "License"); 
 you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ limitations under the License.
       <TN>Open Source Translator          </TN>
       <TCD>open.source@irt.de              </TCD>
       <SLR>ABC-4711        </SLR>
-      <CD>151217</CD>
-      <RD>151217</RD>
+      <CD>180719</CD>
+      <RD>180719</RD>
       <RN> 0</RN>
-      <TNB>1    </TNB>
-      <TNS>1    </TNS>
+      <TNB>3    </TNB>
+      <TNS>3    </TNS>
       <TNG>1  </TNG>
       <MNC>40</MNC>
       <MNR>23</MNR>
@@ -62,7 +62,43 @@ limitations under the License.
         <VP>22</VP>
         <JC>02</JC>
         <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/>Test<EndBox/><EndBox/><newline/><DoubleHeight/><StartBox/><StartBox/>Test<EndBox/><EndBox/></TF>
+        <TF>
+          Test
+          <space/>
+          before
+        </TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>1</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000200</TCI>
+        <TCO>10000403</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>
+          Test
+          <space/>
+          text
+        </TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>2</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000400</TCI>
+        <TCO>10000603</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>
+          Test
+          <space/>
+          after
+        </TF>
       </TTI>
     </TTICONTAINER>
   </BODY>

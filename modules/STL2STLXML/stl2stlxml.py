@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding=utf8 -*-
 # Copyright 2014 Yann Coupin, and
-# Copyright 2014 Institut für Rundfunktechnik GmbH, Munich, Germany
+# Copyright 2014-2018 Institut für Rundfunktechnik GmbH, Munich, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -362,8 +362,10 @@ class STL:
         0xE0a0: 'space'
     }
 
-    def __init__(self, separate_tti):
+    def __init__(self, separate_tti, clear_uda, discard_user_data):
         self.separate_tti = separate_tti
+        self.clear_uda = clear_uda
+        self.discard_user_data = discard_user_data
         self.tti = []
         # register all encodings that can be used for the Text Fields of the TTI blocks in STL
         codecs.register(iso6937().search)
@@ -411,8 +413,11 @@ class STL:
         # Number of TTI Blocks
         self.numberOfTTI = int(GSI['TNB'])
         
-        # Output UDA as base64 (without trailing spaces)
-        GSI['UDA'] = base64.b64encode(GSI['UDA'].rstrip(" "))
+        # Output UDA as base64 (without trailing spaces), if field content to be kept
+        if not self.clear_uda:
+            GSI['UDA'] = base64.b64encode(GSI['UDA'].rstrip(" "))
+        else:
+            GSI['UDA'] = ''
 
     def _readTTI(self, fileHandle):
         eofReached = False
@@ -443,9 +448,10 @@ class STL:
                 TTI['TCO'] = "%02d%02d%02d%02d" % (TTI['TCOh'], TTI['TCOm'],
                                                    TTI['TCOs'], TTI['TCOf'])
                 if TTI['EBN'] == 'fe':
-                    # Output User Data as base64
-                    TTI['TF'] = base64.b64encode(TTI['TF'])
-                    self.tti.append(TTI)
+                    # Output User Data as base64, if TTI block to be kept
+                    if not self.discard_user_data:
+                        TTI['TF'] = base64.b64encode(TTI['TF'])
+                        self.tti.append(TTI)
                     continue    # preserve txt, as there may be more than one text TTI
                 else:
                     txt += TTI['TF'].decode(self.codePage)  # add the decoded text
@@ -564,11 +570,15 @@ def main():
                         dest='pretty_xml', action='store_const', const=True, default=False)
     parser.add_argument('-s', '--separate_tti', help="if text TTI blocks shall NOT be merged",
                         dest='separate_tti', action='store_const', const=True, default=False)
+    parser.add_argument('-a', '--clear_uda', help="clear User-Defined Area (UDA) field",
+                        dest='clear_uda', action='store_const', const=True, default=False)
+    parser.add_argument('-u', '--discard_user_data', help="discard TTI blocks with User Data",
+                        dest='discard_user_data', action='store_const', const=True, default=False)
 
     args = parser.parse_args()
 
     # Read STL file
-    stl = STL(args.separate_tti)
+    stl = STL(args.separate_tti, args.clear_uda, args.discard_user_data)
     with open(args.stl_file, 'rb') as inputHandle:
         stl.readSTL(inputHandle)
 

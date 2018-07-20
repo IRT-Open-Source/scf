@@ -23,18 +23,18 @@ limitations under the License.
       <DSC>2</DSC>
       <CCT>00</CCT>
       <LC>08</LC>
-      <OPT>IRT Testsendung                 </OPT>
-      <OET>IRT Testfolge                   </OET>
-      <TPT>IRT Test Programme              </TPT>
-      <TET>IRT Test Episode                </TET>
-      <TN>Open Source Translator          </TN>
-      <TCD>open.source@irt.de              </TCD>
+      <OPT> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?</OPT>
+      <OET>@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_</OET>
+      <TPT>`abcdefghijklmnopqrstuvwxyz{|}~⌂</TPT>
+      <TET>ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒ</TET>
+      <TN>áíóúñÑªº¿®¬½¼¡«»░▒▓│┤ÁÂÀ©╣║╗╝¢¥┐</TN>
+      <TCD>└┴┬├─┼ãÃ╚╔╩╦╠═╬¤ðÐÊËÈıÍÎÏ┘┌█▄¦Ì▀</TCD>
       <SLR>ABC-4711        </SLR>
       <CD>151217</CD>
       <RD>151217</RD>
       <RN> 0</RN>
-      <TNB>1    </TNB>
-      <TNS>1    </TNS>
+      <TNB>4    </TNB>
+      <TNS>4    </TNS>
       <TNG>1  </TNG>
       <MNC>40</MNC>
       <MNR>23</MNR>
@@ -46,7 +46,7 @@ limitations under the License.
       <CO>DEU</CO>
       <PUB>Institut für Rundfunktechnik    </PUB>
       <EN>Open Source Editor              </EN>
-      <ECD>open.source@irt.de              </ECD>
+      <ECD>ÓßÔÒõÕµþÞÚÛÙýÝ¯´­±‗¾¶§÷¸°¨·¹³²■ </ECD>
       <UDA/>
     </GSI>
   </HEAD>
@@ -62,7 +62,7 @@ limitations under the License.
         <VP>22</VP>
         <JC>02</JC>
         <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/>Test<EndBox/><EndBox/><newline/><DoubleHeight/><StartBox/><StartBox/>Test<EndBox/><EndBox/></TF>
+        <TF><DoubleHeight/><StartBox/><StartBox/>Test<EndBox/><EndBox/></TF>
       </TTI>
     </TTICONTAINER>
   </BODY>

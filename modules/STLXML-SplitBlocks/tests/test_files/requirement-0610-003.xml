@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright 2016 Institut für Rundfunktechnik GmbH, Munich, Germany
+Copyright 2018 Institut für Rundfunktechnik GmbH, Munich, Germany
 
 Licensed under the Apache License, Version 2.0 (the "License"); 
 you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ limitations under the License.
       <TN>Open Source Translator          </TN>
       <TCD>open.source@irt.de              </TCD>
       <SLR>ABC-4711        </SLR>
-      <CD>151217</CD>
-      <RD>151217</RD>
+      <CD>180719</CD>
+      <RD>180719</RD>
       <RN> 0</RN>
-      <TNB>8    </TNB>
-      <TNS>8    </TNS>
+      <TNB>3    </TNB>
+      <TNS>3    </TNS>
       <TNG>1  </TNG>
       <MNC>40</MNC>
       <MNR>23</MNR>
@@ -58,11 +58,15 @@ limitations under the License.
         <EBN>ff</EBN>
         <CS>00</CS>
         <TCI>10000000</TCI>
-        <TCO>10000100</TCO>
+        <TCO>10000203</TCO>
         <VP>22</VP>
         <JC>02</JC>
         <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaBlack/>Test<EndBox/><EndBox/></TF>
+        <TF>
+          Test
+          <space/>
+          before
+        </TF>
       </TTI>
       <TTI>
         <SGN>0</SGN>
@@ -70,11 +74,69 @@ limitations under the License.
         <EBN>ff</EBN>
         <CS>00</CS>
         <TCI>10000200</TCI>
-        <TCO>10000300</TCO>
+        <TCO>10000403</TCO>
         <VP>22</VP>
         <JC>02</JC>
         <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaRed/>Test<EndBox/><EndBox/></TF>
+        <TF>
+          Öhis
+          <space/>
+          subtitle
+          <space/>
+          Text
+          <space/>
+          is
+          <space/>
+          112
+          <space/>
+          bytes
+          <space/>
+          long
+          <space/>
+          and
+          <space/>
+          used
+          <space/>
+          to
+          <space/>
+          exceed
+          <space/>
+          the
+          <space/>
+          maximum
+          <space/>
+          size
+          <space/>
+          of
+          <space/>
+          the
+          <space/>
+          Text
+          <space/>
+          Field
+          <space/>
+          for
+          <space/>
+          testing
+          <space/>
+          purposes.
+          <space/>
+          Further
+          <space/>
+          text
+          <space/>
+          intended
+          <space/>
+          for
+          <space/>
+          a
+          <space/>
+          second
+          <space/>
+          TTI
+          <space/>
+          block.
+        </TF>
       </TTI>
       <TTI>
         <SGN>0</SGN>
@@ -82,71 +144,15 @@ limitations under the License.
         <EBN>ff</EBN>
         <CS>00</CS>
         <TCI>10000400</TCI>
-        <TCO>10000500</TCO>
+        <TCO>10000603</TCO>
         <VP>22</VP>
         <JC>02</JC>
         <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaGreen/>Test<EndBox/><EndBox/></TF>
-      </TTI>
-      <TTI>
-        <SGN>0</SGN>
-        <SN>3</SN>
-        <EBN>ff</EBN>
-        <CS>00</CS>
-        <TCI>10000600</TCI>
-        <TCO>10000700</TCO>
-        <VP>22</VP>
-        <JC>02</JC>
-        <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaYellow/>Test<EndBox/><EndBox/></TF>
-      </TTI>
-      <TTI>
-        <SGN>0</SGN>
-        <SN>4</SN>
-        <EBN>ff</EBN>
-        <CS>00</CS>
-        <TCI>10000800</TCI>
-        <TCO>10000900</TCO>
-        <VP>22</VP>
-        <JC>02</JC>
-        <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaBlue/>Test<EndBox/><EndBox/></TF>
-      </TTI>
-      <TTI>
-        <SGN>0</SGN>
-        <SN>5</SN>
-        <EBN>ff</EBN>
-        <CS>00</CS>
-        <TCI>10001000</TCI>
-        <TCO>10001100</TCO>
-        <VP>22</VP>
-        <JC>02</JC>
-        <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaMagenta/>Test<EndBox/><EndBox/></TF>
-      </TTI>
-      <TTI>
-        <SGN>0</SGN>
-        <SN>6</SN>
-        <EBN>ff</EBN>
-        <CS>00</CS>
-        <TCI>10001200</TCI>
-        <TCO>10001300</TCO>
-        <VP>22</VP>
-        <JC>02</JC>
-        <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaCyan/>Test<EndBox/><EndBox/></TF>
-      </TTI>
-      <TTI>
-        <SGN>0</SGN>
-        <SN>7</SN>
-        <EBN>ff</EBN>
-        <CS>00</CS>
-        <TCI>10001400</TCI>
-        <TCO>10001500</TCO>
-        <VP>22</VP>
-        <JC>02</JC>
-        <CF>00</CF>
-        <TF><DoubleHeight/><StartBox/><StartBox/><AlphaWhite/>Test<EndBox/><EndBox/></TF>
+        <TF>
+          Test
+          <space/>
+          after
+        </TF>
       </TTI>
     </TTICONTAINER>
   </BODY>
