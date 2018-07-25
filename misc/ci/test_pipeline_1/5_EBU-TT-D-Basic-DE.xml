@@ -4,7 +4,6 @@
        xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
        xmlns:tts="http://www.w3.org/ns/ttml#styling"
        xmlns:ebuttm="urn:ebu:tt:metadata"
-       xmlns:xs="http://www.w3.org/2001/XMLSchema"
        ttp:timeBase="media"
        ttp:cellResolution="50 30"
        xml:lang="de">
