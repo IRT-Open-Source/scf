@@ -1,4 +1,11 @@
 -----------------------------
+Version 1.2.1
+-----------------------------
+
+STLXML-SplitBlocks
+- FIXED #53: User Data TTI blocks not correctly handled
+
+-----------------------------
 Version 1.2.0
 -----------------------------
 
