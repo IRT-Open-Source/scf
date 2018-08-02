@@ -57,7 +57,8 @@ limitations under the License.
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="TTI">
+    <xsl:template match="TTI[lower-case(normalize-space(EBN)) ne 'fe']">
+        <!-- process subtitle text TTI block -->
         <xsl:choose>
             <xsl:when test="TF/child::node()">
                 <!-- match first TF child -->
@@ -75,6 +76,20 @@ limitations under the License.
                 </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="TTI[lower-case(normalize-space(EBN)) eq 'fe']">
+        <!-- copy User Data TTI block, if no related subtitle text TTI blocks exist -->
+        <xsl:if test="not(../TTI[normalize-space(SN) eq normalize-space(current()/SN) and lower-case(normalize-space(EBN)) ne 'fe'])">
+            <xsl:apply-templates select="." mode="copy"/>
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="TTI" mode="copy">
+        <!-- 1:1 TTI block copy (except unimportant whitespace text nodes) -->
+        <TTI>
+            <xsl:copy-of select="child::node()[not(self::text()[normalize-space(.) eq ''])]"/>
+        </TTI>
     </xsl:template>
     
     <xsl:template match="element()" mode="tf">
@@ -191,6 +206,11 @@ limitations under the License.
         <!-- flush TTI block -->
         <xsl:param name="ebn_value" as="xs:integer"/>
         <xsl:param name="tf_buffer"/>
+        
+        <!-- insert related User Data TTI blocks, if present -->
+        <xsl:if test="$ebn_value eq 255">
+            <xsl:apply-templates select="../TTI[normalize-space(SN) eq normalize-space(current()/SN) and lower-case(normalize-space(EBN)) eq 'fe']" mode="copy"/>
+        </xsl:if>
         
         <xsl:copy>
             <xsl:apply-templates select="@*|node()">
