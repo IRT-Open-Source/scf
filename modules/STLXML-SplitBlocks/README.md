@@ -53,6 +53,12 @@ the first of the two TTI blocks (later by the `STLXML2STL` module).
 Subsequent characters of the same subtitle are moved towards later TTI
 blocks as well, if required, to always comply to the maximum TF size.
 
+Furthermore TTI blocks containing User Data (if present) are always
+inserted directly before the last subtitle text TTI block (EBN 0xFF) of
+the same subtitle (= same SN value). This way the EBN values of the TTI
+blocks of a subtitle are always monotonically increasing, e.g. the order
+of the EBN values could be: 0x00, 0x01, 0xFE, 0xFE, 0xFF.
+
 ## EXAMPLES
 If you use the Saxon parser you could perform a transformation as
 follows:
