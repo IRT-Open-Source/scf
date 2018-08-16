@@ -37,7 +37,7 @@ limitations under the License.
                 The child must be a space element.
             </assert>
             <assert test="child::node()[3] = 'text'">
-                Expected value: "text" Value from test: "<value-of select="child::node()[1]"/>"
+                Expected value: "text" Value from test: "<value-of select="child::node()[3]"/>"
             </assert>
         </rule>
     </pattern>
