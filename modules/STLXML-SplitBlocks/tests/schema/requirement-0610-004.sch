@@ -22,11 +22,11 @@ limitations under the License.
             <assert test="count(StlXml/BODY/TTICONTAINER/TTI) = 4">
                 Exactly four TTI blocks must be present.
             </assert> 
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
-                The EBN element of the second TTI block must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
+                The TF element of the second TTI block must be present.
             </assert> 
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[3]/EBN">
-                The EBN element of the third TTI block must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[3]/TF">
+                The TF element of the third TTI block must be present.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
@@ -39,13 +39,13 @@ limitations under the License.
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[3]/TF">
             <assert test="child::node()[1] = 'Ä'">
-                Expected value: "Ä" Value from test: "<value-of select="child::node()[last()]"/>"
+                Expected value: "Ä" Value from test: "<value-of select="child::node()[1]"/>"
             </assert>
             <assert test="child::node()[2]/self::space">
                 The child must be a space element.
             </assert>
             <assert test="child::node()[3] = 'Further'">
-                Expected value: "Further" Value from test: "<value-of select="child::node()[last()]"/>"
+                Expected value: "Further" Value from test: "<value-of select="child::node()[3]"/>"
             </assert>
         </rule>
     </pattern>

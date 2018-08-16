@@ -19,25 +19,17 @@ limitations under the License.
     <title>Testing Split TTI blocks if TF size exceeded - TF field</title>
     <pattern>
         <rule context="/">
-            <assert test="count(StlXml/BODY/TTICONTAINER/TTI) = 3">
-                Exactly three TTI blocks must be present.
+            <assert test="count(StlXml/BODY/TTICONTAINER/TTI) = 1">
+                Exactly one TTI block must be present.
             </assert> 
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-                The TF element of the second TTI block must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[1]/TF">
+                The TF element of the TTI block must be present.
             </assert> 
         </rule>
-        <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <assert test="count(child::node()) = 3">
-                Exactly three TF node children must belong to the second TTI block's TF field.
-            </assert> 
-            <assert test="child::node()[1] = 'Test'">
-                Expected value: "Test" Value from test: "<value-of select="child::node()[1]"/>"
-            </assert>
-            <assert test="child::node()[2]/self::space">
-                The child must be a space element.
-            </assert>
-            <assert test="child::node()[3] = 'text'">
-                Expected value: "text" Value from test: "<value-of select="child::node()[3]"/>"
+        <rule context="StlXml/BODY/TTICONTAINER/TTI[1]/TF">
+            <let name="expected" value="'RkFCc3QEAQEAZAQNACAAIAAgACAAIAALAAsATQB1AGwAdABpAC0AVABUAEkALQBVAG4AdABlAHIAdABpAHQAZQBsACAALQAgAGUAaQBuAAoACgAoICggDQAgACAAIAALAAsAVQBuAHQAZQByAAE5QA=='"/>
+            <assert test="child::node()[1] = $expected">
+                Expected value: "<value-of select="$expected"/>" Value from test: "<value-of select="child::node()[1]"/>"
             </assert>
         </rule>
     </pattern>

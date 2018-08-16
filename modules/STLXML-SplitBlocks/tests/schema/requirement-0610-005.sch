@@ -22,14 +22,14 @@ limitations under the License.
             <assert test="count(StlXml/BODY/TTICONTAINER/TTI) = 5">
                 Exactly five TTI blocks must be present.
             </assert> 
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/EBN">
-                The EBN element of the second TTI block must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
+                The TF element of the second TTI block must be present.
             </assert> 
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[3]/EBN">
-                The EBN element of the third TTI block must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[3]/TF">
+                The TF element of the third TTI block must be present.
             </assert> 
-            <assert test="StlXml/BODY/TTICONTAINER/TTI[4]/EBN">
-                The EBN element of the fourth TTI block must be present.
+            <assert test="StlXml/BODY/TTICONTAINER/TTI[4]/TF">
+                The TF element of the fourth TTI block must be present.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
@@ -42,13 +42,13 @@ limitations under the License.
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[3]/TF">
             <assert test="child::node()[1] = 'Ü'">
-                Expected value: "Ä" Value from test: "<value-of select="child::node()[last()]"/>"
+                Expected value: "Ä" Value from test: "<value-of select="child::node()[1]"/>"
             </assert>
             <assert test="child::node()[2]/self::AlphaRed">
                 The child must be an AlphaRed element.
             </assert>
             <assert test="child::node()[3] = 'This'">
-                Expected value: "This" Value from test: "<value-of select="child::node()[last()]"/>"
+                Expected value: "This" Value from test: "<value-of select="child::node()[3]"/>"
             </assert>
             <assert test="child::node()[last()]/preceding-sibling::node()/self::space">
                 The child must be a space element.
@@ -59,7 +59,7 @@ limitations under the License.
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[4]/TF">
             <assert test="child::node()[1] = 'ses.'">
-                Expected value: "ses." Value from test: "<value-of select="child::node()[last()]"/>"
+                Expected value: "ses." Value from test: "<value-of select="child::node()[1]"/>"
             </assert>
             <assert test="child::node()[2]/self::AlphaBlue">
                 The child must be an AlphaBlue element.
