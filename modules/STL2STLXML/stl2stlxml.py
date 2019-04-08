@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding=utf8 -*-
 # Copyright 2014 Yann Coupin, and
 # Copyright 2014-2019 Institut für Rundfunktechnik GmbH, Munich, Germany
@@ -178,11 +178,11 @@ class iso6937(codecs.Codec):
                 state = self.diacritic[char]
             # Generate normalized Unicode Codepoint(s) for char with diacritic.
             elif state:  # second byte of two bytes encoding
-                combined = unicodedata.normalize('NFC', unichr(char) + unichr(state))
+                combined = unicodedata.normalize('NFC', chr(char) + chr(state))
                 if combined:
                     output += map(ord, combined)
                 state = None
-        return (''.join(map(unichr, output)), len(inputdata))
+        return (''.join(map(chr, output)), len(inputdata))
 
     def search(self, name):
         if name in ('iso6937', 'iso_6937-2'):
@@ -256,7 +256,7 @@ class stl_encoding(codecs.Codec):
             # Append char mapped from existing base encoding
             else:
                 output.append(ord(base_decoder(char)[0]))
-        output = ''.join(map(unichr, output))
+        output = ''.join(map(chr, output))
         return (output, len(output))
 
     def search(self, name):

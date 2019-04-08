@@ -4,11 +4,7 @@ The STL2STLXML module converts a binary file that conforms to EBU STL
 written in Python.
 
 ## Prerequisites
-Python 2.7.x
-
-Note: This version of the STL2STLXML module is the last version that 
-uses Python 2 as its support is phased out. Subsequent versions will 
-require Python 3.
+[Python 3](https://www.python.org) (tested with 3.5.2)
 
 ## USAGE
 
