@@ -161,7 +161,6 @@ class iso6937(codecs.Codec):
         output = []
         state = None  #  If previous char was diacritic contains value of diacritic.
         for char in inputdata:
-            char = ord(char)
             if char == 0x8f:  # 0x8Fh (in STL for unused space) marks the end of TF.
                 break
             # Append chars where ASCII and Unicode share code point.
@@ -247,15 +246,14 @@ class stl_encoding(codecs.Codec):
         base_decoder = codecs.getdecoder(self.base_encoding)
         output = []
         for char in inputdata:
-            char_ord = ord(char)
-            if char_ord == 0x8f:  # 0x8Fh (in STL for unused space) marks the end of TF.
+            if char == 0x8f:  # 0x8Fh (in STL for unused space) marks the end of TF.
                 break
             # Append Teletext control code.
-            if char_ord in self.cc_mapping:
-                output.append(self.cc_mapping[char_ord])
+            if char in self.cc_mapping:
+                output.append(self.cc_mapping[char])
             # Append char mapped from existing base encoding
             else:
-                output.append(ord(base_decoder(char)[0]))
+                output.append(ord(base_decoder(bytes([char]))[0]))
         output = ''.join(map(chr, output))
         return (output, len(output))
 
@@ -395,7 +393,7 @@ class STL:
         GSI = self.GSI
 
         # fall back to cp850 if codepage unsupported by Python (despite whether supported by STL!)
-        self.gsiCodePage = 'cp%s' % GSI['CPN']
+        self.gsiCodePage = 'cp%s' % GSI['CPN'].decode('ascii')
         try:
             codecs.lookup(self.gsiCodePage)
         except LookupError:
@@ -404,20 +402,20 @@ class STL:
         # Matching the Character Code Table Number (CCT).
         # The CCT is used to decode the Text Field (TF) of the TTI Blocks.
         self.codePage = {
-            '00': 'iso_6937-2',
-            '01': 'iso-8859-5_stl',
-            '02': 'iso-8859-6_stl',
-            '03': 'iso-8859-7_stl',
-            '04': 'iso-8859-8_stl',
+            b'00': 'iso_6937-2',
+            b'01': 'iso-8859-5_stl',
+            b'02': 'iso-8859-6_stl',
+            b'03': 'iso-8859-7_stl',
+            b'04': 'iso-8859-8_stl',
         }[GSI['CCT']]
         # Number of TTI Blocks
         self.numberOfTTI = int(GSI['TNB'])
         
         # Output UDA as base64 (without trailing spaces), if field content to be kept
         if not self.clear_uda:
-            GSI['UDA'] = base64.b64encode(GSI['UDA'].rstrip(" "))
+            GSI['UDA'] = base64.b64encode(GSI['UDA'].rstrip(b' '))
         else:
-            GSI['UDA'] = ''
+            GSI['UDA'] = b''
 
     def _readTTI(self, fileHandle):
         eofReached = False
@@ -450,7 +448,7 @@ class STL:
                 if TTI['EBN'] == 'fe':
                     # Output User Data as base64, if TTI block to be kept
                     if not self.discard_user_data:
-                        TTI['TF'] = base64.b64encode(TTI['TF'])
+                        TTI['TF'] = map(chr, base64.b64encode(TTI['TF']))
                         self.tti.append(TTI)
                     continue    # preserve txt, as there may be more than one text TTI
                 else:
@@ -486,6 +484,8 @@ class STLXML:
             childElementNode = self.xmlDoc.createElement(elementName)
             if isinstance(data[elementName], int):
                 textValue = str(data[elementName])
+            elif isinstance(data[elementName], str):
+                textValue = data[elementName]
             else:
                 textValue = (data[elementName]).decode(encoding=textEncoding)
             childElementNode.appendChild(self.xmlDoc.createTextNode(textValue))
@@ -582,12 +582,7 @@ def main():
     # Check if a STL file path has been specified.
     # In case no STL file path is used, STDIN will be used to read/pipe the STL data.
     if args.stl_file == "":    
-        # Check if the the script runs on a Windows machine. 
-        # In case of Windows, STDIN has to be set explicit to binary mode. 
-        if sys.platform == "win32":
-            import os, msvcrt
-            msvcrt.setmode(sys.stdin.fileno(), os.O_BINARY)
-        stl.readSTL(sys.stdin)    
+        stl.readSTL(sys.stdin.buffer)
     else: 
         with open(args.stl_file, 'rb') as inputHandle:
             stl.readSTL(inputHandle)
@@ -596,7 +591,7 @@ def main():
     stlXml = STLXML()
     stlXml.setStl(stl)
     if args.xml_file is None:
-        stlXml.serialize(sys.stdout, pretty=args.pretty_xml)
+        stlXml.serialize(sys.stdout.buffer, pretty=args.pretty_xml)
     else:
         with open(args.xml_file, 'wb') as outputHandle:
             stlXml.serialize(outputHandle, pretty=args.pretty_xml)
