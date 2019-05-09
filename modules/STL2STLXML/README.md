@@ -8,9 +8,11 @@ Python 2.7.x
 
 ## USAGE
 
-    stl2stlxml.py [SOURCE-STL-FILE] [-x DESTINATION-XML-FILE] [-p] [-s]
+    stl2stlxml.py SOURCE-STL-FILE [-x DESTINATION-XML-FILE] [-p] [-s]
 
-[SOURCE-STL-FILE] <i>Path to the source EBU STL file that shall be translated.</i>
+SOURCE-STL-FILE <i>Path to the source EBU STL file that shall be translated.</i>
+
+Note: If SOURCE-STL-FILE is an empty string (e.g. "") the EBU STL data is read from STDIN.
 
 -x, --xml DESTINATION-XML-FILE <i>Output file for the XML representation of the EBU STL file. If this option is not specified the result is written to STDOUT.</i>
 
@@ -29,7 +31,13 @@ can be used for further processing with XML technologies or for
 debugging purposes.
 
 ## EXAMPLES
+Using a file path to read the EBU STL data and a file path to write the result into a file:
+
     python stl2stlxml.py test.stl -x test.xml
+
+Using STDIN to read the input EBU STL data and STDOUT to write the result: 
+
+    python stl2stlxml.py "" < test.stl > test.xml
 
 ## AUTHORS
 Development: Michael Meier, Andreas Tai, Stefan Pöschel

@@ -579,8 +579,18 @@ def main():
 
     # Read STL file
     stl = STL(args.separate_tti, args.clear_uda, args.discard_user_data)
-    with open(args.stl_file, 'rb') as inputHandle:
-        stl.readSTL(inputHandle)
+    # Check if a STL file path has been specified.
+    # In case no STL file path is used, STDIN will be used to read/pipe the STL data.
+    if args.stl_file == "":    
+        # Check if the the script runs on a Windows machine. 
+        # In case of Windows, STDIN has to be set explicit to binary mode. 
+        if sys.platform == "win32":
+            import os, msvcrt
+            msvcrt.setmode(sys.stdin.fileno(), os.O_BINARY)
+        stl.readSTL(sys.stdin)    
+    else: 
+        with open(args.stl_file, 'rb') as inputHandle:
+            stl.readSTL(inputHandle)
 
     # XML Out
     stlXml = STLXML()
