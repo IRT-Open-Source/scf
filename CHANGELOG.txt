@@ -1,4 +1,16 @@
 -----------------------------
+Version 1.3.0
+-----------------------------
+
+STL2STLXML
+- ADDED: Option to use STDIN as input instead of file
+- NOTE: This is the last version that uses Python 2
+
+STLXML-SplitBlocks
+- ADDED: TF/EBN tests for User Data TTI blocks
+- FIXED: TF tests
+
+-----------------------------
 Version 1.2.1
 -----------------------------
 

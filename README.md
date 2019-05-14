@@ -4,7 +4,7 @@ converting XML based subtitle formats. Main target is to build up a
 flexible and extensible transformation pipeline to convert EBU STL
 formats and EBU-TT subtitle formats.
 
-The SCF is a stable release with the version 1.2.1.
+The SCF is a stable release with the version 1.3.0.
 
 ## License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer
@@ -23,7 +23,11 @@ XML Schema 1.0 parser is required. You could use for example
 [xerces XML parser and validator](http://xerces.apache.org/).
 
 For the conversion of an EBU STL file into STLXML [Python 2.7.x](https://www.python.org/downloads/)
-is required (it will not run under Python 3.0).
+is required (it will not run under Python 3.x).
+
+Note: The current version of the STL2STLXML module is the last version that 
+uses Python 2 as its support is phased out. Subsequent versions of this module 
+will require Python 3.
 
 ## Structure
 Each module has its own directory under the "modules" folder:
