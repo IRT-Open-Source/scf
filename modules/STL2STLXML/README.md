@@ -6,6 +6,10 @@ written in Python.
 ## Prerequisites
 Python 2.7.x
 
+Note: This version of the STL2STLXML module is the last version that 
+uses Python 2 as its support is phased out. Subsequent versions will 
+require Python 3.
+
 ## USAGE
 
     stl2stlxml.py SOURCE-STL-FILE [-x DESTINATION-XML-FILE] [-p] [-s]
