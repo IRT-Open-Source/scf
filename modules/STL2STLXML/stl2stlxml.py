@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding=utf8 -*-
 # Copyright 2014 Yann Coupin, and
-# Copyright 2014-2018 Institut für Rundfunktechnik GmbH, Munich, Germany
+# Copyright 2014-2019 Institut für Rundfunktechnik GmbH, Munich, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
