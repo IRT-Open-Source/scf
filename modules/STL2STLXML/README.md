@@ -39,9 +39,13 @@ Using a file path to read the EBU STL data and a file path to write the result i
 
     python stl2stlxml.py test.stl -x test.xml
 
-Using STDIN to read the input EBU STL data and STDOUT to write the result: 
+The same can be achieved by using STDIN to read and STDOUT to write:
 
     python stl2stlxml.py "" < test.stl > test.xml
+    
+The module can also be used as part of a conversion pipeline:
+
+    example_stl_source | python stl2stlxml.py "" | example_stlxml_sink
 
 ## AUTHORS
 Development: Michael Meier, Andreas Tai, Stefan Pöschel
