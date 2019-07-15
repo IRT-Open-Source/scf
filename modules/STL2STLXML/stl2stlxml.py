@@ -176,11 +176,11 @@ class iso6937(codecs.Codec):
             # Change state if diacritic and append with next char.
             elif not state and char in self.diacritic:  # diacritic
                 state = self.diacritic[char]
-            # Generate normalized Unicode Codepoint for char with diacritic.
+            # Generate normalized Unicode Codepoint(s) for char with diacritic.
             elif state:  # second byte of two bytes encoding
                 combined = unicodedata.normalize('NFC', unichr(char) + unichr(state))
-                if combined and len(combined) == 1:
-                    output.append(ord(combined))
+                if combined:
+                    output += map(ord, combined)
                 state = None
         return (''.join(map(unichr, output)), len(inputdata))
 
