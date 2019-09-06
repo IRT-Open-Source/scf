@@ -103,18 +103,17 @@ limitations under the License.
                 <xsl:choose>
                     <!-- ensure correct format -->
                     <xsl:when test="
-                        (string-length($tc_value) = 12) and
+                        (string-length($tc_value) >= 8) and
                         (substring($tc_value, 3, 1) = ':') and
                         (substring($tc_value, 6, 1) = ':') and
-                        (substring($tc_value, 9, 1) = '.') and
+                        ((string-length($tc_value) = 8) or (substring($tc_value, 9, 1) = '.')) and
                         (number(translate($tc_value, ':.', '')) = number(translate($tc_value, ':.', '')))
                         ">
                         <xsl:variable name="h" select="substring($tc_value, 1, 2)"/>
                         <xsl:variable name="m" select="substring($tc_value, 4, 2)"/>
-                        <xsl:variable name="s" select="substring($tc_value, 7, 2)"/>
-                        <xsl:variable name="fr" select="substring($tc_value, 10, 3)"/>
+                        <xsl:variable name="s" select="substring($tc_value, 7)"/>
                         
-                        <xsl:value-of select="$h * 3600 + $m * 60 + $s + $fr div 1000"/>
+                        <xsl:value-of select="$h * 3600 + $m * 60 + $s"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
