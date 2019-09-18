@@ -26,7 +26,17 @@ limitations under the License.
     <xsl:strip-space elements="tt:div"/><!-- remove empty output lines due to removed tt:p elements -->
 
     <!-- timecode base and framerate apply to input/output and also the edit list -->
-    <xsl:variable name="timeBase" select="/tt:tt/@ttp:timeBase"/>
+    <xsl:variable name="timeBaseAttribute" select="/tt:tt/@ttp:timeBase"/>
+    <xsl:variable name="timeBase">
+        <xsl:choose>
+            <xsl:when test="$timeBaseAttribute != ''">
+                <xsl:value-of select="$timeBaseAttribute"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="'media'"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="frameRate" select="/tt:tt/@ttp:frameRate"/>
     
     <!-- parameter for edit list filename -->
@@ -326,26 +336,17 @@ limitations under the License.
                 The edit list is empty.
             </xsl:message>
         </xsl:if>
-        
+
+        <!--** FrameRate is either '25' or '30', if ttp:timeBase attribute is not set to 'media' -->
+        <xsl:if test="not($frameRate = '25' or $frameRate = '30' or $timeBase = 'media')">
+            <!--@ Interrupt if the frameRate is not supported -->
+            <xsl:message terminate="yes">
+                This implementation only supports frame rates of '25' and '30'.
+            </xsl:message>
+        </xsl:if>
+
         <!-- copy also top-level comments to preserve possible EBU-TT-D-Basic-DE signalling -->
         <xsl:apply-templates select="tt:tt|comment()"/>
-    </xsl:template>
-    
-    <xsl:template match="tt:tt">
-        <xsl:choose>
-            <!--** FrameRate is either '25' or '30', if ttp:timeBase attribute is not set to 'media' -->
-            <xsl:when test="not(@ttp:frameRate = '25' or @ttp:frameRate = '30' or @ttp:timeBase = 'media')">
-            <!--@ Interrupt if the frameRate is not supported -->
-                <xsl:message terminate="yes">
-                    This implementation only supports frame rates of '25' and '30'.
-                </xsl:message>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:copy>
-                    <xsl:apply-templates select="@*|node()"/>
-                </xsl:copy>
-            </xsl:otherwise>
-        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="tt:p">
