@@ -980,7 +980,7 @@ limitations under the License.
                     </scf:stlUserData>
                 </tt:metadata>
             </xsl:if>
-            <xsl:apply-templates select="child::*[1]">
+            <xsl:apply-templates select="child::node()[1]">
                 <!--** Tunnel parameters needed for value calculation of decending elements -->
                 <xsl:with-param name="boxStarted" select="false()"/>
                 <xsl:with-param name="buffer" select="''"/>
