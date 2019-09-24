@@ -151,7 +151,7 @@ limitations under the License.
       <TTI>
         <SGN>0</SGN>
         <SN>0</SN>
-        <EBN>ff</EBN>
+        <EBN>08</EBN>
         <CS>00</CS>
         <TCI>10000000</TCI>
         <TCO>10000203</TCO>
@@ -159,6 +159,18 @@ limitations under the License.
         <JC>02</JC>
         <CF>00</CF>
         <TF>ÄÖÜäöüáèô<newline/></TF>
+      </TTI>
+      <TTI>
+        <SGN>0</SGN>
+        <SN>0</SN>
+        <EBN>ff</EBN>
+        <CS>00</CS>
+        <TCI>10000000</TCI>
+        <TCO>10000203</TCO>
+        <VP>22</VP>
+        <JC>02</JC>
+        <CF>00</CF>
+        <TF>$m̃Äa<newline/></TF>
       </TTI>
     </TTICONTAINER>
   </BODY>

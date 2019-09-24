@@ -262,6 +262,7 @@ limitations under the License.
         <binary gsi_offset="1024" tti_offset="768"  field_offset="16" byte_offset="0">E0E1E2E3E4E6E7E8E9EAEBECEDEEEF8A8F</binary>
         <binary gsi_offset="1024" tti_offset="896"  field_offset="16" byte_offset="0">F0F1F2F3F4F5F6F7F8F9FAFBFCFDFEFF8A8F</binary>
         <binary gsi_offset="1024" tti_offset="1024" field_offset="16" byte_offset="0">C841C84FC855C861C86FC875C261C165C36F8A8F</binary>
+        <binary gsi_offset="1024" tti_offset="1152" field_offset="16" byte_offset="0">A4C46DC84161</binary>
     </requirement>
 
     <requirement name="requirement-0422-001" description="Text Field mapping - ignore undesired characters">
