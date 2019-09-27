@@ -195,15 +195,18 @@ declare function tti-encode-text-field-chars($s as xs:string, $cct as xs:string)
     (:
       * STL format encodes diacritics by 'floating accent' principle, f.i.: ü -> 0xC875
       * normalized UTF-8 diacritics work similar, but order is switched:    ü -> 0x75C8
+      * exception: the available "dot below" characters ("ạ"/"ọ") are stored in STL as single characters
       --> Algorithm
         1. given string is normalized to decomposed normal form and codepoints are retrieved
-        2. if a composite sequence is found, the codepoint order is reversed
-          a. graphic character: insert combined character before actual graphic character
-          b. combined character: ignore combined character this time
+        2. if a composite sequence is found:
+          a. graphic character (default case): the codepoint order is reversed - insert combined character before actual graphic character
+          a. graphic character ("dot below" case): the composite sequence is inserted in composed normal form, for later mapping
+          c. combined character: ignore combined character this time
         3. each codepoint is mapped to its STL representation via the specified encoding (f.i. iso-6937-2)
     :)
     let $utf8-normalized-cps :=
       let $diacritic-cps := map:keys($_:DIACRITIC) ! bin:hex(.) ! bin:unpack-integer(., 0, 2)
+      let $diacritic-cp-dot-below := 803
       let $norm-cps := fn:normalize-unicode($s, 'NFD') ! fn:string-to-codepoints(.)
       for $x in 1 to fn:count($norm-cps)
       let $cp := $norm-cps[$x]
@@ -212,9 +215,12 @@ declare function tti-encode-text-field-chars($s as xs:string, $cct as xs:string)
         if ($cp_next = $diacritic-cps)
         then ($cp_next, $cp)
         else
-          if ($cp = $diacritic-cps)
-          then ()
-          else $cp (: single graphic character :)
+          if ($cp_next eq $diacritic-cp-dot-below)
+          then fn:string-to-codepoints(fn:normalize-unicode(fn:codepoints-to-string(($cp, $cp_next)), 'NFC'))
+          else
+            if ($cp = ($diacritic-cps, $diacritic-cp-dot-below))
+            then ()
+            else $cp (: single graphic character :)
     for $cp in $utf8-normalized-cps
     let $hex := bin:pack-integer($cp, 2) ! xs:hexBinary(.)
     (: use mapping for non-ascii characters :)
@@ -355,14 +361,14 @@ declare variable $_:CCT-00 := map {
   '03A9': 'E0', (: Ω:)
   '00C6': 'E1', (: Æ:)
   '0110': 'E2', (: Đ:)
-  '00AA': 'E3', (: ª:)
+  '1EA1': 'E3', (: ạ:)
   '0126': 'E4', (: Ħ:)
   '0132': 'E6', (: Ĳ:)
   '013F': 'E7', (: Ŀ:)
   '0141': 'E8', (: Ł:)
   '00D8': 'E9', (: Ø:)
   '0152': 'EA', (: Œ:)
-  '00BA': 'EB', (: º:)
+  '1ECD': 'EB', (: ọ:)
   '00DE': 'EC', (: Þ:)
   '0166': 'ED', (: Ŧ:)
   '014A': 'EE', (: Ŋ:)
