@@ -22,19 +22,35 @@ limitations under the License.
     version="2.0">
     <xsl:output encoding="UTF-8" indent="no"/>
 
+    <xsl:variable name="combining_diacritical_marks" select="768 to 772, 774 to 776, 778 to 780, 807 to 808"/>
+
     <xsl:function name="scf:tf-stl-char-length" as="xs:integer">
         <!-- returns the amount of bytes that a specific character of the TF field consumes in EBU STL with CCT 00 -->
         <xsl:param name="s" as="xs:string"/>
+        <xsl:param name="s_next" as="xs:string"/>
         
+        <!--
+            There are three cases for a character to consider here:
+            - composite sequence (graphic character + combined character), composed
+                - counted as two bytes
+            - composite sequence (graphic character + combined character), decomposed
+                - counted as two bytes (two + zero, to prevent splitting among different TTI blocks)
+            - single graphic character (default case)
+                - counted as one byte
+        -->
         <xsl:variable name="norm_cps" select="string-to-codepoints(normalize-unicode($s, 'NFD'))"/>
         <xsl:choose>
-            <xsl:when test="count($norm_cps) eq 2 and $norm_cps[2] = (768 to 772, 774 to 776, 778 to 780, 807 to 808)">
-                <!-- combining diacritical marks result in two bytes -->
-                <xsl:value-of select="2"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="1"/>
-            </xsl:otherwise>
+            <!-- composite sequence (composed) results in two bytes -->
+            <xsl:when test="count($norm_cps) eq 2 and $norm_cps[2] = $combining_diacritical_marks">2</xsl:when>
+            
+            <!-- composite sequence (decomposed) results in two bytes for the graphic character ... -->
+            <xsl:when test="string-to-codepoints($s_next) = $combining_diacritical_marks">2</xsl:when>
+            
+            <!-- ... and zero bytes for the combined character -->
+            <xsl:when test="string-to-codepoints($s) = $combining_diacritical_marks">0</xsl:when>
+            
+            <!-- single graphic character results in single byte -->
+            <xsl:otherwise>1</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
@@ -157,7 +173,7 @@ limitations under the License.
             <xsl:otherwise>
                 <!-- determine how many bytes every character of the relevant substring occupies -->
                 <xsl:variable name="s" select="substring(normalize-space(.), $stringoffset + 1)"/>
-                <xsl:variable name="char_lengths" select="for $x in string-to-codepoints($s) return scf:tf-stl-char-length(codepoints-to-string($x))"/>
+                <xsl:variable name="char_lengths" select="for $x in 1 to string-length($s) return scf:tf-stl-char-length(substring($s, $x, 1), substring($s, $x + 1, 1))"/>
                 
                 <!-- select the longest substring that fits into the remaining TF -->
                 <xsl:variable name="lengths_eligible" select="for $x in 0 to string-length($s) return sum(subsequence($char_lengths, 1, $x))[. le (112 - $tf_offset)]"/>
