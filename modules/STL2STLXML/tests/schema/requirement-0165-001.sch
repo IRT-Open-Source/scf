@@ -24,8 +24,8 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="StlXml/BODY/TTICONTAINER/TTI[2]/TF">
-            <assert test="string(.) = string('!&quot;#%&amp;()*+,-./')">
-                Expected value: "!&quot;#%&amp;()*+,-./" Value from test: "<value-of select="."/>"
+            <assert test="string(.) = string('!&quot;#¤%&amp;()*+,-./')">
+                Expected value: "!&quot;#¤%&amp;()*+,-./" Value from test: "<value-of select="."/>"
             </assert> 
             <assert test="StartBox[position() &lt; 3][name(following-sibling::node()[1]) = 'space' ]">
                 The first node after the start of the first box must be a space element.
