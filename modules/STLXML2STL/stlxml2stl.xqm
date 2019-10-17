@@ -196,17 +196,25 @@ declare function tti-encode-text-field-chars($s as xs:string, $cct as xs:string)
       * STL format encodes diacritics by 'floating accent' principle, f.i.: ü -> 0xC875
       * normalized UTF-8 diacritics work similar, but order is switched:    ü -> 0x75C8
       --> Algorithm
-        1. given string is chopped to individual characters
-        2. each char C is UTF-8 normalized (diacritics are encoded with two bytes)
-        3. codepoints are determined for C and reversed, if there are two
-        4. each codepoint is mapped to its STL representation via the specified encoding (f.i. iso-6937-2)
+        1. given string is normalized to decomposed normal form and codepoints are retrieved
+        2. if a composite sequence is found, the codepoint order is reversed
+          a. graphic character: insert combined character before actual graphic character
+          b. combined character: ignore combined character this time
+        3. each codepoint is mapped to its STL representation via the specified encoding (f.i. iso-6937-2)
     :)
     let $utf8-normalized-cps :=
-      let $chars := for $cp in fn:string-to-codepoints($s) return fn:codepoints-to-string($cp)
-      for $ch in $chars
-      let $norm-cps := fn:normalize-unicode($ch, 'NFD') ! fn:string-to-codepoints(.)
-      let $reversed-norm-cps := ($norm-cps[2], $norm-cps[1])
-      return $reversed-norm-cps
+      let $diacritic-cps := map:keys($_:DIACRITIC) ! bin:hex(.) ! bin:unpack-integer(., 0, 2)
+      let $norm-cps := fn:normalize-unicode($s, 'NFD') ! fn:string-to-codepoints(.)
+      for $x in 1 to fn:count($norm-cps)
+      let $cp := $norm-cps[$x]
+      let $cp_next := $norm-cps[$x + 1]
+      return
+        if ($cp_next = $diacritic-cps)
+        then ($cp_next, $cp)
+        else
+          if ($cp = $diacritic-cps)
+          then ()
+          else $cp (: single graphic character :)
     for $cp in $utf8-normalized-cps
     let $hex := bin:pack-integer($cp, 2) ! xs:hexBinary(.)
     (: use mapping for non-ascii characters :)
