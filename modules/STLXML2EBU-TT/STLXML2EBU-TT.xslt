@@ -31,12 +31,14 @@ limitations under the License.
     exclude-result-prefixes="exsltCommon exsltSet exsltDate fn"
     version="1.0">
     <xsl:output encoding="UTF-8" indent="no"/>
-    <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
+    <!--** The Offset in seconds used for the Time Code In, Time Code Out and TCP values in this STLXML file -->
     <xsl:param name="offsetInSeconds" select="0"/>
-    <!--** The Offset in frames used for the Time Code In and Time Code Out values in this STLXML file -->
+    <!--** The Offset in frames used for the Time Code In, Time Code Out and TCP values in this STLXML file -->
     <xsl:param name="offsetInFrames" select="'00:00:00:00'"/>
     <!--** If set to 1, the TCP value is used as offset for the Time Code In and Time Code Out values in this STLXML file -->
     <xsl:param name="offsetTCP" select="0"/>
+    <!--** If set to 1, any manual offset (seconds or frames) will *not* be subtracted from the TCP value -->
+    <xsl:param name="ignoreManualOffsetForTCP" select="0"/>
     <!--** Format that shall be used for the Time Code; supported by this transformation are 'smpte' and 'media' -->
     <xsl:param name="timeBase" select="'smpte'"/>
     <!--** Provides the tt:style elements the mapped color is located in -->
@@ -384,6 +386,7 @@ limitations under the License.
                 <xsl:with-param name="fieldName">TCP</xsl:with-param>
                 <xsl:with-param name="timeCodeFormat">smpte</xsl:with-param>
                 <xsl:with-param name="frameRate" select="$frameRate"/>
+                <xsl:with-param name="applyManualOffset" select="$ignoreManualOffsetForTCP != '1'"/>
             </xsl:call-template>
         </ebuttm:documentStartOfProgramme>
     </xsl:template>
@@ -756,6 +759,7 @@ limitations under the License.
             <xsl:with-param name="fieldName">TCI</xsl:with-param>
             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
             <xsl:with-param name="frameRate" select="$frameRate"/>
+            <xsl:with-param name="applyManualOffset" select="true()"/>
         </xsl:call-template>
     </xsl:template>
     
@@ -767,6 +771,7 @@ limitations under the License.
             <xsl:with-param name="fieldName">TCO</xsl:with-param>
             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
             <xsl:with-param name="frameRate" select="$frameRate"/>
+            <xsl:with-param name="applyManualOffset" select="true()"/>
         </xsl:call-template>
     </xsl:template>
 
@@ -776,6 +781,7 @@ limitations under the License.
         <xsl:param name="fieldName"/>
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
+        <xsl:param name="applyManualOffset"/>
         <xsl:variable name="tc" select="normalize-space(.)"/>
         <!--@ Check if there's any non-numerical content in the normalized TCx field -->
         <xsl:if test="number($tc) != number($tc)">
@@ -804,6 +810,7 @@ limitations under the License.
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
+                            <xsl:with-param name="applyManualOffset" select="$applyManualOffset"/>
                             <xsl:with-param name="frames" select="$frames"/>
                             <xsl:with-param name="seconds" select="$seconds"/>
                             <xsl:with-param name="minutes" select="$minutes"/>
@@ -835,6 +842,7 @@ limitations under the License.
         <xsl:param name="frames"/>
         <xsl:param name="timeCodeFormat"/>
         <xsl:param name="frameRate"/>
+        <xsl:param name="applyManualOffset"/>
         
         <!--@ Calculate the value in frames of the current timestamp before applying the offsets -->
         <xsl:variable name="stampValueInFrames" select="($hours * 3600 + $minutes * 60 + $seconds) * number($frameRate) + $frames"/>
@@ -896,8 +904,17 @@ limitations under the License.
             </xsl:choose>
         </xsl:variable>
         
-        <!--@ Calculate the value in frames of the current timestamp after applying the offsets -->
-        <xsl:variable name="targetStampValueInFrames" select="$stampValueInFrames - $offsetInSeconds * number($frameRate) - $offsetinFramesValue - $offsetTCPValue"/>
+        <!--@ Calculate the value in frames of the current timestamp after applying the offsets (if desired) -->
+        <xsl:variable name="targetStampValueInFrames">
+            <xsl:choose>
+                <xsl:when test="$applyManualOffset">
+                    <xsl:value-of select="$stampValueInFrames - $offsetTCPValue - $offsetInSeconds * number($frameRate) - $offsetinFramesValue"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$stampValueInFrames - $offsetTCPValue"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <!--@ Interrupt, if the offset is too large, i.e. produces negative values -->
         <xsl:if test="$targetStampValueInFrames &lt; 0">
             <xsl:message terminate="yes">
