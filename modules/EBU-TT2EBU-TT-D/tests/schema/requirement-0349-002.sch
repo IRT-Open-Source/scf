@@ -22,7 +22,7 @@ limitations under the License.
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
     <ns uri="http://www.w3.org/ns/ttml#parameter" prefix="ttp"/>
-    <title>Testing the offsetInFrames with value "10:00:00:00"</title>
+    <title>Testing the offsetInFrames parameter with value "10:00:01:01"</title>
     <pattern id="offsetInFrames">
         <rule context="/">
             <assert test="tt:tt/tt:body/tt:div/tt:p/@begin">
