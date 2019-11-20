@@ -20,13 +20,47 @@ limitations under the License.
     xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style">
     <xsl:output encoding="UTF-8" indent="no"/>
-    <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
+    <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this EBU-TT file -->
     <xsl:param name="offsetInSeconds"/>
-    <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this STLXML file -->
+    <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this EBU-TT file -->
     <xsl:param name="offsetInFrames"/>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+    
+    <xsl:template name="checkOffsetParam">
+        <!--** Checks the value of an offset parameter that is supposed to contain a SMPTE timecode -->
+        <xsl:param name="param_name"/>
+        <xsl:param name="value"/>
+        
+        <xsl:choose>
+            <xsl:when test="translate($value, '0123456789:', '') != ''">
+                <!--@ Interrupt transformation if content contains non-numerical values -->
+                <xsl:message terminate="yes">
+                    The value for the <xsl:value-of select="$param_name"/> contains non-numerical values. 
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="string-length(translate($value, ':', '')) != 8">
+                <!--@ Interrupt transformation if content is not valid -->
+                <xsl:message terminate="yes">
+                    The value for the <xsl:value-of select="$param_name"/> does not have the necessary format of 'hh:mm:ss:ff'. The value for hours shall be a number between 00 and 23, minutes and 
+                    and seconds shall be between 00 and 59 and with a framerate of 25 the framerate the frame part shall be between 00 and 24 (begin and end of the intervals are included). 
+                </xsl:message>
+            </xsl:when>
+            <xsl:when test="
+                not(number(substring($value, 1,2)) &gt;= 0 and number(substring($value, 1,2)) &lt; 24 and
+                number(substring($value, 4,2)) &gt;= 0 and number(substring($value, 4,2) ) &lt; 60 and
+                number(substring($value, 7,2)) &gt;= 0 and number(substring($value, 7,2)) &lt; 60 and
+                number(substring($value, 10,2)) &gt;= 0 and number(substring($value, 10,2)) &lt; 25)">
+                <!--@ Interrupt transformation if content is not valid -->
+                <xsl:message terminate="yes">
+                    The value for the <xsl:value-of select="$param_name"/> does not have the necessary format of "hh:mm:ss:ff". The value for hours shall be a number between 00 and 23, minutes and 
+                    and seconds shall be between 00 and 59 and with a framerate of 25 the framerate shall be between 00 and 24 (begin and end of the intervals are included).  
+                </xsl:message>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
     
     <xsl:template match="/">
         <xsl:choose>
@@ -36,30 +70,6 @@ limitations under the License.
                     The parameters offsetInFrames and offsetInSeconds are specified at the same time. 
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$offsetInFrames and (translate($offsetInFrames, '0123456789:', '') != '')">
-                <!--@ Interrupt transformation if content contains non-numerical values -->
-                <xsl:message terminate="yes">
-                    The value for the parameter offsetInFrames contains non-numerical values. 
-                </xsl:message>
-            </xsl:when>
-            <xsl:when test="$offsetInFrames and (string-length(translate($offsetInFrames, ':', '')) != 8)">
-                <!--@ Interrupt transformation if content is not valid -->
-                <xsl:message terminate="yes">
-                    The value for the parameter offsetInFrames does not have the necessary format of 'hh:mm:ss:ff'.  The value for hours shall be a number between 00 and 23, minutes and 
-                    and seconds shall be between 00 and 59 and with a framerate of 25 the framerate the frame part shall be between 00 and 24 (begin and end of the intervals are included). 
-                </xsl:message>
-            </xsl:when>
-            <xsl:when test="$offsetInFrames and 
-                not(number(substring($offsetInFrames, 1,2)) &gt;= 0 and number(substring($offsetInFrames, 1,2)) &lt; 24 and
-                number(substring($offsetInFrames, 4,2)) &gt;= 0 and number(substring($offsetInFrames, 4,2) ) &lt; 60 and
-                number(substring($offsetInFrames, 7,2)) &gt;= 0 and number(substring($offsetInFrames, 7,2)) &lt; 60 and
-                number(substring($offsetInFrames, 10,2)) &gt;= 0 and number(substring($offsetInFrames, 10,2)) &lt; 25)">
-                <!--@ Interrupt transformation if content is not valid -->
-                <xsl:message terminate="yes">
-                    The value for the parameter offsetInFrames does not have the necessary format of "hh:mm:ss:ff". The value for hours shall be a number between 00 and 23, minutes and 
-                    and seconds shall be between 00 and 59 and with a framerate of 25 the framerate shall be between 00 and 24 (begin and end of the intervals are included).  
-                </xsl:message>
-            </xsl:when>
             <xsl:when test="$offsetInSeconds and (translate($offsetInSeconds, '0123456789-', '') != '')">
                 <!--@ Interrupt transformation if content contains non-numerical values -->
                 <xsl:message terminate="yes">
@@ -67,6 +77,12 @@ limitations under the License.
                 </xsl:message>
             </xsl:when>
         </xsl:choose>
+        <xsl:if test="$offsetInFrames">
+            <xsl:call-template name="checkOffsetParam">
+                <xsl:with-param name="param_name" select="'parameter offsetInFrames'"/>
+                <xsl:with-param name="value" select="$offsetInFrames"/>
+            </xsl:call-template>
+        </xsl:if>
         <xsl:apply-templates select="tt:tt"/>        
     </xsl:template>
     
@@ -762,4 +778,4 @@ limitations under the License.
             <xsl:with-param name="frameRate" select="$frameRate" />
         </xsl:apply-templates>
     </xsl:template>
-</xsl:stylesheet>   
+</xsl:stylesheet>
