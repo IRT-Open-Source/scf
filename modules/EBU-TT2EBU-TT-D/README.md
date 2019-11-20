@@ -23,6 +23,12 @@ The `EBU-TT2EBU-TT-D.xslt` provides the following parameters:
       `begin` and `end` attributes' values. Only positive values are
       supported.
 
+    - offsetStartOfProgramme
+      Set to 1 to use the value of `ebuttm:documentStartOfProgramme` as
+      time-offset that's used for the begin and end attributes. This
+      offset is subtracted from all `begin` and `end` attributes'
+      values.
+
 If the use of any of the offset parameters results in a negative time
 expression, the processing is aborted.
 

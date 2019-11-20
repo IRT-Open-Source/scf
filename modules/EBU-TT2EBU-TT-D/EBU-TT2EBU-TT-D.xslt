@@ -24,9 +24,12 @@ limitations under the License.
     <xsl:param name="offsetInSeconds"/>
     <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this EBU-TT file -->
     <xsl:param name="offsetInFrames"/>
+    <!--** If set to 1, use ebuttm:documentStartOfProgramme as offset for the Time Code In and Time Code Out values in this EBU-TT file -->
+    <xsl:param name="offsetStartOfProgramme"/>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+    <xsl:variable name="startOfProgrammeValue" select="/tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentStartOfProgramme"/>
     
     <xsl:template name="checkOffsetParam">
         <!--** Checks the value of an offset parameter that is supposed to contain a SMPTE timecode -->
@@ -64,10 +67,10 @@ limitations under the License.
     
     <xsl:template match="/">
         <xsl:choose>
-            <xsl:when test="$offsetInSeconds and $offsetInFrames">
-                <!--@ Interrupt transformation if both parameters are set -->
+            <xsl:when test="($offsetInSeconds and $offsetInFrames) or ($offsetInSeconds and number($offsetStartOfProgramme) = 1) or ($offsetInFrames and number($offsetStartOfProgramme) = 1)">
+                <!--@ Interrupt transformation if more than one timecode offset parameter is set -->
                 <xsl:message terminate="yes">
-                    The parameters offsetInFrames and offsetInSeconds are specified at the same time. 
+                    More than one parameter of offsetInFrames, offsetInSeconds or offsetTCP is specified at the same time. 
                 </xsl:message>
             </xsl:when>
             <xsl:when test="$offsetInSeconds and (translate($offsetInSeconds, '0123456789-', '') != '')">
@@ -81,6 +84,12 @@ limitations under the License.
             <xsl:call-template name="checkOffsetParam">
                 <xsl:with-param name="param_name" select="'parameter offsetInFrames'"/>
                 <xsl:with-param name="value" select="$offsetInFrames"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="number($offsetStartOfProgramme) = 1">
+            <xsl:call-template name="checkOffsetParam">
+                <xsl:with-param name="param_name" select="'field ebuttm:documentStartOfProgramme'"/>
+                <xsl:with-param name="value" select="$startOfProgrammeValue"/>
             </xsl:call-template>
         </xsl:if>
         <xsl:apply-templates select="tt:tt"/>        
@@ -620,6 +629,12 @@ limitations under the License.
                     The $offsetInFrames parameter can't be used with ttp:timeBase set to media
                 </xsl:message>
             </xsl:when>
+            <xsl:when test="number($offsetStartOfProgramme) = 1 and $legacyTimeBase='media'">
+                <!--@ Interrupt transformation if the offsetStartOfProgramme is used and the timeBase is set to media -->
+                <xsl:message terminate="yes">
+                    The $offsetStartOfProgramme parameter can't be used with ttp:timeBase set to media
+                </xsl:message>
+            </xsl:when>
             <xsl:otherwise>
                 <!--@ Convert actual timestamp and the respective offset to values of milliseconds -->
                 <xsl:variable name="timestampSummedUp">
@@ -641,6 +656,11 @@ limitations under the License.
                             <xsl:value-of select="(substring($offsetInFrames, 1,2) * 3600 + 
                                 substring($offsetInFrames, 4,2) * 60 + 
                                 substring($offsetInFrames, 7,2) + (substring($offsetInFrames, 10,2) div $frameRate)) * 1000"/>
+                        </xsl:when>
+                        <xsl:when test="number($offsetStartOfProgramme) = 1">
+                            <xsl:value-of select="(substring($startOfProgrammeValue, 1,2) * 3600 + 
+                                substring($startOfProgrammeValue, 4,2) * 60 + 
+                                substring($startOfProgrammeValue, 7,2) + (substring($startOfProgrammeValue, 10,2) div $frameRate)) * 1000"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="0"/>
