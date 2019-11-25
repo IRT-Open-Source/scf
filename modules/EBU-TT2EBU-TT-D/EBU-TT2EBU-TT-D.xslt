@@ -24,9 +24,18 @@ limitations under the License.
     <xsl:param name="offsetInSeconds"/>
     <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this STLXML file -->
     <xsl:param name="offsetInFrames"/>
+    <!--** If set to 1, use the value "125%" (instead of the special value "normal") for tts:lineHeight -->
+    <xsl:param name="useLineHeight125Percent"/>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+    
+    <xsl:variable name="line_height_value">
+        <xsl:choose>
+            <xsl:when test="$useLineHeight125Percent = '1'">125%</xsl:when>
+            <xsl:otherwise>normal</xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     
     <xsl:template match="/">
         <xsl:choose>
@@ -129,7 +138,7 @@ limitations under the License.
                 <tt:style
                     xml:id="defaultStyle" 
                     tts:fontSize="80%" 
-                    tts:lineHeight="normal" 
+                    tts:lineHeight="{$line_height_value}" 
                     tts:textAlign="center" 
                     tts:color="#ffffffff" 
                     tts:backgroundColor="#00000000" 
@@ -205,7 +214,7 @@ limitations under the License.
             </xsl:if>
             <xsl:if test="@tts:lineHeight != ''">
                 <xsl:attribute name="tts:lineHeight">
-                    <xsl:value-of select="'normal'"/>
+                    <xsl:value-of select="$line_height_value"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@tts:textAlign != ''">
@@ -856,4 +865,4 @@ limitations under the License.
             <xsl:with-param name="frameRate" select="$frameRate" />
         </xsl:apply-templates>
     </xsl:template>
-</xsl:stylesheet>   
+</xsl:stylesheet>

@@ -23,6 +23,11 @@ The `EBU-TT2EBU-TT-D.xslt` provides the following parameters:
       `begin` and `end` attributes' values. Only positive values are
       supported.
 
+    - useLineHeight125Percent
+      Set to 1 to use the value `125%` (instead of the special value
+      `normal`) for the line height, to _not_ let the renderer choose an
+      appropriate value.
+
 If the use of any of the offset parameters results in a negative time
 expression, the processing is aborted.
 
