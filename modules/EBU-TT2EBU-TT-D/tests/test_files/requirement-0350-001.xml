@@ -41,7 +41,7 @@ limitations under the License.
                    tts:textAlign="center"
                    tts:fontFamily="monospaceSansSerif"
                    tts:fontSize="1c 1c"
-                   tts:lineHeight="normal"/>
+                   tts:lineHeight="125%"/>
         </tt:styling>
         <tt:layout>
             <tt:region xml:id="defaultRegion"

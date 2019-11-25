@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing lineHeight attribute with value normal -->
+<!-- Testing lineHeight attribute with value 125% -->
 <tt:tt xmlns:tt="http://www.w3.org/ns/ttml"
        xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
        xmlns:tts="http://www.w3.org/ns/ttml#styling"
@@ -41,10 +41,10 @@ limitations under the License.
                    tts:textAlign="center"
                    tts:fontFamily="monospaceSansSerif"
                    tts:fontSize="1c 1c"
-                   tts:lineHeight="normal"/>
+                   tts:lineHeight="125%"/>
 			      <tt:style xml:id="singleHeightLeft"
                    tts:fontSize="1c 1c"
-                   tts:lineHeight="normal"
+                   tts:lineHeight="125%"
                    tts:textAlign="left"/>
         </tt:styling>
         <tt:layout>

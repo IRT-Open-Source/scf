@@ -36,8 +36,8 @@ limitations under the License.
             <assert test="@tts:fontSize = '80%'">
                 Expected value: "80%" Value from test: "<value-of select="@tts:fontSize"/>"
             </assert> 
-            <assert test="@tts:lineHeight = '125%'">
-                Expected value: "125%" Value from test: "<value-of select="@tts:lineHeight"/>"
+            <assert test="@tts:lineHeight = 'normal'">
+                Expected value: "normal" Value from test: "<value-of select="@tts:lineHeight"/>"
             </assert> 
             <assert test="@tts:textAlign = 'center'">
                 Expected value: "center" Value from test: "<value-of select="@tts:textAlign"/>"

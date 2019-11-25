@@ -129,7 +129,7 @@ limitations under the License.
                 <tt:style
                     xml:id="defaultStyle" 
                     tts:fontSize="80%" 
-                    tts:lineHeight="125%" 
+                    tts:lineHeight="normal" 
                     tts:textAlign="center" 
                     tts:color="#ffffffff" 
                     tts:backgroundColor="#00000000" 
@@ -205,7 +205,7 @@ limitations under the License.
             </xsl:if>
             <xsl:if test="@tts:lineHeight != ''">
                 <xsl:attribute name="tts:lineHeight">
-                    <xsl:value-of select="'125%'"/>
+                    <xsl:value-of select="'normal'"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="@tts:textAlign != ''">

@@ -18,7 +18,7 @@
       <tt:styling>
          <tt:style xml:id="defaultStyle"
                    tts:fontSize="80%"
-                   tts:lineHeight="125%"
+                   tts:lineHeight="normal"
                    tts:textAlign="center"
                    tts:color="#ffffffff"
                    tts:backgroundColor="#00000000"
