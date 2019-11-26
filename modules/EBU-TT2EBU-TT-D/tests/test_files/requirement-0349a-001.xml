@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing the transformation without the offset parameters -->
+<!-- Testing the offsetStartOfProgramme parameter with Start-of-Programme value "10:00:00:00" -->
 <tt:tt xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
     xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style"
@@ -24,6 +24,12 @@ limitations under the License.
     ttp:cellResolution="50 30" xml:lang="en">
     <tt:head>
         <tt:metadata>
+            <scfm:parameters xmlns:scfm="http://www.irt.de/scf/metadata">
+                <scfm:parameter>
+                    <scfm:name>offsetStartOfProgramme</scfm:name>
+                    <scfm:value>1</scfm:value>
+                </scfm:parameter>
+            </scfm:parameters>
             <ebuttm:documentMetadata>
                 <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
                 <ebuttm:documentSubtitleListReferenceCode>String length
@@ -51,7 +57,7 @@ limitations under the License.
     <tt:body>
         <tt:div style="defaultStyle">
             <tt:p xml:id="sub1" style="textAlignCenter" region="bottomAligned" begin="10:00:00:00"
-                end="10:00:02:10">
+                end="10:00:02:12">
                 <tt:span style="WhiteOnBlack">Test Subtitle</tt:span>
                 <tt:br/>
                 <tt:br/>

@@ -22,7 +22,7 @@ limitations under the License.
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
     <ns uri="http://www.w3.org/ns/ttml#parameter" prefix="ttp"/>
-    <title>Testing the offsetInFrames parameter with value "10:00:01:01"</title>
+    <title>Testing the offsetStartOfProgramme parameter with Start-of-Programme value "10:00:00:00"</title>
     <pattern id="offsetInFrames">
         <rule context="/">
             <assert test="tt:tt/tt:body/tt:div/tt:p/@begin">
@@ -33,13 +33,13 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p/@begin">
-            <assert test=". = '00:00:00.960'">
-                Expected value: "00:00:00.960" Value from test: "<value-of select="."/>"
+            <assert test=". = '00:00:00.000'">
+                Expected value: "00:00:00.000" Value from test: "<value-of select="."/>"
             </assert>
         </rule>
         <rule context="tt:tt/tt:body/tt:div/tt:p/@end">
-            <assert test=". = '00:00:02.920'">
-                Expected value: "00:00:02.920" Value from test: "<value-of select="."/>"
+            <assert test=". = '00:00:02.480'">
+                Expected value: "00:00:02.480" Value from test: "<value-of select="."/>"
             </assert>
         </rule>
     </pattern>            
