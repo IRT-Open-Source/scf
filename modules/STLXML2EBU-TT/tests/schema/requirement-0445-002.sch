@@ -21,26 +21,17 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <ns uri="http://www.w3.org/ns/ttml#parameter" prefix="ttp"/>
-    <title>Testing the offsetInFrames parameter with value "10:00:01:01"</title>
+    <title>Testing ignoreManualOffsetForTCP Parameter with 1</title>
     <pattern id="offsetInFrames">
         <rule context="/">
-            <assert test="tt:tt/tt:body/tt:div/tt:p/@begin">
-                The begin attribute at the tt:p element must be present.
-            </assert> 
-            <assert test="tt:tt/tt:body/tt:div/tt:p/@end">
-                The end attribute at the tt:p element must be present.
+            <assert test="tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentStartOfProgramme">
+                The ebuttm:documentStartOfProgramme element must be present.
             </assert> 
         </rule>
-        <rule context="tt:tt/tt:body/tt:div/tt:p/@begin">
-            <assert test=". = '00:00:00.960'">
-                Expected value: "00:00:00.960" Value from test: "<value-of select="."/>"
-            </assert>
-        </rule>
-        <rule context="tt:tt/tt:body/tt:div/tt:p/@end">
-            <assert test=". = '00:00:02.920'">
-                Expected value: "00:00:02.920" Value from test: "<value-of select="."/>"
-            </assert>
+        <rule context="tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentStartOfProgramme">
+            <assert test=". = '10:00:00:00'">
+                Expected value: 10:00:00:00. Value from test: <value-of select="."/>
+            </assert> 
         </rule>
     </pattern>            
 </schema>

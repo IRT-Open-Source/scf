@@ -23,6 +23,12 @@ The `EBU-TT2EBU-TT-D.xslt` provides the following parameters:
       `begin` and `end` attributes' values. Only positive values are
       supported.
 
+    - offsetStartOfProgramme
+      Set to 1 to use the value of `ebuttm:documentStartOfProgramme` as
+      time-offset that's used for the begin and end attributes. This
+      offset is subtracted from all `begin` and `end` attributes'
+      values.
+
     - useLineHeight125Percent
       Set to 1 to use the value `125%` (instead of the special value
       `normal`) for the line height, to _not_ let the renderer choose an

@@ -20,15 +20,18 @@ limitations under the License.
     xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
     xmlns:ebuttm="urn:ebu:tt:metadata" xmlns:ebutts="urn:ebu:tt:style">
     <xsl:output encoding="UTF-8" indent="no"/>
-    <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this STLXML file -->
+    <!--** The Offset in seconds used for the Time Code In and Time Code Out values in this EBU-TT file -->
     <xsl:param name="offsetInSeconds"/>
-    <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this STLXML file -->
+    <!--** The Offset in frame format used for the Time Code In and Time Code Out values in this EBU-TT file -->
     <xsl:param name="offsetInFrames"/>
+    <!--** If set to 1, use ebuttm:documentStartOfProgramme as offset for the Time Code In and Time Code Out values in this EBU-TT file -->
+    <xsl:param name="offsetStartOfProgramme"/>
     <!--** If set to 1, use the value "125%" (instead of the special value "normal") for tts:lineHeight -->
     <xsl:param name="useLineHeight125Percent"/>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+    <xsl:variable name="startOfProgrammeValue" select="/tt:tt/tt:head/tt:metadata/ebuttm:documentMetadata/ebuttm:documentStartOfProgramme"/>
     
     <xsl:variable name="line_height_value">
         <xsl:choose>
@@ -37,36 +40,46 @@ limitations under the License.
         </xsl:choose>
     </xsl:variable>
     
-    <xsl:template match="/">
+    <xsl:template name="checkOffsetParam">
+        <!--** Checks the value of an offset parameter that is supposed to contain a SMPTE timecode -->
+        <xsl:param name="param_name"/>
+        <xsl:param name="value"/>
+        
         <xsl:choose>
-            <xsl:when test="$offsetInSeconds and $offsetInFrames">
-                <!--@ Interrupt transformation if both parameters are set -->
-                <xsl:message terminate="yes">
-                    The parameters offsetInFrames and offsetInSeconds are specified at the same time. 
-                </xsl:message>
-            </xsl:when>
-            <xsl:when test="$offsetInFrames and (translate($offsetInFrames, '0123456789:', '') != '')">
+            <xsl:when test="translate($value, '0123456789:', '') != ''">
                 <!--@ Interrupt transformation if content contains non-numerical values -->
                 <xsl:message terminate="yes">
-                    The value for the parameter offsetInFrames contains non-numerical values. 
+                    The value for the <xsl:value-of select="$param_name"/> contains non-numerical values. 
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$offsetInFrames and (string-length(translate($offsetInFrames, ':', '')) != 8)">
+            <xsl:when test="string-length(translate($value, ':', '')) != 8">
                 <!--@ Interrupt transformation if content is not valid -->
                 <xsl:message terminate="yes">
-                    The value for the parameter offsetInFrames does not have the necessary format of 'hh:mm:ss:ff'.  The value for hours shall be a number between 00 and 23, minutes and 
+                    The value for the <xsl:value-of select="$param_name"/> does not have the necessary format of 'hh:mm:ss:ff'. The value for hours shall be a number between 00 and 23, minutes and 
                     and seconds shall be between 00 and 59 and with a framerate of 25 the framerate the frame part shall be between 00 and 24 (begin and end of the intervals are included). 
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$offsetInFrames and 
-                not(number(substring($offsetInFrames, 1,2)) &gt;= 0 and number(substring($offsetInFrames, 1,2)) &lt; 24 and
-                number(substring($offsetInFrames, 4,2)) &gt;= 0 and number(substring($offsetInFrames, 4,2) ) &lt; 60 and
-                number(substring($offsetInFrames, 7,2)) &gt;= 0 and number(substring($offsetInFrames, 7,2)) &lt; 60 and
-                number(substring($offsetInFrames, 10,2)) &gt;= 0 and number(substring($offsetInFrames, 10,2)) &lt; 25)">
+            <xsl:when test="
+                not(number(substring($value, 1,2)) &gt;= 0 and number(substring($value, 1,2)) &lt; 24 and
+                number(substring($value, 4,2)) &gt;= 0 and number(substring($value, 4,2) ) &lt; 60 and
+                number(substring($value, 7,2)) &gt;= 0 and number(substring($value, 7,2)) &lt; 60 and
+                number(substring($value, 10,2)) &gt;= 0 and number(substring($value, 10,2)) &lt; 25)">
                 <!--@ Interrupt transformation if content is not valid -->
                 <xsl:message terminate="yes">
-                    The value for the parameter offsetInFrames does not have the necessary format of "hh:mm:ss:ff". The value for hours shall be a number between 00 and 23, minutes and 
+                    The value for the <xsl:value-of select="$param_name"/> does not have the necessary format of "hh:mm:ss:ff". The value for hours shall be a number between 00 and 23, minutes and 
                     and seconds shall be between 00 and 59 and with a framerate of 25 the framerate shall be between 00 and 24 (begin and end of the intervals are included).  
+                </xsl:message>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="/">
+        <xsl:choose>
+            <xsl:when test="($offsetInSeconds and $offsetInFrames) or ($offsetInSeconds and number($offsetStartOfProgramme) = 1) or ($offsetInFrames and number($offsetStartOfProgramme) = 1)">
+                <!--@ Interrupt transformation if more than one timecode offset parameter is set -->
+                <xsl:message terminate="yes">
+                    More than one parameter of offsetInFrames, offsetInSeconds or offsetTCP is specified at the same time. 
                 </xsl:message>
             </xsl:when>
             <xsl:when test="$offsetInSeconds and (translate($offsetInSeconds, '0123456789-', '') != '')">
@@ -76,6 +89,18 @@ limitations under the License.
                 </xsl:message>
             </xsl:when>
         </xsl:choose>
+        <xsl:if test="$offsetInFrames">
+            <xsl:call-template name="checkOffsetParam">
+                <xsl:with-param name="param_name" select="'parameter offsetInFrames'"/>
+                <xsl:with-param name="value" select="$offsetInFrames"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="number($offsetStartOfProgramme) = 1">
+            <xsl:call-template name="checkOffsetParam">
+                <xsl:with-param name="param_name" select="'field ebuttm:documentStartOfProgramme'"/>
+                <xsl:with-param name="value" select="$startOfProgrammeValue"/>
+            </xsl:call-template>
+        </xsl:if>
         <xsl:apply-templates select="tt:tt"/>        
     </xsl:template>
     
@@ -504,29 +529,29 @@ limitations under the License.
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="@begin">
-        <!--** Checks the begin timestamps validity and converts them to media timeCodeFormat if necessary. Steps:  -->
+    <xsl:template match="@begin | @end">
+        <!--** Checks the timestamps validity and converts them to media timeCodeFormat if necessary. Steps:  -->
         <xsl:param name="legacyTimeBase" />
         <xsl:param name="frameRate" />
-        <xsl:variable name="begin" select="normalize-space(.)"/>
+        <xsl:variable name="tc" select="normalize-space(.)"/>
         <!--@ Check if the attribute's content can be cast as a number if the ':' are not regarded -->
-        <xsl:if test="number(translate($begin, ':', '')) != number(translate($begin, ':', ''))">
+        <xsl:if test="number(translate($tc, ':', '')) != number(translate($tc, ':', ''))">
             <xsl:message terminate="yes">
-                The begin attribute of the tt:p element has invalid content. 
+                The <xsl:value-of select="local-name()"/> attribute of the tt:p element has invalid content. 
             </xsl:message>
         </xsl:if>
         <!--@ Split timestamp in hours, minutes, seconds and frames / fraction -->
-        <xsl:variable name="beginHours" select="substring($begin, 1, 2)"/>
-        <xsl:variable name="beginMinutes" select="substring($begin, 4, 2)"/>
-        <xsl:variable name="beginSeconds" select="substring($begin, 7, 2)"/>
+        <xsl:variable name="tcHours" select="substring($tc, 1, 2)"/>
+        <xsl:variable name="tcMinutes" select="substring($tc, 4, 2)"/>
+        <xsl:variable name="tcSeconds" select="substring($tc, 7, 2)"/>
         <!--@ Check timeCodeFormat of the source and interrupt if it's neither 'media' nor 'smpte' -->
-        <xsl:variable name="beginFrames">
+        <xsl:variable name="tcFrames">
             <xsl:choose>
                 <xsl:when test="$legacyTimeBase = 'smpte'">
-                    <xsl:value-of select="substring($begin, 10, 2)"/>
+                    <xsl:value-of select="substring($tc, 10, 2)"/>
                 </xsl:when>
                 <xsl:when test="$legacyTimeBase = 'media'">
-                    <xsl:value-of select="substring($begin, 10, 3)"/>
+                    <xsl:value-of select="substring($tc, 10, 3)"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:message terminate="yes">
@@ -539,26 +564,26 @@ limitations under the License.
             <xsl:when test="$legacyTimeBase = 'smpte'">
                 <xsl:choose>
                     <!--@ Check the timestamp's validity -->
-                    <xsl:when test="string-length($begin) = 11 and
-                        number($beginHours) &gt;= 0 and number($beginHours) &lt; 24 and
-                        number($beginMinutes) &gt;= 0 and number($beginMinutes) &lt; 60 and
-                        number($beginSeconds) &gt;= 0 and number($beginSeconds) &lt; 60 and
-                        number($beginFrames) &gt;= 0 and number($beginFrames) &lt; 25 and 
+                    <xsl:when test="string-length($tc) = 11 and
+                        number($tcHours) &gt;= 0 and number($tcHours) &lt; 24 and
+                        number($tcMinutes) &gt;= 0 and number($tcMinutes) &lt; 60 and
+                        number($tcSeconds) &gt;= 0 and number($tcSeconds) &lt; 60 and
+                        number($tcFrames) &gt;= 0 and number($tcFrames) &lt; 25 and 
                         $frameRate = '25'">
                         <!--@ Calculate time regarding offset -->
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="legacyTimeBase" select="$legacyTimeBase"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$beginFrames"/>
-                            <xsl:with-param name="seconds" select="$beginSeconds"/>
-                            <xsl:with-param name="minutes" select="$beginMinutes"/>
-                            <xsl:with-param name="hours" select="$beginHours"/>
+                            <xsl:with-param name="frames" select="$tcFrames"/>
+                            <xsl:with-param name="seconds" select="$tcSeconds"/>
+                            <xsl:with-param name="minutes" select="$tcMinutes"/>
+                            <xsl:with-param name="hours" select="$tcHours"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--@ Interrupt, if the value is invalid for 25 frames -->
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
-                            The begin attribute should use a valid smpte timeformat if 'smpte' is given as timeCodeFormat. 
+                            The <xsl:value-of select="local-name()"/> attribute should use a valid smpte timeformat if 'smpte' is given as timeCodeFormat. 
                         </xsl:message>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -566,119 +591,25 @@ limitations under the License.
             <xsl:when test="$legacyTimeBase = 'media'">
                 <xsl:choose>
                     <!--@ Check the timestamp's validity -->
-                    <xsl:when test="string-length($begin) = 12 and
-                        number($beginHours) &gt;= 0 and number($beginHours) &lt; 24 and
-                        number($beginMinutes) &gt;= 0 and number($beginMinutes) &lt; 60 and
-                        number($beginSeconds) &gt;= 0 and number($beginSeconds) &lt; 60 and
-                        number($beginFrames) &gt;= 0 and number($beginFrames) &lt;= 999">
+                    <xsl:when test="string-length($tc) = 12 and
+                        number($tcHours) &gt;= 0 and number($tcHours) &lt; 24 and
+                        number($tcMinutes) &gt;= 0 and number($tcMinutes) &lt; 60 and
+                        number($tcSeconds) &gt;= 0 and number($tcSeconds) &lt; 60 and
+                        number($tcFrames) &gt;= 0 and number($tcFrames) &lt;= 999">
                         <!--@ Calculate time regarding offset -->
                         <xsl:call-template name="timestampConversion">
                             <xsl:with-param name="legacyTimeBase" select="$legacyTimeBase"/>
                             <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$beginFrames"/>
-                            <xsl:with-param name="seconds" select="$beginSeconds"/>
-                            <xsl:with-param name="minutes" select="$beginMinutes"/>
-                            <xsl:with-param name="hours" select="$beginHours"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <!--@ Interrupt, if the value is invalid for  25 frames -->
-                    <xsl:otherwise>
-                        <xsl:message terminate="yes">
-                            The begin attribute should use a valid media timeformat if 'media' is given as timeCodeFormat. 
-                        </xsl:message>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <!--@ Interrupt if the source's timeCodeFormat is neither 'media' nor 'smpte' -->
-            <xsl:otherwise>
-                <xsl:message terminate="yes">
-                    The selected timeCodeFormat is unknown. Only 'media' and 'smpte' are supported.
-                </xsl:message>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="@end">
-        <!--** Checks the end timestamps validity and converts them to media timeCodeFormat if necessary. Steps:  -->
-        <xsl:param name="legacyTimeBase" />
-        <xsl:param name="frameRate" />
-        <xsl:variable name="end" select="normalize-space(.)"/>
-        <!--@ Check if the attribute's content can be cast as a number if the ':' are not regarded -->
-        <xsl:if test="number(translate($end, ':', '')) != number(translate($end, ':', ''))">
-            <xsl:message terminate="yes">
-                The begin attribute of the tt:p element has invalid content. 
-            </xsl:message>
-        </xsl:if>
-        <!--@ Split timestamp in hours, minutes, seconds and frames / fraction -->
-        <xsl:variable name="endHours" select="substring($end, 1, 2)"/>
-        <xsl:variable name="endMinutes" select="substring($end, 4, 2)"/>
-        <xsl:variable name="endSeconds" select="substring($end, 7, 2)"/>
-        <!--@ Check timeCodeFormat of the source and interrupt if it's neither 'media' nor 'smpte' -->
-        <xsl:variable name="endFrames">
-            <xsl:choose>
-                <xsl:when test="$legacyTimeBase = 'smpte'">
-                    <xsl:value-of select="substring($end, 10, 2)"/>
-                </xsl:when>
-                <xsl:when test="$legacyTimeBase = 'media'">
-                    <xsl:value-of select="substring($end, 10, 3)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:message terminate="yes">
-                        The selected timeCodeFormat is unknown. Only 'media' and 'smpte' are supported.
-                    </xsl:message>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="$legacyTimeBase = 'smpte'">
-                <xsl:choose>
-                    <!--@ Check the timestamp's validity -->
-                    <xsl:when test="string-length($end) = 11 and
-                        number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
-                        number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
-                        number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
-                        number($endFrames) &gt;= 0 and number($endFrames) &lt; 25 and 
-                        $frameRate = '25'">
-                        <!--@ Calculate time regarding offset -->
-                        <xsl:call-template name="timestampConversion">
-                            <xsl:with-param name="legacyTimeBase" select="$legacyTimeBase"/>
-                            <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$endFrames"/>
-                            <xsl:with-param name="seconds" select="$endSeconds"/>
-                            <xsl:with-param name="minutes" select="$endMinutes"/>
-                            <xsl:with-param name="hours" select="$endHours"/>
+                            <xsl:with-param name="frames" select="$tcFrames"/>
+                            <xsl:with-param name="seconds" select="$tcSeconds"/>
+                            <xsl:with-param name="minutes" select="$tcMinutes"/>
+                            <xsl:with-param name="hours" select="$tcHours"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--@ Interrupt, if the value is invalid for 25 frames -->
                     <xsl:otherwise>
                         <xsl:message terminate="yes">
-                            The end attribute should use a valid smpte timeformat if 'smpte' is given as timeCodeFormat. 
-                        </xsl:message>
-                    </xsl:otherwise>
-                </xsl:choose>                
-            </xsl:when>
-            <xsl:when test="$legacyTimeBase = 'media'">
-                <xsl:choose>
-                    <!--@ Check the timestamp's validity -->
-                    <xsl:when test="string-length($end) = 12 and
-                        number($endHours) &gt;= 0 and number($endHours) &lt; 24 and
-                        number($endMinutes) &gt;= 0 and number($endMinutes) &lt; 60 and
-                        number($endSeconds) &gt;= 0 and number($endSeconds) &lt; 60 and
-                        number($endFrames) &gt;= 0 and number($endFrames) &lt;= 999">
-                        <!--@ Calculate time regarding offset -->
-                        <xsl:call-template name="timestampConversion">
-                            <xsl:with-param name="legacyTimeBase" select="$legacyTimeBase"/>
-                            <xsl:with-param name="frameRate" select="$frameRate"/>
-                            <xsl:with-param name="frames" select="$endFrames"/>
-                            <xsl:with-param name="seconds" select="$endSeconds"/>
-                            <xsl:with-param name="minutes" select="$endMinutes"/>
-                            <xsl:with-param name="hours" select="$endHours"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <!--@ Interrupt, if the value is invalid for 25 frames -->
-                    <xsl:otherwise>
-                        <xsl:message terminate="yes">
-                            The end attribute should use a valid media timeformat if 'media' is given as timeCodeFormat. 
+                            The <xsl:value-of select="local-name()"/> attribute should use a valid media timeformat if 'media' is given as timeCodeFormat. 
                         </xsl:message>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -707,6 +638,12 @@ limitations under the License.
                     The $offsetInFrames parameter can't be used with ttp:timeBase set to media
                 </xsl:message>
             </xsl:when>
+            <xsl:when test="number($offsetStartOfProgramme) = 1 and $legacyTimeBase='media'">
+                <!--@ Interrupt transformation if the offsetStartOfProgramme is used and the timeBase is set to media -->
+                <xsl:message terminate="yes">
+                    The $offsetStartOfProgramme parameter can't be used with ttp:timeBase set to media
+                </xsl:message>
+            </xsl:when>
             <xsl:otherwise>
                 <!--@ Convert actual timestamp and the respective offset to values of milliseconds -->
                 <xsl:variable name="timestampSummedUp">
@@ -728,6 +665,11 @@ limitations under the License.
                             <xsl:value-of select="(substring($offsetInFrames, 1,2) * 3600 + 
                                 substring($offsetInFrames, 4,2) * 60 + 
                                 substring($offsetInFrames, 7,2) + (substring($offsetInFrames, 10,2) div $frameRate)) * 1000"/>
+                        </xsl:when>
+                        <xsl:when test="number($offsetStartOfProgramme) = 1">
+                            <xsl:value-of select="(substring($startOfProgrammeValue, 1,2) * 3600 + 
+                                substring($startOfProgrammeValue, 4,2) * 60 + 
+                                substring($startOfProgrammeValue, 7,2) + (substring($startOfProgrammeValue, 10,2) div $frameRate)) * 1000"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of select="0"/>
