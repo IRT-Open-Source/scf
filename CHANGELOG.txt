@@ -1,4 +1,31 @@
 -----------------------------
+Version 1.5.0
+-----------------------------
+
+STL2STLXML
+- FIXED #60: Fix ¤ character conversion in CCT 00
+
+STLXML2EBU-TT
+- FIXED #58: Fix first word in TF ignored in special cases
+- ADDED #62: Add param to ignore manual offset for TCP
+
+EBU-TT2EBU-TT-D
+- ADDED #63: Add param to use Start-of-Programme
+- ADDED #64: Add param to use tts:lineHeight "125%"
+- NOTE: This version changes the default tts:lineHeight value to "normal"
+
+STLXML-SplitBlocks
+- FIXED #59: Fix spread composite sequence
+
+STLXML2STL
+- FIXED #55: Fix composite sequence mapping in TF
+- FIXED #61: Fix conversion of ạ/ọ characters
+
+TT-Edit-List
+- FIXED #56: Support ttp:timeBase default value
+- FIXED #57: Fix media timecode fraction support
+
+-----------------------------
 Version 1.4.0
 -----------------------------
 
