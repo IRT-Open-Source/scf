@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing lineHeight attribute with value 125% -->
+<!-- Testing useLineHeight125Percent Parameter -->
 <tt:tt xmlns:tt="http://www.w3.org/ns/ttml"
        xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
        xmlns:tts="http://www.w3.org/ns/ttml#styling"
@@ -27,6 +27,12 @@ limitations under the License.
        xml:lang="">
     <tt:head>
         <tt:metadata>
+            <scfm:parameters xmlns:scfm="http://www.irt.de/scf/metadata">
+                <scfm:parameter>
+                    <scfm:name>useLineHeight125Percent</scfm:name>
+                    <scfm:value>1</scfm:value>
+                </scfm:parameter>
+            </scfm:parameters>
             <ebuttm:documentMetadata>
                 <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
             </ebuttm:documentMetadata>
@@ -41,10 +47,10 @@ limitations under the License.
                    tts:textAlign="center"
                    tts:fontFamily="monospaceSansSerif"
                    tts:fontSize="1c 1c"
-                   tts:lineHeight="125%"/>
-			      <tt:style xml:id="singleHeightLeft"
+                   tts:lineHeight="normal"/>
+			<tt:style xml:id="singleHeightLeft"
                    tts:fontSize="1c 1c"
-                   tts:lineHeight="125%"
+                   tts:lineHeight="normal"
                    tts:textAlign="left"/>
         </tt:styling>
         <tt:layout>

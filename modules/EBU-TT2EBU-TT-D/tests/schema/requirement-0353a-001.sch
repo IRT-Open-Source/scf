@@ -21,7 +21,7 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing lineHeight attribute with value 125%</title>
+    <title>Testing useLineHeight125Percent Parameter</title>
     <pattern id="SpanIDAttribute">
         <rule context="/">
             <assert test="tt:tt/tt:head/tt:styling/tt:style/@xml:id">
@@ -32,13 +32,13 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="tt:tt/tt:head/tt:styling/tt:style[@xml:id = 'defaultStyle']">
-            <assert test="@tts:lineHeight = 'normal'">
-                Expected value: "normal" Value from test: "<value-of select="@tts:lineHeight"/>"
+            <assert test="@tts:lineHeight = '125%'">
+                Expected value: "125%" Value from test: "<value-of select="@tts:lineHeight"/>"
             </assert> 
         </rule>
         <rule context="tt:tt/tt:head/tt:styling/tt:style[@xml:id = 'singleHeightLeft']">
-            <assert test="@tts:lineHeight = 'normal'">
-                Expected value: "normal" Value from test: "<value-of select="@tts:lineHeight"/>"
+            <assert test="@tts:lineHeight = '125%'">
+                Expected value: "125%" Value from test: "<value-of select="@tts:lineHeight"/>"
             </assert> 
         </rule>
     </pattern>            
