@@ -1,0 +1,6 @@
+.git
+documentation
+misc
+modules/*/documentation
+modules/*/tests
+modules/TT-Helper
