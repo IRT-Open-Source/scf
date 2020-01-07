@@ -50,6 +50,12 @@ output).
     |         +---schema
     |         +---test_files
 
+## SCF service
+The SCF also provides a REST service including a simple web interface.
+This service invokes the different conversion modules of the SCF.
+
+For further details, please see [README-SCF-SERVICE.md](README-SCF-SERVICE.md).
+
 
 ## DESCRIPTION
 
