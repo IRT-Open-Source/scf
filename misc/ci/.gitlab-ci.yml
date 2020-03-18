@@ -142,7 +142,7 @@ tests_STLXML_XSD:
   tags:
     - docker
   stage: test
-  script: scf_test_driver/ci/test_stlxml-xsd.sh
+  script: scf_test_driver/ci/test_schema.sh STLXML-XSD STLXML-XSD stlxml.xsd
   artifacts:
     name: "$CI_JOB_NAME"
     paths:
