@@ -151,6 +151,19 @@ tests_STLXML_XSD:
     # provide test results only on failure
     when: on_failure
 
+tests_SRTXML_XSD:
+  tags:
+    - docker
+  stage: test
+  script: scf_test_driver/ci/test_schema.sh SRTXML-XSD SRTXML-XSD srtxml.xsd
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+    # test results
+    - index.html
+    # provide test results only on failure
+    when: on_failure
+
 # TT-Helper modules
 tests_Helper_DFXP2TTML:
   tags:

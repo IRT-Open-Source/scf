@@ -60,7 +60,7 @@ For further details, please see [README-SCF-SERVICE.md](README-SCF-SERVICE.md).
 ## DESCRIPTION
 
 ### Modules
-Currently the SCF has the following eight core modules:
+Currently the SCF has the following core modules:
 
 * STLXML-XSD
 * STL2STLXML
@@ -71,6 +71,7 @@ Currently the SCF has the following eight core modules:
 * EBU-TT2EBU-TT-D
 * EBU-TT-D2EBU-TT-D-Basic-DE
 * FlashDFXP2EBU-TT-D-Basic-DE
+* SRTXML-XSD
 
 Additionally there are various helper submodules that can be found in the
 folder "TT-Helper". These modules solve smaller transformation tasks.
@@ -119,6 +120,12 @@ Mediathek portals" (EBU-TT-D-Basic-DE).
 #### FlashDFXP2EBU-TT-D-Basic-DE
 The FlashDFXP2EBU-TT-D-Basic-DE module converts a TTML/DFXP file made
 for Adobe Flash player into EBU-TT-D-Basic-DE.
+
+#### SRTXML-XSD
+The SRTXML W3C XML Schema is a tool to check if the XML representation
+of the SRT (SubRip) files conform to the expected structure. Files that
+don't conform will most probably fail further SCF conversions or will
+otherwise lead to unexpected results.
 
 
 ### Tests
