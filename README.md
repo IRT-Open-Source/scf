@@ -18,11 +18,12 @@ from version 6.5.5.
 The STLXML2EBU-TT, EBU-TT2STLXML and STLXML-SplitBlocks modules require XSLT 2.0 support. For
 the STLXML2EBU-TT and EBU-TT2STLXML modules EXSLT support can be used as fallback.
 
-To validate an STLXML document with the STLXML W3C XML Schema an
-XML Schema 1.0 parser is required. You could use for example
+To validate an STLXML document or an SRTXML document with the respective
+W3C XML Schema an XML Schema 1.0 parser is required. You could use e.g.
 [xerces XML parser and validator](http://xerces.apache.org/).
 
-For the conversion of an EBU STL file into STLXML [Python 3](https://www.python.org/downloads/)
+For the conversion of an EBU STL file into STLXML (or the conversion of
+an SRT file into SRTXML) [Python 3](https://www.python.org/downloads/)
 is required (it will not run under Python 2).
 
 ## Structure
@@ -72,6 +73,7 @@ Currently the SCF has the following core modules:
 * EBU-TT-D2EBU-TT-D-Basic-DE
 * FlashDFXP2EBU-TT-D-Basic-DE
 * SRTXML-XSD
+* SRT2SRTXML
 
 Additionally there are various helper submodules that can be found in the
 folder "TT-Helper". These modules solve smaller transformation tasks.
@@ -127,6 +129,11 @@ of the SRT (SubRip) files conform to the expected structure. Files that
 don't conform will most probably fail further SCF conversions or will
 otherwise lead to unexpected results.
 
+#### SRT2SRTXML
+The SRT2SRTXML script decodes the SRT file and exports it in an XML
+representation that can be used for further processing with XML
+technologies or for debugging purposes.
+
 
 ### Tests
 The test files that are used as test input for a module are named
@@ -138,11 +145,11 @@ Example: The first test file for the requirement 27 in an XML format is
 named `requirement-0027-001.xml`.
 
 If there are certain assertions written that can be automatically
-processed (e.g. by a schematron schema), then each assertion file has
+processed (e.g. by a Schematron schema), then each assertion file has
 the corresponding file name of the test file (with file suffix of the
 assertion format).
 
-A schematron file that tests the output of a module that gets the test
+A Schematron file that tests the output of a module that gets the test
 file `requirement-0027-001.xml` as input would be named as
 `requirement-0027-001.sch`.
 
