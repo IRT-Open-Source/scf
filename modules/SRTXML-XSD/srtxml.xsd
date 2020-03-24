@@ -55,10 +55,10 @@ limitations under the License.
   </xs:simpleType>
   
   <xs:element name="line">
-    <xs:simpleType>
-      <xs:restriction base="xs:string">
-        <xs:pattern value=".+"></xs:pattern>
-      </xs:restriction>
-    </xs:simpleType>
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+      </xs:sequence>
+    </xs:complexType>
   </xs:element>
 </xs:schema>

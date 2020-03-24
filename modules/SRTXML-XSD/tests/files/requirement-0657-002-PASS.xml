@@ -21,6 +21,7 @@ limitations under the License.
         <id>1</id>
         <begin>00:00:01,000</begin>
         <end>00:00:05,124</end>
-        <line/>
+        <line>This <b>is</b> <i>a</i> <u>test</u> subtitle</line>
+        <line>that <font color="#FF0000">consists</font> of <meta:test xmlns:meta="http://www.irt.de/scf/metadata">formatting</meta:test></line>
     </subtitle>
 </SRTXML>
