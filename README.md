@@ -74,6 +74,7 @@ Currently the SCF has the following core modules:
 * FlashDFXP2EBU-TT-D-Basic-DE
 * SRTXML-XSD
 * SRT2SRTXML
+* SRTXML2TTML
 
 Additionally there are various helper submodules that can be found in the
 folder "TT-Helper". These modules solve smaller transformation tasks.
@@ -133,6 +134,12 @@ otherwise lead to unexpected results.
 The SRT2SRTXML script decodes the SRT file and exports it in an XML
 representation that can be used for further processing with XML
 technologies or for debugging purposes.
+
+#### SRTXML2TTML
+The SRTXML2TTML XSLT transforms an XML representation of an SRT file
+into a TTML file, using a user-provided TTML template file. Hereby the
+template serves as a base for the conversion output into which the
+converted subtitles are inserted.
 
 
 ### Tests
