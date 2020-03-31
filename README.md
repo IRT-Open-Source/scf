@@ -172,4 +172,4 @@ QC: Stefan Pöschel, Barbara Fichte, Peter tho Pesch
 * [EBU STL (EBU Tech 3264)](https://tech.ebu.ch/docs/tech/tech3264.pdf)
 * [MAPPING EBU STL TO EBU-TT SUBTITLE FILES (EBU Tech 3360)](https://tech.ebu.ch/docs/tech/tech3360.pdf)
 * [EBU-TT-D SUBTITLING DISTRIBUTION FORMAT (EBU Tech 3380)](https://tech.ebu.ch/docs/tech/tech3380.pdf)
-* [XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE)](http://www.irt.de/en/publications/technical-guidelines.html)
+* [XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE)](https://www.irt.de/fileadmin/media/Neue_Downloads/Publikationen/Technische_Richtlinien/EBU-TT-D-Basic-DE-Subtitle_Format_ARD_Mediathek_Portals-v1.2.pdf)

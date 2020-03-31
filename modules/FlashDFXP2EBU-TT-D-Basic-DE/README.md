@@ -61,4 +61,4 @@ where `[dir]` is the directory of the Saxon jar-file.
 
 ## RESOURCES
 * [Timed Text (TT) Authoring Format 1.0 - Distribution Format Exchange Profile (DFXP)](https://www.w3.org/TR/2009/CR-ttaf1-dfxp-20090924/)
-* [XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE)](http://www.irt.de/en/publications/technical-guidelines.html)
+* [XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE)](https://www.irt.de/fileadmin/media/Neue_Downloads/Publikationen/Technische_Richtlinien/EBU-TT-D-Basic-DE-Subtitle_Format_ARD_Mediathek_Portals-v1.2.pdf)
