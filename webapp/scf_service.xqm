@@ -158,14 +158,14 @@ declare function scf:call_xslt($status as map(*), $xslt as xs:string, $param_opt
     
     (: transformation :)
     let $input as document-node() := $status('result')
-    let $result as document-node() := xslt:transform($input, $xslt, $params)
+    let $result as document-node() := xslt:transform($input, concat('../', $scf:modules_path, $xslt), $params)
     
     (: remove consumed options + replace result :)
     return map:merge((map:entry('result', $result), map:keys($params) ! map:entry($param_option_mapping(.), ()), $status))
 };
 
 declare function scf:call_stlxml2ebu-tt($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'STLXML2EBU-TT/STLXML2EBU-TT.xslt'), map {
+    scf:call_xslt($status, 'STLXML2EBU-TT/STLXML2EBU-TT.xslt', map {
         'offsetTCP': 'option_offset_start_of_programme',
         'offsetInSeconds': 'option_offset_seconds',
         'offsetInFrames': 'option_offset_frames',
@@ -174,11 +174,11 @@ declare function scf:call_stlxml2ebu-tt($status as map(*)) as map(*) {
 };
 
 declare function scf:call_ebu-tt2stlxml($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'EBU-TT2STLXML/EBU-TT2STLXML.xslt'), map{})
+    scf:call_xslt($status, 'EBU-TT2STLXML/EBU-TT2STLXML.xslt', map{})
 };
 
 declare function scf:call_ebu-tt2ebu-tt-d($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'EBU-TT2EBU-TT-D/EBU-TT2EBU-TT-D.xslt'), map {
+    scf:call_xslt($status, 'EBU-TT2EBU-TT-D/EBU-TT2EBU-TT-D.xslt', map {
         'useLineHeight125Percent': 'option_use_line_height_125',
         'offsetStartOfProgramme': 'option_offset_start_of_programme',
         'offsetInSeconds': 'option_offset_seconds',
@@ -187,7 +187,7 @@ declare function scf:call_ebu-tt2ebu-tt-d($status as map(*)) as map(*) {
 };
 
 declare function scf:call_ebu-tt-d2ebu-tt-d-basic-de($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt'), map{})
+    scf:call_xslt($status, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt', map{})
 };
 
 (: sets an unsupported option error as status result :)
