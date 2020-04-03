@@ -105,14 +105,9 @@ declare
 
 (: param->options map: sets a param (key) to the value of a specific status option (value); afterwards clear the option value to indicate that it has been consumed :)
 
-declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
-    let $param_option_mapping := map {
-        's': 'option_separate_tti',
-        'a': 'option_clear_uda',
-        'u': 'option_discard_user_data'
-    }
-    
-    (: build params sequence with present options - for STL2STLXML it is sufficient that an option is present; the actual value doesn't matter! :)
+(: generic Python invokation :)
+declare function scf:call_python($status as map(*), $script as xs:string, $param_option_mapping as map(*)) as map(*) {
+    (: build params sequence with present options - it is sufficient that an option is present; the actual value doesn't matter! :)
     let $params := 
         for $k in map:keys($param_option_mapping)
         let $v := $k => $param_option_mapping() => $status()
@@ -124,13 +119,21 @@ declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
     let $input_filename := file:create-temp-file('scf-service-', '')
     let $output_filename := concat($input_filename, '.out')
     let $write_input := file:write-binary($input_filename, $input)
-    let $result_call := proc:system('python3', (file:resolve-path(concat($scf:modules_path, 'STL2STLXML/stl2stlxml.py')), $input_filename, '-x', $output_filename, $params ! concat('-', .)))
+    let $result_call := proc:system('python3', (file:resolve-path(concat($scf:modules_path, $script)), $input_filename, '-x', $output_filename, $params ! concat('-', .)))
     let $result as document-node() := (# basex:non-deterministic #) {doc($output_filename)} (: prevent evaluation after deleted output file :)
     let $delete_input := file:delete($input_filename)
     let $delete_output := file:delete($output_filename)
     
     (: remove consumed options + replace result :)
     return map:merge((map:entry('result', $result), $params ! map:entry($param_option_mapping(.), ()), $status))
+};
+
+declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
+    scf:call_python($status, 'STL2STLXML/stl2stlxml.py', map {
+        's': 'option_separate_tti',
+        'a': 'option_clear_uda',
+        'u': 'option_discard_user_data'
+    })
 };
 
 declare function scf:call_stlxml2stl($status as map(*)) as map(*) {
