@@ -1,20 +1,19 @@
 # base upon Debian Buster
 FROM debian:buster
 
-# set correct timezone
-ENV TZ=Europe/Berlin
+# set correct timezone + generic UTF-8 locale
+ENV TZ=Europe/Berlin LC_ALL=C.UTF-8
+
+# set workdir ("~" does not work)
+WORKDIR /root
 
 # install necessary packages
-RUN apt-get update && apt-get install -y \
- git \
+RUN apt-get update && apt-get install -y --no-install-recommends \
  openjdk-11-jre-headless \
  python3 \
  wget \
  unzip \
  && rm -rf /var/lib/apt/lists/*
-
-# set workdir ("~" does not work)
-WORKDIR /root
 
 # prevent "java.awt.AWTError: Assistive Technology not found: org.GNOME.Accessibility.AtkWrapper" (see https://askubuntu.com/a/723503)
 RUN sed -i -e '/^assistive_technologies=/s/^/#/' /etc/java-*-openjdk/accessibility.properties
