@@ -276,13 +276,9 @@ declare
         'option_discard_user_data': 'to remove STL User Data'
     }
     
-    let $conversion_format := concat($format_source, '→', $format_target)
-    let $source_stl := $format_source eq 'stl'
-    let $target_stl := $format_target eq 'stl'
-    
     let $input_filename := map:keys($input)[1]
     let $input_content_raw := $input($input_filename)
-    let $input_content := if ($source_stl) then $input_content_raw else parse-xml(bin:decode-string($input_content_raw, 'UTF-8'))
+    let $input_content := if ($format_source eq 'stl') then $input_content_raw else parse-xml(bin:decode-string($input_content_raw, 'UTF-8'))
 
     (: do conversion :)
     let $conversion_status_init := map {
@@ -301,10 +297,8 @@ declare
     let $conversion_option_errors := map:keys($conversion_option_error_messages)[exists($conversion_status(.))] ! $conversion_option_error_messages(.)
     let $conversion := if (scf:is_status_error($conversion_status) or empty($conversion_option_errors)) then $conversion_status else scf:status_set_error_unsupported_option($conversion_status, $conversion_option_errors)
     
-    let $rest_response_format := if ($conversion('result') instance of xs:base64Binary) then 'application/octet-stream' else 'application/xml'
     let $rest_response_filename_without_ext := replace($input_filename, '[.]([Ss][Tt][Ll]|[Xx][Mm][Ll])$', '')
-    let $rest_response_filename_suffix := if ($target_stl) then '.stl' else concat('_', $format_target, '.xml')
-    let $rest_response_filename := concat($rest_response_filename_without_ext, $rest_response_filename_suffix)
+    let $rest_response_filename := concat($rest_response_filename_without_ext, scf:filename_suffix($format_target))
     let $rest_response_success := not(scf:is_status_error($conversion))
    
     return (
@@ -313,7 +307,7 @@ declare
             <output:serialization-parameters>
                 <output:omit-xml-declaration value='no'/>
                 <output:indent value='{if (exists($indent)) then 'yes' else 'no'}'/>
-                <output:media-type value='{$rest_response_format}'/>
+                <output:media-type value='{scf:media_type($conversion('result'))}'/>
             </output:serialization-parameters>
             <http:response status="{if ($rest_response_success) then 200 else 400}">
                 {if ($rest_response_success) then <http:header name="Content-Disposition" value="attachment; filename=""{$rest_response_filename}"""/> else ()}
@@ -324,6 +318,18 @@ declare
         $conversion('result')
     )
   };
+
+declare function scf:media_type($data) as xs:string {
+    typeswitch($data)
+    case xs:base64Binary return 'application/octet-stream'
+    default return 'application/xml'
+};
+
+declare function scf:filename_suffix($format as xs:string) as xs:string {
+    switch($format)
+    case ('stl') return '.stl'
+    default return concat('_', $format, '.xml')
+};
 
 (: execute a single conversion step :)
 declare function scf:convert_step($status as map(*), $format_target as xs:string) as map(*) {
