@@ -193,15 +193,15 @@ declare function scf:call_ebu-tt-d2ebu-tt-d-basic-de($status as map(*)) as map(*
     scf:call_xslt($status, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt', map{})
 };
 
-(: sets an unsupported option error as status result :)
-declare function scf:status_set_error($status as map(*), $description as xs:string+) as map(*) {
+(: sets a specified description as status result :)
+declare function scf:status_set_error_generic($status as map(*), $description as xs:string) as map(*) {
     map:put($status, 'result',
         <error>
             <steps>
                 {$status('steps') ! <step>{$scf:subtitle_format(.)}</step>}
             </steps>
             <code/>
-            <description>This conversion chain does not support the following option(s): {string-join($description, '; ')}.</description>
+            <description>{$description}</description>
             <value/>
             <module/>
             <line-number/>
@@ -210,6 +210,16 @@ declare function scf:status_set_error($status as map(*), $description as xs:stri
     )
 };
 
+(: sets an unsupported option error as status result :)
+declare function scf:status_set_error_unsupported_option($status as map(*), $description as xs:string+) as map(*) {
+    let $description_merged := concat('This conversion chain does not support the following option(s): ', string-join($description, '; '), '.')
+    return scf:status_set_error_generic($status, $description_merged)
+};
+
+(: returns whether the status result represents an error :)
+declare function scf:is_status_error($status as map(*)) as xs:boolean {
+    $status('result') instance of element()
+};
 
 (:
 items of the status map:
@@ -289,13 +299,13 @@ declare
     }
     let $conversion_status := scf:convert_step($conversion_status_init, $format_target)
     let $conversion_option_errors := map:keys($conversion_option_error_messages)[exists($conversion_status(.))] ! $conversion_option_error_messages(.)
-    let $conversion := if (empty($conversion_option_errors)) then $conversion_status else scf:status_set_error($conversion_status, $conversion_option_errors)
+    let $conversion := if (scf:is_status_error($conversion_status) or empty($conversion_option_errors)) then $conversion_status else scf:status_set_error_unsupported_option($conversion_status, $conversion_option_errors)
     
     let $rest_response_format := if ($conversion('result') instance of xs:base64Binary) then 'application/octet-stream' else 'application/xml'
     let $rest_response_filename_without_ext := replace($input_filename, '[.]([Ss][Tt][Ll]|[Xx][Mm][Ll])$', '')
     let $rest_response_filename_suffix := if ($target_stl) then '.stl' else concat('_', $format_target, '.xml')
     let $rest_response_filename := concat($rest_response_filename_without_ext, $rest_response_filename_suffix)
-    let $rest_response_success := not($conversion('result') instance of element())
+    let $rest_response_success := not(scf:is_status_error($conversion))
    
     return (
         (: MIME type + filename :)
