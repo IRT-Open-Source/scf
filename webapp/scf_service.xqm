@@ -144,7 +144,7 @@ declare function scf:template_files() {
     return
         if (file:exists($path))
         then
-            for $file in file:list($path)[ends-with(lower-case(.), '.xml')]
+            for $file in file:list($path)[matches(lower-case(.), '\.(xml|ttml)$')]
             order by $file
             return $file
         else ()

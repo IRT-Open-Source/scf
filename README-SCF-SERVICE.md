@@ -104,7 +104,7 @@ TTML, a TTML template has to be specified.
 
 This request is a helper request that provides an (ordered) list of all
 available template files in the configured template folder. Currently
-this includes all files that have an `.xml` extension.
+this includes all files that have an `.xml` or an `.ttml` extension.
 
 No parameters are available for this request.
 
@@ -114,7 +114,7 @@ strings, for example:
 ```json
 [
   "ebu-tt-d-basic-de.xml",
-  "ttml_custom.xml"
+  "ttml_custom.ttml"
 ]
 ```
 
