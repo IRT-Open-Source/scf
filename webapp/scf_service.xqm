@@ -21,8 +21,8 @@ declare variable $scf:modules_path as xs:string := "modules/";
 declare variable $scf:config := if(doc-available("scf_service_config.xml")) then doc("scf_service_config.xml") else doc("scf_service_config_default.xml");
 
 (: fall back to module template path, if needed :)
-declare variable $scf:config_templates_path as xs:string :=
-    let $config_path := $scf:config/settings/setting[@name eq 'templates_path']/text()
+declare variable $scf:config_templates_path :=
+    let $config_path := $scf:config/settings/setting[@name eq 'templates_path']
     return
         if ($config_path != '')
         then $config_path

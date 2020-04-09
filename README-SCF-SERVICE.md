@@ -26,8 +26,9 @@ The following subtitle formats/profiles are supported:
 Some aspects of the SCF service can be configured through a config file
 named `scf_service_config.xml` which is located in the `webapp`
 subfolder. By default this file doesn't exist. In that case the default
-configuration in `scf_service_config.xml` is used instead. This file is
-part of the SCF distribution.
+configuration in `scf_service_config_default.xml` (located in the same
+subfolder) is used instead. This file is part of the SCF distribution
+and may be used as blueprint for a custom configuration file.
 
 The following settings are available:
 - `templates_path`: The location (absolute path) of the TTML templates.
