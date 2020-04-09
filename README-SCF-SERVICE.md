@@ -52,6 +52,24 @@ This can be achieved with the following command:
 
     docker run -p 9000:8984 scf_service
 
+A convenient way to provide custom TTML templates (please see below) is
+to employ an appropriate template folder on the Docker host in order to
+overlay the default template folder within the Docker image.
+
+This can be achieved with the following command (Linux host):
+
+    docker run \
+    --mount type=bind,source=/ttml_templates,target=/root/modules/SRTXML2TTML/templates,ro=1 \
+    -p 9000:8984 scf_service
+
+The value for the `source` parameter needs to be set to a local folder
+on the system where Docker is executed. On a Windows host this may look
+like:
+
+    docker run ^
+    --mount type=bind,source=c:\ttml_templates,target=/root/modules/SRTXML2TTML/templates,ro=1 ^
+    -p 9000:8984 scf_service
+
 
 ## Run standalone
 
