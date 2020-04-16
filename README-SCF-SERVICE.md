@@ -1,6 +1,6 @@
 # SCF service
 
-The SCF service allows to convert subtitles between EBU STL and
+The SCF service allows to convert subtitles e.g. between EBU STL and
 different EBU-TT profiles (and vice versa). The conversion is done using
 IRT's Subtitle Conversion Framework (SCF) which consists of different
 conversion modules. These modules allow to convert a subtitle file
@@ -16,6 +16,24 @@ The following subtitle formats/profiles are supported:
 - EBU-TT
 - EBU-TT-D
 - EBU-TT-D-Basic-DE
+- SRT
+- SRTXML (an SCF internal intermediate format)
+- TTML (based on a provided TTML template)
+
+
+## Configuration
+
+Some aspects of the SCF service can be configured through a config file
+named `scf_service_config.xml` which is located in the `webapp`
+subfolder. By default this file doesn't exist. In that case the default
+configuration in `scf_service_config_default.xml` (located in the same
+subfolder) is used instead. This file is part of the SCF distribution
+and may be used as blueprint for a custom configuration file.
+
+The following settings are available:
+- `templates_path`: The location (absolute path) of the TTML templates.
+  By default the `templates` subfolder of the `SRTXML2TTML` module is
+  used.
 
 
 ## Building the Docker image
@@ -33,6 +51,24 @@ local port (here: 9000).
 This can be achieved with the following command:
 
     docker run -p 9000:8984 scf_service
+
+A convenient way to provide custom TTML templates (please see below) is
+to employ an appropriate template folder on the Docker host in order to
+overlay the default template folder within the Docker image.
+
+This can be achieved with the following command (Linux host):
+
+    docker run \
+    --mount type=bind,source=/ttml_templates,target=/root/modules/SRTXML2TTML/templates,ro=1 \
+    -p 9000:8984 scf_service
+
+The value for the `source` parameter needs to be set to a local folder
+on the system where Docker is executed. On a Windows host this may look
+like:
+
+    docker run ^
+    --mount type=bind,source=c:\ttml_templates,target=/root/modules/SRTXML2TTML/templates,ro=1 ^
+    -p 9000:8984 scf_service
 
 
 ## Run standalone
@@ -71,9 +107,37 @@ automatically proposed by the service, based on the source file's name.
 A conversion can also be executed using the REST interface. The process
 is started using the `convert` POST request and returns the result.
 
+To aid conversions which imply a conversion from SRTXML towards TTML,
+the `templates` GET request provides a list of all available TTML
+templates.
+
 Note that Cross-Origin Resource Sharing (CORS) is enabled i.e. requests
 from any origin are processed. This behaviour can be disabled by
 removing the paragraph related to CORS in `/webapp/WEB-INF/web.xml`.
+
+### `templates` GET request
+
+To carry out a conversion which implies a conversion from SRTXML towards
+TTML, a TTML template has to be specified.
+
+This request is a helper request that provides an (ordered) list of all
+available template files in the configured template folder. Currently
+this includes all files that have an `.xml` or an `.ttml` extension.
+
+No parameters are available for this request.
+
+Upon success the response is in JSON format and simply an array of
+strings, for example:
+
+```json
+[
+  "ebu-tt-d-basic-de.xml",
+  "ttml_custom.ttml"
+]
+```
+
+Each string is the filename of a template available in the configured
+template folder.
 
 ### `convert` POST request
 
@@ -99,15 +163,24 @@ The following request parameters are available:
   the special value `normal`) for the line height in EBU-TT-D.
 - `ignore_manual_offset_for_tcp`: If present, any manual offset (seconds
   or frames) will *not* be subtracted from the TCP value.
+- `template`: If present, the TTML template to be used (only affects
+  conversions which imply a conversion from SRTXML towards TTML - in
+  such a case this field is mandatory!). Only values returned by the
+  `templates` GET request can be used.
+- `language`: If present, the language identifier to override the
+  general language of the used template (only affects conversions which
+  imply a conversion from SRTXML towards TTML).
 - `indent`: If present, the output will be indented in case of a target
   format based on XML.
 
 For the two format fields, the following values are supported:
-`stl`, `stlxml`, `ebu-tt`, `ebu-tt-d`, `ebu-tt-d-basic-de`.
+`stl`, `stlxml`, `ebu-tt`, `ebu-tt-d`, `ebu-tt-d-basic-de`, `srt`,
+`srtxml`, `ttml`.
 
 Note that option fields may not be supported for all possible conversion
-chains. If an option is not supported, the conversion will abort with a
-descriptive error message then.
+chains. Furthermore not every combination of source/target format may be
+supported. In one of these cases the conversion will abort with a
+descriptive error message.
 
 On success, the response is in the related file format (as specified by
 the transmitted media type in the response header), depending on the
@@ -164,6 +237,8 @@ The following files are relevant for the actual application:
 - `.basexhome`: empty BaseX helper file to indicate home directory.
 - `modules`: the SCF modules
 - `webapp/scf_service.xqm`: application source code as XQuery module.
+- `webapp/scf_service_config.xml`: configuration (if file present).
+- `webapp/scf_service_config_default.xml`: default configuration.
 - `webapp/static/error.xsl`: XSLT used for rendering by the error result page.
 - `webapp/WEB-INF/jetty.xml`: Jetty web server config
 - `webapp/WEB-INF/web.xml`: web application config
@@ -173,17 +248,17 @@ step-by-step from the source format to the target format. The FSM's
 transitions are determined by a transition function. This function is
 provided with the current format and the target format, and returns the
 next format to which the subtitles shall (and can) be converted, towards
-the target format. After all the necessary transitions/conversions,
-finally the subtitles are available in the desired target format.
-Depending on success/failure and the target format of the conversion,
-the different header fields are set accordingly.
+the target format, if possible. After all the necessary transitions and
+conversions, finally the subtitles are available in the desired target
+format. Depending on success/failure and the target format of the
+conversion, the different header fields are set accordingly.
 
 Most of the SCF modules are implemented in XSLT or XQuery. Such modules
 can be natively invoked by the SCF service. Thus no temporary files are
-required to perform the actual conversion. The module `STL2STLXML`
-however is implemented in Python and requires to execute a Python
-interpreter in a separate process. Furthermore the input/output data has
-to be stored in (temporary) files, in order to prevent problems
+required to perform the actual conversion. The modules `STL2STLXML` and
+`SRT2SRTXML` however are implemented in Python and require to execute a
+Python interpreter in a separate process. Furthermore the input/output
+data has to be stored in (temporary) files, in order to prevent problems
 regarding character encoding.
 
 In case of a conversion option, the option is part of the status that is

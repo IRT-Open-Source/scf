@@ -17,16 +17,44 @@ module namespace scf = 'http://www.irt.de/irt_restxq/scf_service';
 
 declare variable $scf:modules_path as xs:string := "modules/";
 
+(: fall back to default config, if needed :)
+declare variable $scf:config := if(doc-available("scf_service_config.xml")) then doc("scf_service_config.xml") else doc("scf_service_config_default.xml");
+
+(: fall back to module template path, if needed :)
+declare variable $scf:config_templates_path :=
+    let $config_path := $scf:config/settings/setting[@name eq 'templates_path']
+    return
+        if ($config_path != '')
+        then $config_path
+        else file:resolve-path(concat($scf:modules_path, 'SRTXML2TTML/templates/'));
+
 declare variable $scf:subtitle_format :=
     map {
         'stl': 'STL',
         'stlxml': 'STLXML',
         'ebu-tt': 'EBU-TT',
         'ebu-tt-d': 'EBU-TT-D',
-        'ebu-tt-d-basic-de': 'EBU-TT-D-Basic-DE'
+        'ebu-tt-d-basic-de': 'EBU-TT-D-Basic-DE',
+        'srt': 'SRT',
+        'srtxml': 'SRTXML',
+        'ttml': 'TTML'
     };
 
-declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'indent');
+(: conversion between formats of different groups are not available :)
+declare variable $scf:subtitle_format_group :=
+    map {
+        'stl': 1,
+        'stlxml': 1,
+        'ebu-tt': 1,
+        'ebu-tt-d': 1,
+        'ebu-tt-d-basic-de': 1,
+        'srt': 2,
+        'srtxml': 2,
+        'ttml': 2
+    };
+
+(: parameters to show in custom conversion case - any parameters required for a specific module are optional here! :)
+declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'templateOPT', 'language', 'indent');
 
 (: returns a simple HTML form for a conversion from one format to another :)
 declare function scf:form_conversion($format_source, $format_target, $params) {
@@ -51,6 +79,9 @@ declare function scf:form_conversion_fields($params) {
         {if($params = 'discard_user_data') then <li><label><input type="checkbox" name="discard_user_data" value="1"/> discard STL User Data (EBN 0xFE)</label></li> else ()}
         {if($params = 'use_line_height_125') then <li><label><input type="checkbox" name="use_line_height_125" value="1"/> use line height "125%" in EBU-TT-D</label></li> else ()}
         {if($params = 'ignore_manual_offset_for_tcp') then <li><label><input type="checkbox" name="ignore_manual_offset_for_tcp" value="1"/> ignore manual offset for TCP</label></li> else ()}
+        {if($params = 'templateREQ') then <li><label><input type="checkbox" checked="checked" disabled="disabled"/> use template <select name="template" required="required">{scf:template_files() ! <option>{.}</option>}</select> for conversion</label></li> else () (: required :)}
+        {if($params = 'templateOPT') then <li><label><input type="checkbox" onclick="this.nextElementSibling.disabled=!this.checked"/> use template <select name="template" disabled="disabled">{scf:template_files() ! <option>{.}</option>}</select> for conversion</label></li> else () (: optional :)}
+        {if($params = 'language') then <li><label><input type="checkbox" onclick="this.nextElementSibling.disabled=!this.checked"/> use <input type="text" size="10" name="language" value="en" disabled="disabled"/> as general language (override template)</label></li> else ()}
         {if($params = 'indent') then <li><label><input type="checkbox" name="indent" value="1" checked="checked"/> indented output</label></li> else () (: enabled by default :)}
     </ul>,
     <hr/>
@@ -58,7 +89,7 @@ declare function scf:form_conversion_fields($params) {
 
 
 (: web interface homepage :)
-declare 
+declare
   %rest:path("/webif")
   %output:method("xhtml")
   function scf:overview() {
@@ -73,6 +104,7 @@ declare
         {scf:form_conversion('stl', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'ignore_manual_offset_for_tcp', 'indent'))}
         {scf:form_conversion('ebu-tt', 'stl', ())}
         {scf:form_conversion('stl', 'ebu-tt-d-basic-de', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'indent'))}
+        {scf:form_conversion('srt', 'ttml', ('templateREQ', 'language', 'indent'))}
 
         <h2>Custom multi step conversion</h2>
         <i>Note: For a particular conversion, not every shown option may be supported!</i><br/>
@@ -99,20 +131,42 @@ declare
         {scf:form_conversion('ebu-tt', 'stlxml', ('indent'))}
         {scf:form_conversion('ebu-tt', 'ebu-tt-d', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'use_line_height_125', 'indent'))}
         {scf:form_conversion('ebu-tt-d', 'ebu-tt-d-basic-de', ('indent'))}
+        {scf:form_conversion('srt', 'srtxml', ('indent'))}
+        {scf:form_conversion('srtxml', 'ttml', ('templateREQ', 'language', 'indent'))}
       </body>
     </html>
   };
 
+
+(: returns an (ordered) list of the existing template files in the template folder :)
+declare function scf:template_files() {
+    let $path := if($scf:config_templates_path != '') then $scf:config_templates_path else concat($scf:modules_path, 'SRTXML2TTML/templates')
+    return
+        if (file:exists($path))
+        then
+            for $file in file:list($path)[matches(lower-case(.), '\.(xml|ttml)$')]
+            order by $file
+            return $file
+        else ()
+};
+
+(: returns the aforementioned list :)
+declare
+  %rest:path("/templates")
+  %output:method("json")
+  %output:json("format=basic")
+  function scf:templates() {
+    <j:array xmlns:j="http://www.w3.org/2005/xpath-functions">
+      {scf:template_files() ! <j:string>{.}</j:string>}
+    </j:array>
+};
+
+
 (: param->options map: sets a param (key) to the value of a specific status option (value); afterwards clear the option value to indicate that it has been consumed :)
 
-declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
-    let $param_option_mapping := map {
-        's': 'option_separate_tti',
-        'a': 'option_clear_uda',
-        'u': 'option_discard_user_data'
-    }
-    
-    (: build params sequence with present options - for STL2STLXML it is sufficient that an option is present; the actual value doesn't matter! :)
+(: generic Python invokation :)
+declare function scf:call_python($status as map(*), $script as xs:string, $param_option_mapping as map(*)) as map(*) {
+    (: build params sequence with present options - it is sufficient that an option is present; the actual value doesn't matter! :)
     let $params := 
         for $k in map:keys($param_option_mapping)
         let $v := $k => $param_option_mapping() => $status()
@@ -124,13 +178,21 @@ declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
     let $input_filename := file:create-temp-file('scf-service-', '')
     let $output_filename := concat($input_filename, '.out')
     let $write_input := file:write-binary($input_filename, $input)
-    let $result_call := proc:system('python3', (file:resolve-path(concat($scf:modules_path, 'STL2STLXML/stl2stlxml.py')), $input_filename, '-x', $output_filename, $params ! concat('-', .)))
+    let $result_call := proc:system('python3', (file:resolve-path(concat($scf:modules_path, $script)), $input_filename, '-x', $output_filename, $params ! concat('-', .)))
     let $result as document-node() := (# basex:non-deterministic #) {doc($output_filename)} (: prevent evaluation after deleted output file :)
     let $delete_input := file:delete($input_filename)
     let $delete_output := file:delete($output_filename)
     
     (: remove consumed options + replace result :)
     return map:merge((map:entry('result', $result), $params ! map:entry($param_option_mapping(.), ()), $status))
+};
+
+declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
+    scf:call_python($status, 'STL2STLXML/stl2stlxml.py', map {
+        's': 'option_separate_tti',
+        'a': 'option_clear_uda',
+        'u': 'option_discard_user_data'
+    })
 };
 
 declare function scf:call_stlxml2stl($status as map(*)) as map(*) {
@@ -146,6 +208,10 @@ declare function scf:call_stlxml2stl($status as map(*)) as map(*) {
     return map:put($status, 'result', $result)
 };
 
+declare function scf:call_srt2srtxml($status as map(*)) as map(*) {
+    scf:call_python($status, 'SRT2SRTXML/srt2srtxml.py', map {})
+};
+
 (: generic XSLT conversion :)
 declare function scf:call_xslt($status as map(*), $xslt as xs:string, $param_option_mapping as map(*)) as map(*) {
     (: build params map with present options :)
@@ -158,14 +224,14 @@ declare function scf:call_xslt($status as map(*), $xslt as xs:string, $param_opt
     
     (: transformation :)
     let $input as document-node() := $status('result')
-    let $result as document-node() := xslt:transform($input, $xslt, $params)
+    let $result as document-node() := xslt:transform($input, concat('../', $scf:modules_path, $xslt), $params)
     
     (: remove consumed options + replace result :)
     return map:merge((map:entry('result', $result), map:keys($params) ! map:entry($param_option_mapping(.), ()), $status))
 };
 
 declare function scf:call_stlxml2ebu-tt($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'STLXML2EBU-TT/STLXML2EBU-TT.xslt'), map {
+    scf:call_xslt($status, 'STLXML2EBU-TT/STLXML2EBU-TT.xslt', map {
         'offsetTCP': 'option_offset_start_of_programme',
         'offsetInSeconds': 'option_offset_seconds',
         'offsetInFrames': 'option_offset_frames',
@@ -174,11 +240,11 @@ declare function scf:call_stlxml2ebu-tt($status as map(*)) as map(*) {
 };
 
 declare function scf:call_ebu-tt2stlxml($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'EBU-TT2STLXML/EBU-TT2STLXML.xslt'), map{})
+    scf:call_xslt($status, 'EBU-TT2STLXML/EBU-TT2STLXML.xslt', map{})
 };
 
 declare function scf:call_ebu-tt2ebu-tt-d($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'EBU-TT2EBU-TT-D/EBU-TT2EBU-TT-D.xslt'), map {
+    scf:call_xslt($status, 'EBU-TT2EBU-TT-D/EBU-TT2EBU-TT-D.xslt', map {
         'useLineHeight125Percent': 'option_use_line_height_125',
         'offsetStartOfProgramme': 'option_offset_start_of_programme',
         'offsetInSeconds': 'option_offset_seconds',
@@ -187,18 +253,38 @@ declare function scf:call_ebu-tt2ebu-tt-d($status as map(*)) as map(*) {
 };
 
 declare function scf:call_ebu-tt-d2ebu-tt-d-basic-de($status as map(*)) as map(*) {
-    scf:call_xslt($status, concat('../', $scf:modules_path, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt'), map{})
+    scf:call_xslt($status, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt', map{})
 };
 
-(: sets an unsupported option error as status result :)
-declare function scf:status_set_error($status as map(*), $description as xs:string+) as map(*) {
+declare function scf:call_srtxml2ttml($status as map(*)) as map(*) {
+    let $template := $status('option_template')
+    return
+        (: abort, if the required template is not specified :)
+        if (empty($template))
+        then scf:status_set_error_generic($status, 'The template parameter is required, but not set!')
+        else
+            (: abort, if the specified template does not exist :)
+            if (not($template = scf:template_files()))
+            then scf:status_set_error_generic($status, 'The template parameter is set, but the specified template is unavailable!')
+            else
+                (: make template path absolute :)
+                let $status_updated := map:put($status, 'option_template', concat($scf:config_templates_path, $template))
+                return
+                    scf:call_xslt($status_updated, 'SRTXML2TTML/SRTXML2TTML.xslt', map {
+                        'template': 'option_template',
+                        'language': 'option_language'
+                    })
+};
+
+(: sets a specified description as status result :)
+declare function scf:status_set_error_generic($status as map(*), $description as xs:string) as map(*) {
     map:put($status, 'result',
         <error>
             <steps>
                 {$status('steps') ! <step>{$scf:subtitle_format(.)}</step>}
             </steps>
             <code/>
-            <description>This conversion chain does not support the following option(s): {string-join($description, '; ')}.</description>
+            <description>{$description}</description>
             <value/>
             <module/>
             <line-number/>
@@ -207,6 +293,16 @@ declare function scf:status_set_error($status as map(*), $description as xs:stri
     )
 };
 
+(: sets an unsupported option error as status result :)
+declare function scf:status_set_error_unsupported_option($status as map(*), $description as xs:string+) as map(*) {
+    let $description_merged := concat('This conversion chain does not support the following option(s): ', string-join($description, '; '), '.')
+    return scf:status_set_error_generic($status, $description_merged)
+};
+
+(: returns whether the status result represents an error :)
+declare function scf:is_status_error($status as map(*)) as xs:boolean {
+    $status('result') instance of element()
+};
 
 (:
 items of the status map:
@@ -219,6 +315,8 @@ items of the status map:
 - option_separate_tti: if present, do not merge multiple text TTI blocks of the same subtitle
 - option_clear_uda: if present, clear STL User-Defined Area (UDA)
 - option_discard_user_data: if present, discard STL User Data
+- option_template: if present, set the used TTML template
+- option_language: if present, override the template's general language
 - result: subtitle content in the indicated format
 :)
 
@@ -237,6 +335,8 @@ declare
   %rest:form-param("separate_tti", "{$separate_tti}")
   %rest:form-param("clear_uda", "{$clear_uda}")
   %rest:form-param("discard_user_data", "{$discard_user_data}")
+  %rest:form-param("template", "{$template}")
+  %rest:form-param("language", "{$language}")
   %rest:form-param("indent", "{$indent}")
   function scf:convert(
     $input as map(*),
@@ -250,6 +350,8 @@ declare
     $separate_tti as xs:string?,
     $clear_uda as xs:string?,
     $discard_user_data as xs:string?,
+    $template as xs:string?,
+    $language as xs:string?,
     $indent as xs:string?
   ) {
     let $conversion_option_error_messages := map {
@@ -260,16 +362,14 @@ declare
         'option_ignore_manual_offset_for_tcp': 'to ignore any manual offset for TCP',
         'option_separate_tti': 'to disable text TTI block merging',
         'option_clear_uda': 'to clear STL User-Defined Area (UDA)',
-        'option_discard_user_data': 'to remove STL User Data'
+        'option_discard_user_data': 'to remove STL User Data',
+        'option_template': 'to use a TTML template',
+        'option_language': 'to override the general language of the template'
     }
-    
-    let $conversion_format := concat($format_source, '→', $format_target)
-    let $source_stl := $format_source eq 'stl'
-    let $target_stl := $format_target eq 'stl'
     
     let $input_filename := map:keys($input)[1]
     let $input_content_raw := $input($input_filename)
-    let $input_content := if ($source_stl) then $input_content_raw else parse-xml(bin:decode-string($input_content_raw, 'UTF-8'))
+    let $input_content := if ($format_source = ('stl', 'srt')) then $input_content_raw else parse-xml(bin:decode-string($input_content_raw, 'UTF-8'))
 
     (: do conversion :)
     let $conversion_status_init := map {
@@ -282,17 +382,17 @@ declare
         'option_separate_tti': $separate_tti,
         'option_clear_uda': $clear_uda,
         'option_discard_user_data': $discard_user_data,
+        'option_template': $template,
+        'option_language': $language,
         'result': $input_content
     }
     let $conversion_status := scf:convert_step($conversion_status_init, $format_target)
     let $conversion_option_errors := map:keys($conversion_option_error_messages)[exists($conversion_status(.))] ! $conversion_option_error_messages(.)
-    let $conversion := if (empty($conversion_option_errors)) then $conversion_status else scf:status_set_error($conversion_status, $conversion_option_errors)
+    let $conversion := if (scf:is_status_error($conversion_status) or empty($conversion_option_errors)) then $conversion_status else scf:status_set_error_unsupported_option($conversion_status, $conversion_option_errors)
     
-    let $rest_response_format := if ($conversion('result') instance of xs:base64Binary) then 'application/octet-stream' else 'application/xml'
-    let $rest_response_filename_without_ext := replace($input_filename, '[.]([Ss][Tt][Ll]|[Xx][Mm][Ll])$', '')
-    let $rest_response_filename_suffix := if ($target_stl) then '.stl' else concat('_', $format_target, '.xml')
-    let $rest_response_filename := concat($rest_response_filename_without_ext, $rest_response_filename_suffix)
-    let $rest_response_success := not($conversion('result') instance of element())
+    let $rest_response_filename_without_ext := replace($input_filename, '[.]([Ss][Tt][Ll]|[Ss][Rr][Tt]|[Xx][Mm][Ll])$', '')
+    let $rest_response_filename := concat($rest_response_filename_without_ext, scf:filename_suffix($format_target))
+    let $rest_response_success := not(scf:is_status_error($conversion))
    
     return (
         (: MIME type + filename :)
@@ -300,7 +400,7 @@ declare
             <output:serialization-parameters>
                 <output:omit-xml-declaration value='no'/>
                 <output:indent value='{if (exists($indent)) then 'yes' else 'no'}'/>
-                <output:media-type value='{$rest_response_format}'/>
+                <output:media-type value='{scf:media_type($conversion('result'))}'/>
             </output:serialization-parameters>
             <http:response status="{if ($rest_response_success) then 200 else 400}">
                 {if ($rest_response_success) then <http:header name="Content-Disposition" value="attachment; filename=""{$rest_response_filename}"""/> else ()}
@@ -312,15 +412,31 @@ declare
     )
   };
 
+declare function scf:media_type($data) as xs:string {
+    typeswitch($data)
+    case xs:base64Binary return 'application/octet-stream'
+    default return 'application/xml'
+};
+
+declare function scf:filename_suffix($format as xs:string) as xs:string {
+    switch($format)
+    case ('stl') return '.stl'
+    case ('srt') return '.srt'
+    default return concat('_', $format, '.xml')
+};
+
 (: execute a single conversion step :)
 declare function scf:convert_step($status as map(*), $format_target as xs:string) as map(*) {
     let $current_format := $status('steps')[last()]
     let $next_format := scf:next_format($current_format, $format_target)
     return
+        switch ($next_format)
         (: return, if no conversion needed :)
-        if (empty($next_format))
-        then $status
-        else
+        case () return $status
+        (: return error, if no conversion available :)
+        case '' return scf:status_set_error_generic($status, 'There is no conversion available for the desired source/target format combination!')
+        (: next step :)
+        default return
             let $next_steps := ($status('steps'), $next_format)
             return try {
                 (: invoke next conversion step :)
@@ -339,6 +455,10 @@ declare function scf:convert_step($status as map(*), $format_target as xs:string
                         scf:call_ebu-tt2ebu-tt-d($status)
                     case "ebu-tt-d→ebu-tt-d-basic-de" return
                         scf:call_ebu-tt-d2ebu-tt-d-basic-de($status)
+                    case "srt→srtxml" return
+                        scf:call_srt2srtxml($status)
+                    case "srtxml→ttml" return
+                        scf:call_srtxml2ttml($status)
                     default return
                         ()
                 let $next_status := map:put($next_step_status, 'steps', $next_steps)
@@ -363,30 +483,42 @@ declare function scf:convert_step($status as map(*), $format_target as xs:string
 
 (: determine the next format to which the current (intermediate) result has to be converted, towards the target format :)
 declare function scf:next_format($format_source as xs:string, $format_target as xs:string) as xs:string? {
-    switch($format_source)
-    case $format_target return
-        () (: no conversion needed :)
-    case 'stl' return
-        'stlxml'
-    case 'stlxml' return
-        if($format_target eq 'stl')
-        then 'stl'
-        else 'ebu-tt'
-    default return
-        (: TTML source :)
-        if($format_target = ('stl', 'stlxml'))
-        then 'stlxml'
-        else
-            (: TTML source/target :)
-            switch($format_source)
-            case 'ebu-tt' return
-                'ebu-tt-d'
-            case 'ebu-tt-d' return
-                if($format_target eq 'ebu-tt')
-                then () (: no conversion needed :)
-                else 'ebu-tt-d-basic-de'
-            case 'ebu-tt-d-basic-de'
-                return () (: no conversion needed :)
-            default return
-                ''
+    (: no conversion available, if source/target formats part of different format groups! :)
+    if($scf:subtitle_format_group($format_source) ne $scf:subtitle_format_group($format_target))
+    then ''
+    else 
+        switch($format_source)
+        case $format_target return
+            () (: no conversion needed :)
+        case 'stl' return
+            'stlxml'
+        case 'stlxml' return
+            if($format_target eq 'stl')
+            then 'stl'
+            else 'ebu-tt'
+        case 'srt' return
+            'srtxml'
+        case 'srtxml' return
+            if($format_target eq 'ttml')
+            then 'ttml'
+            else '' (: no conversion available! :)
+        case 'ttml' return
+            '' (: no conversion available! :)
+        default return
+            (: EBU-TT based source :)
+            if($format_target = ('stl', 'stlxml'))
+            then 'stlxml'
+            else
+                (: TTML source/target :)
+                switch($format_source)
+                case 'ebu-tt' return
+                    'ebu-tt-d'
+                case 'ebu-tt-d' return
+                    if($format_target eq 'ebu-tt')
+                    then () (: no conversion needed :)
+                    else 'ebu-tt-d-basic-de'
+                case 'ebu-tt-d-basic-de'
+                    return () (: no conversion needed :)
+                default return
+                    ''
 };

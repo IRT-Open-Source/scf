@@ -30,7 +30,7 @@ RUN wget https://sourceforge.net/projects/saxon/files/Saxon-HE/9.9/SaxonHE9-9-1-
  && rm saxon.zip
 
 # copy Webapp
-COPY webapp/*.xqm webapp/
+COPY webapp/*.xqm webapp/scf_service_config*.xml webapp/
 COPY webapp/static/error.xsl webapp/static/
 COPY webapp/WEB-INF/*.xml webapp/WEB-INF/
 COPY modules modules
