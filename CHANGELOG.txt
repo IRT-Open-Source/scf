@@ -1,4 +1,22 @@
 -----------------------------
+Version 1.7.0
+-----------------------------
+
+SRTXML-XSD
+- ADDED: Module SRTXML-XSD
+
+SRT2SRTXML
+- ADDED: Module SRT2SRTXML
+
+SRTXML2TTML
+- ADDED: Module SRTXML2TTML
+
+SCF REST service
+- FIXED: Correctly pass signals to Docker container (e.g. to stop it)
+- ADDED: Add support for TTML templates (SRTXML2TTML)
+- ADDED: Add configuration file
+
+-----------------------------
 Version 1.6.0
 -----------------------------
 
