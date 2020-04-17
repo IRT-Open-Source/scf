@@ -26,6 +26,8 @@ Decodes the SRT file and exports it in an XML representation that can be
 used for further processing with XML technologies or for debugging
 purposes.
 
+The SRT text file must be in UTF-8 format.
+
 ## EXAMPLES
 Using a file path to read the SRT data and a file path to write the result into a file:
 

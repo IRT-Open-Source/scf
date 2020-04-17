@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
-    <title>Testing "id" with value "1" (w/o UTF-8 BOM)</title>
+    <title>Testing "id" with value "1" (w/ UTF-8 BOM)</title>
     <pattern id="id">
         <rule context="/">
             <assert test="SRTXML/subtitle[1]/id">
