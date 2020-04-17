@@ -97,7 +97,7 @@ def main():
     
     args = parser.parse_args()
     
-    # read SRT file from STDIN or file
+    # read SRT file from STDIN or file (ignoring a possible UTF-8 BOM)
     if args.srt_file == "":    
         srt_bytes = sys.stdin.buffer.read()
     else: 
@@ -105,7 +105,7 @@ def main():
             srt_bytes = inputHandle.read()
     
     srtxml = SRTXML()
-    srtxml.setSrt(codecs.decode(srt_bytes, 'UTF-8'))
+    srtxml.setSrt(codecs.decode(srt_bytes, 'UTF-8-sig'))
 
     # write XML output to STDOUT or file
     if args.xml_file is None:
