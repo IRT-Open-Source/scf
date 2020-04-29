@@ -21,9 +21,8 @@ test_pipeline_1:
     # STL -> STLXML
     - modules/STL2STLXML/stl2stlxml.py -p -x 2_STLXML.xml misc/ci/test_pipeline_1/1_STL.stl
     - diff misc/ci/test_pipeline_1/2_STLXML.xml 2_STLXML.xml
-    # STLXML -> EBU-TT (result is patched to be reproducible)
-    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:2_STLXML.xml -xsl:modules/STLXML2EBU-TT/STLXML2EBU-TT.xslt -o:3_EBU-TT_tmp.xml
-    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:3_EBU-TT_tmp.xml -xsl:misc/ci/make_reproducible_EBU-TT.xsl -o:3_EBU-TT.xml
+    # STLXML -> EBU-TT (use constant date/time to make result reproducible)
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:2_STLXML.xml -xsl:modules/STLXML2EBU-TT/STLXML2EBU-TT.xslt -o:3_EBU-TT.xml -now:2018-01-01T00:00:00+00:00
     - diff misc/ci/test_pipeline_1/3_EBU-TT.xml 3_EBU-TT.xml
     # EBU-TT -> EBU-TT-D
     - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:3_EBU-TT.xml -xsl:modules/EBU-TT2EBU-TT-D/EBU-TT2EBU-TT-D.xslt -o:4_EBU-TT-D.xml
