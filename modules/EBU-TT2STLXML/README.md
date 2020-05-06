@@ -90,7 +90,7 @@ EBU-TT2STLXML.xslt has the following parameters:
 The goal of the conversion is to provide 'round-tripping' from EBU STL
 to EBU-TT and back to EBU STL. When EBU-TT files are used as standard
 format in production, some systems downstream may still require EBU STL
-files. This modules provides the transformation to STLXML, that can be
+files. This module provides the transformation to STLXML, that can be
 transformed to EBU STL by the SCF module 'STLXML2STL'. The module was
 tested mainly with EBU-TT files that were created according to the EBU
 STL to EBU-TT mapping guideline ([EBU Tech 3360](https://tech.ebu.ch/docs/tech/tech3360.pdf)).
