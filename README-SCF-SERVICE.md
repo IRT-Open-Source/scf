@@ -18,7 +18,7 @@ The following subtitle formats/profiles are supported:
 - EBU-TT-D-Basic-DE
 - SRT
 - SRTXML (an SCF internal intermediate format)
-- TTML (based on a provided TTML template)
+- TTML (as target format: based on a provided TTML template)
 
 
 ## Configuration
