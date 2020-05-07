@@ -400,7 +400,7 @@ declare
             <output:serialization-parameters>
                 <output:omit-xml-declaration value='no'/>
                 <output:indent value='{if (exists($indent)) then 'yes' else 'no'}'/>
-                <output:media-type value='{scf:media_type($conversion('result'))}'/>
+                <output:media-type value='{if ($rest_response_success) then scf:media_type($format_target) else 'application/xml'}'/>
             </output:serialization-parameters>
             <http:response status="{if ($rest_response_success) then 200 else 400}">
                 {if ($rest_response_success) then <http:header name="Content-Disposition" value="attachment; filename=""{$rest_response_filename}"""/> else ()}
@@ -412,9 +412,10 @@ declare
     )
   };
 
-declare function scf:media_type($data) as xs:string {
-    typeswitch($data)
-    case xs:base64Binary return 'application/octet-stream'
+declare function scf:media_type($format as xs:string) as xs:string {
+    switch($format)
+    case ('stl') return 'application/octet-stream'
+    case ('srt') return 'text/plain'
     default return 'application/xml'
 };
 
