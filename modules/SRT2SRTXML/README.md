@@ -26,7 +26,10 @@ Decodes the SRT file and exports it in an XML representation that can be
 used for further processing with XML technologies or for debugging
 purposes.
 
-The SRT text file must be in UTF-8 format.
+The SRT text file must be in UTF-8 format. If any tags are used (as part
+of a subtitle line), the affected line must be well-formed XML, assuming
+an (imaginary) enclosing root element. Hereby the `<` character must not
+be used (unescaped) except as part of actual markup.
 
 ## EXAMPLES
 Using a file path to read the SRT data and a file path to write the result into a file:

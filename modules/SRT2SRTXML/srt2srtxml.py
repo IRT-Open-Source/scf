@@ -65,9 +65,9 @@ class SRTXML:
         block.appendChild(self.createTextNodeElement('begin', timecodes.group(1)))
         block.appendChild(self.createTextNodeElement('end', timecodes.group(2)))
         
-        # map any text lines
+        # map any text lines, escaping "&"
         for line in block_lines[2:]:
-            doc = xml.dom.minidom.parseString('<line>' + line + '</line>')
+            doc = xml.dom.minidom.parseString('<line>' + line.replace('&', '&amp;') + '</line>')
             block.appendChild(doc.documentElement)
         
         self.xmlDoc.documentElement.appendChild(block)
