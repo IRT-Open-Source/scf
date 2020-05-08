@@ -4,7 +4,7 @@ converting XML based subtitle formats. Main target is to build up a
 flexible and extensible transformation pipeline to convert EBU STL
 formats and EBU-TT subtitle formats.
 
-The SCF is a stable release with the version 1.7.1.
+The SCF is a stable release with the version 1.8.0.
 
 ## License
 The Subtitle Conversion Framework ("SCF") offered by Institut fuer

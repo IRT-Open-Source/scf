@@ -1,4 +1,17 @@
 -----------------------------
+Version 1.8.0
+-----------------------------
+
+TTML2SRTXML
+- ADDED: Module TTML2SRTXML
+
+SRTXML2SRT
+- ADDED: Module SRTXML2SRT
+
+SRT2SRTXML
+- FIXED #68: Consider < and & characters
+
+-----------------------------
 Version 1.7.1
 -----------------------------
 
