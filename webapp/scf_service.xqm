@@ -105,6 +105,7 @@ declare
         {scf:form_conversion('ebu-tt', 'stl', ())}
         {scf:form_conversion('stl', 'ebu-tt-d-basic-de', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'indent'))}
         {scf:form_conversion('srt', 'ttml', ('templateREQ', 'language', 'indent'))}
+        {scf:form_conversion('ttml', 'srt', ())}
 
         <h2>Custom multi step conversion</h2>
         <i>Note: For a particular conversion, not every shown option may be supported!</i><br/>
@@ -132,7 +133,9 @@ declare
         {scf:form_conversion('ebu-tt', 'ebu-tt-d', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'use_line_height_125', 'indent'))}
         {scf:form_conversion('ebu-tt-d', 'ebu-tt-d-basic-de', ('indent'))}
         {scf:form_conversion('srt', 'srtxml', ('indent'))}
+        {scf:form_conversion('srtxml', 'srt', ())}
         {scf:form_conversion('srtxml', 'ttml', ('templateREQ', 'language', 'indent'))}
+        {scf:form_conversion('ttml', 'srtxml', ('indent'))}
       </body>
     </html>
   };
@@ -213,7 +216,7 @@ declare function scf:call_srt2srtxml($status as map(*)) as map(*) {
 };
 
 (: generic XSLT conversion :)
-declare function scf:call_xslt($status as map(*), $xslt as xs:string, $param_option_mapping as map(*)) as map(*) {
+declare function scf:call_xslt($status as map(*), $xslt as xs:string, $param_option_mapping as map(*), $text_output as xs:boolean) as map(*) {
     (: build params map with present options :)
     let $params := map:merge(
         for $k in map:keys($param_option_mapping)
@@ -224,7 +227,7 @@ declare function scf:call_xslt($status as map(*), $xslt as xs:string, $param_opt
     
     (: transformation :)
     let $input as document-node() := $status('result')
-    let $result as document-node() := xslt:transform($input, concat('../', $scf:modules_path, $xslt), $params)
+    let $result := (if ($text_output) then xslt:transform-text#3 else xslt:transform#3)($input, concat('../', $scf:modules_path, $xslt), $params)
     
     (: remove consumed options + replace result :)
     return map:merge((map:entry('result', $result), map:keys($params) ! map:entry($param_option_mapping(.), ()), $status))
@@ -236,11 +239,11 @@ declare function scf:call_stlxml2ebu-tt($status as map(*)) as map(*) {
         'offsetInSeconds': 'option_offset_seconds',
         'offsetInFrames': 'option_offset_frames',
         'ignoreManualOffsetForTCP': 'option_ignore_manual_offset_for_tcp'
-    })
+    }, false())
 };
 
 declare function scf:call_ebu-tt2stlxml($status as map(*)) as map(*) {
-    scf:call_xslt($status, 'EBU-TT2STLXML/EBU-TT2STLXML.xslt', map{})
+    scf:call_xslt($status, 'EBU-TT2STLXML/EBU-TT2STLXML.xslt', map{}, false())
 };
 
 declare function scf:call_ebu-tt2ebu-tt-d($status as map(*)) as map(*) {
@@ -249,11 +252,11 @@ declare function scf:call_ebu-tt2ebu-tt-d($status as map(*)) as map(*) {
         'offsetStartOfProgramme': 'option_offset_start_of_programme',
         'offsetInSeconds': 'option_offset_seconds',
         'offsetInFrames': 'option_offset_frames'
-    })
+    }, false())
 };
 
 declare function scf:call_ebu-tt-d2ebu-tt-d-basic-de($status as map(*)) as map(*) {
-    scf:call_xslt($status, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt', map{})
+    scf:call_xslt($status, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt', map{}, false())
 };
 
 declare function scf:call_srtxml2ttml($status as map(*)) as map(*) {
@@ -273,7 +276,15 @@ declare function scf:call_srtxml2ttml($status as map(*)) as map(*) {
                     scf:call_xslt($status_updated, 'SRTXML2TTML/SRTXML2TTML.xslt', map {
                         'template': 'option_template',
                         'language': 'option_language'
-                    })
+                    }, false())
+};
+
+declare function scf:call_ttml2srtxml($status as map(*)) as map(*) {
+    scf:call_xslt($status, 'TTML2SRTXML/TTML2SRTXML.xslt', map{}, false())
+};
+
+declare function scf:call_srtxml2srt($status as map(*)) as map(*) {
+    scf:call_xslt($status, 'SRTXML2SRT/SRTXML2SRT.xslt', map{}, true())
 };
 
 (: sets a specified description as status result :)
@@ -458,8 +469,12 @@ declare function scf:convert_step($status as map(*), $format_target as xs:string
                         scf:call_ebu-tt-d2ebu-tt-d-basic-de($status)
                     case "srt→srtxml" return
                         scf:call_srt2srtxml($status)
+                    case "srtxml→srt" return
+                        scf:call_srtxml2srt($status)
                     case "srtxml→ttml" return
                         scf:call_srtxml2ttml($status)
+                    case "ttml→srtxml" return
+                        scf:call_ttml2srtxml($status)
                     default return
                         ()
                 let $next_status := map:put($next_step_status, 'steps', $next_steps)
@@ -500,11 +515,11 @@ declare function scf:next_format($format_source as xs:string, $format_target as 
         case 'srt' return
             'srtxml'
         case 'srtxml' return
-            if($format_target eq 'ttml')
-            then 'ttml'
-            else '' (: no conversion available! :)
+            if($format_target eq 'srt')
+            then 'srt'
+            else 'ttml'
         case 'ttml' return
-            '' (: no conversion available! :)
+            'srtxml'
         default return
             (: EBU-TT based source :)
             if($format_target = ('stl', 'stlxml'))
