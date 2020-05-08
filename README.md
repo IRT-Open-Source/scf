@@ -76,6 +76,7 @@ Currently the SCF has the following core modules:
 * SRT2SRTXML
 * SRTXML2SRT
 * SRTXML2TTML
+* TTML2SRTXML
 
 Additionally there are various helper submodules that can be found in the
 folder "TT-Helper". These modules solve smaller transformation tasks.
@@ -145,6 +146,10 @@ The SRTXML2TTML XSLT transforms an XML representation of an SRT file
 into a TTML file, using a user-provided TTML template file. Hereby the
 template serves as a base for the conversion output into which the
 converted subtitles are inserted.
+
+#### TTML2SRTXML
+The TTML2SRTXML XSLT converts a TTML file that fulfils certain
+requirements into an XML representation of an SRT file.
 
 Note that the SRT format is not based on a common official standard, but
 is a community driven format.
