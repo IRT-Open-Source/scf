@@ -31,6 +31,46 @@ test_pipeline_1:
     - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:4_EBU-TT-D.xml -xsl:modules/EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt -o:5_EBU-TT-D-Basic-DE.xml
     - diff misc/ci/test_pipeline_1/5_EBU-TT-D-Basic-DE.xml 5_EBU-TT-D-Basic-DE.xml
 
+# Test pipeline 2: EBU-TT -> STLXML -> STL
+test_pipeline_2:
+  tags:
+    - docker
+  stage: test
+  script:
+    # EBU-TT -> STLXML
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_2/1_EBU-TT.xml -xsl:modules/EBU-TT2STLXML/EBU-TT2STLXML.xslt -o:2_STLXML.xml
+    - diff misc/ci/test_pipeline_2/2_STLXML.xml 2_STLXML.xml
+    # STLXML -> STL
+    - ~/tools/basex/bin/basex -i 2_STLXML.xml modules/STLXML2STL/stlxml2stl_helper.xq > 3_STL.stl
+    - diff misc/ci/test_pipeline_2/3_STL.stl 3_STL.stl
+
+# Test pipeline 3: SRT -> SRTXML -> TTML (default template)
+test_pipeline_3:
+  tags:
+    - docker
+  stage: test
+  script:
+    # SRT -> SRTXML
+    - modules/SRT2SRTXML/srt2srtxml.py -p -x 2_SRTXML.xml misc/ci/test_pipeline_3/1_SRT.srt
+    - diff misc/ci/test_pipeline_3/2_SRTXML.xml 2_SRTXML.xml
+    # SRTXML -> TTML (default template)
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:2_SRTXML.xml -xsl:modules/SRTXML2TTML/SRTXML2TTML.xslt -o:3_TTML.xml
+    - diff misc/ci/test_pipeline_3/3_TTML.xml 3_TTML.xml
+
+# Test pipeline 4: TTML -> SRTXML -> SRT
+test_pipeline_4:
+  tags:
+    - docker
+  stage: test
+  script:
+    # TTML -> SRTXML
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_4/1_TTML.xml -xsl:modules/TTML2SRTXML/TTML2SRTXML.xslt -o:2_SRTXML.xml
+    - diff misc/ci/test_pipeline_4/2_SRTXML.xml 2_SRTXML.xml
+    # SRTXML -> SRT
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:2_SRTXML.xml -xsl:modules/SRTXML2SRT/SRTXML2SRT.xslt -o:3_SRT.srt
+    - diff misc/ci/test_pipeline_4/3_SRT.srt 3_SRT.srt
+
+
 tests_STL2STLXML:
   tags:
     - docker
