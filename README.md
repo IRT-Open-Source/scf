@@ -74,6 +74,7 @@ Currently the SCF has the following core modules:
 * FlashDFXP2EBU-TT-D-Basic-DE
 * SRTXML-XSD
 * SRT2SRTXML
+* SRTXML2SRT
 * SRTXML2TTML
 
 Additionally there are various helper submodules that can be found in the
@@ -135,11 +136,18 @@ The SRT2SRTXML script decodes the SRT file and exports it in an XML
 representation that can be used for further processing with XML
 technologies or for debugging purposes.
 
+#### SRTXML2SRT
+The SRTXML2SRT module converts an XML representation of SRT to an SRT
+text file.
+
 #### SRTXML2TTML
 The SRTXML2TTML XSLT transforms an XML representation of an SRT file
 into a TTML file, using a user-provided TTML template file. Hereby the
 template serves as a base for the conversion output into which the
 converted subtitles are inserted.
+
+Note that the SRT format is not based on a common official standard, but
+is a community driven format.
 
 
 ### Tests
@@ -179,7 +187,7 @@ Dominik Garsche, Stefan Pöschel, Peter tho Pesch, Lukas Kircher
 Test files: Barbara Fichte, Lilli Weiss, Tilman Eberspächer,
 Stefan Pöschel, Peter tho Pesch
 
-QC: Stefan Pöschel, Barbara Fichte, Peter tho Pesch
+QC: Stefan Pöschel, Barbara Fichte, Peter tho Pesch, Andreas Tai
 
 
 ## RESOURCES
@@ -187,3 +195,4 @@ QC: Stefan Pöschel, Barbara Fichte, Peter tho Pesch
 * [MAPPING EBU STL TO EBU-TT SUBTITLE FILES (EBU Tech 3360)](https://tech.ebu.ch/docs/tech/tech3360.pdf)
 * [EBU-TT-D SUBTITLING DISTRIBUTION FORMAT (EBU Tech 3380)](https://tech.ebu.ch/docs/tech/tech3380.pdf)
 * [XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE)](https://www.irt.de/fileadmin/media/Neue_Downloads/Publikationen/Technische_Richtlinien/EBU-TT-D-Basic-DE-Subtitle_Format_ARD_Mediathek_Portals-v1.2.pdf)
+* [SubRip (SRT), accessed on 2020-03-18](https://en.wikipedia.org/wiki/SubRip)

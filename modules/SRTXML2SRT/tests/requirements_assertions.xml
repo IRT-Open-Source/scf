@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2020 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<requirements>
+    <requirement name="requirement-0801-001" description="subtitle mapping">
+        <line block_offset="0" line_offset="0">1</line>
+        <line block_offset="1" line_offset="-1"><!-- separator to preceding subtitle --></line>
+        <line block_offset="1" line_offset="0">2</line>
+        <line block_offset="2" line_offset="-1"><!-- separator to preceding subtitle --></line>
+        <line block_offset="2" line_offset="0">3</line>
+    </requirement>
+    <requirement name="requirement-0802-001" description="ID mapping">
+        <line block_offset="0" line_offset="0">1</line>
+        <line block_offset="1" line_offset="0">2</line>
+    </requirement>
+    <requirement name="requirement-0803-001" description="begin/end mapping">
+        <line block_offset="0" line_offset="1">00:00:00,680 --> 00:00:02,600</line>
+        <line block_offset="1" line_offset="1">01:03:02,840 --> 01:03:05,520</line>
+    </requirement>
+    <requirement name="requirement-0804-001" description="line mapping (no lines)">
+        <line block_offset="0" line_offset="2"><!-- separator to following subtitle --></line>
+    </requirement>
+    <requirement name="requirement-0804-002" description="line mapping (single line)">
+        <line block_offset="0" line_offset="2">This is a subtitle.</line>
+        <line block_offset="0" line_offset="3"><!-- separator to following subtitle --></line>
+    </requirement>
+    <requirement name="requirement-0804-003" description="line mapping (multiple lines)">
+        <line block_offset="0" line_offset="2">This is a test subtitle.</line>
+        <line block_offset="0" line_offset="3">It has two lines.</line>
+        <line block_offset="0" line_offset="4"><!-- separator to following subtitle --></line>
+    </requirement>
+    <requirement name="requirement-0804-004" description="line mapping (whitespacing)">
+        <line block_offset="0" line_offset="2">This is a subtitle with a line break.</line>
+        <line block_offset="1" line_offset="2">This is a test subtitle</line>
+    </requirement>
+    <requirement name="requirement-0804-005" description="line mapping (formatting tags)">
+        <line block_offset="1" line_offset="3">with two lines of text.</line>
+    </requirement>
+</requirements>
