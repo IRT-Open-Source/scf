@@ -26,7 +26,8 @@ class SRTXML:
     """
     A class for the XML representation of the SRT file
     """
-    def __init__(self):
+    def __init__(self, markup=False):
+        self.markup = markup
         self.xmlDoc = xml.dom.minidom.getDOMImplementation().createDocument(None, "SRTXML", None)
         self.re_id = re.compile("^\d+$")
         self.re_timing = re.compile("^(\d\d+:[0-5]\d:[0-5]\d,\d\d\d) --> (\d\d+:[0-5]\d:[0-5]\d,\d\d\d)$")
@@ -65,10 +66,16 @@ class SRTXML:
         block.appendChild(self.createTextNodeElement('begin', timecodes.group(1)))
         block.appendChild(self.createTextNodeElement('end', timecodes.group(2)))
         
-        # map any text lines, escaping "&"
+        # map any text lines
         for line in block_lines[2:]:
-            doc = xml.dom.minidom.parseString('<line>' + line.replace('&', '&amp;') + '</line>')
-            block.appendChild(doc.documentElement)
+            if self.markup:
+                # process markup, no additional escaping
+                doc = xml.dom.minidom.parseString('<line>' + line + '</line>')
+                block.appendChild(doc.documentElement)
+            else:
+                # treat as plain text, applying escaping
+                elem = self.createTextNodeElement('line', line)
+                block.appendChild(elem)
         
         self.xmlDoc.documentElement.appendChild(block)
 
@@ -94,6 +101,8 @@ def main():
     parser.add_argument('-x', '--xml_file', help="path to SRTXML output", default=None)
     parser.add_argument('-p', '--pretty', help="if the SRTXML shall be 'prettified'",
                         dest='pretty_xml', action='store_const', const=True, default=False)
+    parser.add_argument('-m', '--markup', help="if any markup in subtitle lines shall be processed",
+                        dest='markup', action='store_const', const=True, default=False)
     
     args = parser.parse_args()
     
@@ -104,7 +113,7 @@ def main():
         with open(args.srt_file, 'rb') as inputHandle:
             srt_bytes = inputHandle.read()
     
-    srtxml = SRTXML()
+    srtxml = SRTXML(markup=args.markup)
     srtxml.setSrt(codecs.decode(srt_bytes, 'UTF-8-sig'))
 
     # write XML output to STDOUT or file

@@ -1,3 +1,0 @@
-1
-00:00:01,230 --> 01:02:03,400
-The character & must be escaped in XML.

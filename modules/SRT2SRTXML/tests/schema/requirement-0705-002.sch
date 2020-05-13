@@ -17,6 +17,7 @@ limitations under the License.
 -->
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"  queryBinding="xslt" schemaVersion="ISO19757-3">
     <title>Testing "line" with formatting tags</title>
+    <p>-m</p><!-- while the p element usually is used for text paragraphs, we use it to propagate parameters to the SRT2SRTXML call -->
     <pattern id="id">
         <rule context="/">
             <assert test="SRTXML/subtitle[1]/line[1]">
@@ -45,8 +46,8 @@ limitations under the License.
             <assert test="child::text()[3]=' '">
                 Expected value: " " Value from test: "<value-of select="child::text()[3]"/>"
             </assert>
-            <assert test="child::text()[4]=' subtitle'">
-                Expected value: " subtitle" Value from test: "<value-of select="child::text()[4]"/>"
+            <assert test="child::text()[4]=' subtitle with the characters &amp; and &lt;.'">
+                Expected value: " subtitle with the characters &amp; and &lt;." Value from test: "<value-of select="child::text()[4]"/>"
             </assert>
             <assert test="child::*[1]/child::text() = 'is'">
                 Expected value: "is" Value from test: "<value-of select="child::*[1]/child::text()"/>"
