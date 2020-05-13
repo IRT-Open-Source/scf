@@ -37,8 +37,8 @@ test_pipeline_2:
     - docker
   stage: test
   script:
-    # EBU-TT -> STLXML
-    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_2/1_EBU-TT.xml -xsl:modules/EBU-TT2STLXML/EBU-TT2STLXML.xslt -o:2_STLXML.xml
+    # EBU-TT -> STLXML (use constant date/time to make result reproducible)
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_2/1_EBU-TT.xml -xsl:modules/EBU-TT2STLXML/EBU-TT2STLXML.xslt -o:2_STLXML.xml  -now:2020-05-08T00:00:00+00:00
     - diff misc/ci/test_pipeline_2/2_STLXML.xml 2_STLXML.xml
     # STLXML -> STL
     - ~/tools/basex/bin/basex -i 2_STLXML.xml modules/STLXML2STL/stlxml2stl_helper.xq > 3_STL.stl
