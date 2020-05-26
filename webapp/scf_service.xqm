@@ -54,7 +54,7 @@ declare variable $scf:subtitle_format_group :=
     };
 
 (: parameters to show in custom conversion case - any parameters required for a specific module are optional here! :)
-declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'templateOPT', 'language', 'indent');
+declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'markup', 'templateOPT', 'language', 'indent');
 
 (: returns a simple HTML form for a conversion from one format to another :)
 declare function scf:form_conversion($format_source, $format_target, $params) {
@@ -79,6 +79,7 @@ declare function scf:form_conversion_fields($params) {
         {if($params = 'discard_user_data') then <li><label><input type="checkbox" name="discard_user_data" value="1"/> discard STL User Data (EBN 0xFE)</label></li> else ()}
         {if($params = 'use_line_height_125') then <li><label><input type="checkbox" name="use_line_height_125" value="1"/> use line height "125%" in EBU-TT-D</label></li> else ()}
         {if($params = 'ignore_manual_offset_for_tcp') then <li><label><input type="checkbox" name="ignore_manual_offset_for_tcp" value="1"/> ignore manual offset for TCP</label></li> else ()}
+        {if($params = 'markup') then <li><label><input type="checkbox" name="markup" value="1"/> process markup in subtitle lines</label></li> else ()}
         {if($params = 'templateREQ') then <li><label><input type="checkbox" checked="checked" disabled="disabled"/> use template <select name="template" required="required">{scf:template_files() ! <option>{.}</option>}</select> for conversion</label></li> else () (: required :)}
         {if($params = 'templateOPT') then <li><label><input type="checkbox" onclick="this.nextElementSibling.disabled=!this.checked"/> use template <select name="template" disabled="disabled">{scf:template_files() ! <option>{.}</option>}</select> for conversion</label></li> else () (: optional :)}
         {if($params = 'language') then <li><label><input type="checkbox" onclick="this.nextElementSibling.disabled=!this.checked"/> use <input type="text" size="10" name="language" value="en" disabled="disabled"/> as general language (override template)</label></li> else ()}
@@ -104,7 +105,7 @@ declare
         {scf:form_conversion('stl', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'ignore_manual_offset_for_tcp', 'indent'))}
         {scf:form_conversion('ebu-tt', 'stl', ())}
         {scf:form_conversion('stl', 'ebu-tt-d-basic-de', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'indent'))}
-        {scf:form_conversion('srt', 'ttml', ('templateREQ', 'language', 'indent'))}
+        {scf:form_conversion('srt', 'ttml', ('markup', 'templateREQ', 'language', 'indent'))}
         {scf:form_conversion('ttml', 'srt', ())}
 
         <h2>Custom multi step conversion</h2>
@@ -132,7 +133,7 @@ declare
         {scf:form_conversion('ebu-tt', 'stlxml', ('indent'))}
         {scf:form_conversion('ebu-tt', 'ebu-tt-d', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'use_line_height_125', 'indent'))}
         {scf:form_conversion('ebu-tt-d', 'ebu-tt-d-basic-de', ('indent'))}
-        {scf:form_conversion('srt', 'srtxml', ('indent'))}
+        {scf:form_conversion('srt', 'srtxml', ('markup', 'indent'))}
         {scf:form_conversion('srtxml', 'srt', ())}
         {scf:form_conversion('srtxml', 'ttml', ('templateREQ', 'language', 'indent'))}
         {scf:form_conversion('ttml', 'srtxml', ('indent'))}
@@ -212,7 +213,9 @@ declare function scf:call_stlxml2stl($status as map(*)) as map(*) {
 };
 
 declare function scf:call_srt2srtxml($status as map(*)) as map(*) {
-    scf:call_python($status, 'SRT2SRTXML/srt2srtxml.py', map {})
+    scf:call_python($status, 'SRT2SRTXML/srt2srtxml.py', map {
+        'm': 'option_markup'
+    })
 };
 
 (: generic XSLT conversion :)
@@ -326,6 +329,7 @@ items of the status map:
 - option_separate_tti: if present, do not merge multiple text TTI blocks of the same subtitle
 - option_clear_uda: if present, clear STL User-Defined Area (UDA)
 - option_discard_user_data: if present, discard STL User Data
+- option_markup: if present, process markup in subtitle lines
 - option_template: if present, set the used TTML template
 - option_language: if present, override the template's general language
 - result: subtitle content in the indicated format
@@ -346,6 +350,7 @@ declare
   %rest:form-param("separate_tti", "{$separate_tti}")
   %rest:form-param("clear_uda", "{$clear_uda}")
   %rest:form-param("discard_user_data", "{$discard_user_data}")
+  %rest:form-param("markup", "{$markup}")
   %rest:form-param("template", "{$template}")
   %rest:form-param("language", "{$language}")
   %rest:form-param("indent", "{$indent}")
@@ -361,6 +366,7 @@ declare
     $separate_tti as xs:string?,
     $clear_uda as xs:string?,
     $discard_user_data as xs:string?,
+    $markup as xs:string?,
     $template as xs:string?,
     $language as xs:string?,
     $indent as xs:string?
@@ -374,6 +380,7 @@ declare
         'option_separate_tti': 'to disable text TTI block merging',
         'option_clear_uda': 'to clear STL User-Defined Area (UDA)',
         'option_discard_user_data': 'to remove STL User Data',
+        'option_markup': 'to process markup in subtitle lines',
         'option_template': 'to use a TTML template',
         'option_language': 'to override the general language of the template'
     }
@@ -393,6 +400,7 @@ declare
         'option_separate_tti': $separate_tti,
         'option_clear_uda': $clear_uda,
         'option_discard_user_data': $discard_user_data,
+        'option_markup': $markup,
         'option_template': $template,
         'option_language': $language,
         'result': $input_content

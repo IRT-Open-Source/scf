@@ -163,6 +163,8 @@ The following request parameters are available:
   the special value `normal`) for the line height in EBU-TT-D.
 - `ignore_manual_offset_for_tcp`: If present, any manual offset (seconds
   or frames) will *not* be subtracted from the TCP value.
+- `markup`: If present, process markup in subtitle lines (affects an SRT
+  source).
 - `template`: If present, the TTML template to be used (only affects
   conversions which imply a conversion from SRTXML towards TTML - in
   such a case this field is mandatory!). Only values returned by the
