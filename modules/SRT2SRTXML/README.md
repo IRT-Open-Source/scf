@@ -20,16 +20,21 @@ Note: If SOURCE-SRT-FILE is an empty string (e.g. "") the SRT data is read from 
 
 -p, --pretty <i>Output the XML File in pretty XML (with indention).</i>
 
+-m, --markup <i>Process markup in subtitle lines.</i>
+
 
 ## DESCRIPTION
 Decodes the SRT file and exports it in an XML representation that can be
 used for further processing with XML technologies or for debugging
 purposes.
 
-The SRT text file must be in UTF-8 format. If any tags are used (as part
-of a subtitle line), the affected line must be well-formed XML, assuming
-an (imaginary) enclosing root element. Hereby the `<` character must not
-be used (unescaped) except as part of actual markup.
+The SRT text file must be in UTF-8 format. By default all text lines are
+treated as plain text i.e. characters will automatically be escaped,
+where needed. In contrast if the `-m` parameter is used, all text lines
+must be well-formed XML, assuming an (anonymous) enclosing root element.
+Thus characters as part of actual subtitle text already have to be
+provided in escaped form, where necessary (e.g. `&` and `<`).
+
 
 ## EXAMPLES
 Using a file path to read the SRT data and a file path to write the result into a file:

@@ -24,8 +24,8 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="SRTXML/subtitle[1]/line[1]">
-            <assert test="normalize-space(.) = 'The character &amp; must be escaped in XML.'">
-                Expected value: "The character &amp; must be escaped in XML." Value from test: "<value-of select="normalize-space(.)"/>"
+            <assert test="normalize-space(.) = 'The characters &amp; and &lt; must be escaped in XML.'">
+                Expected value: "The characters &amp; and &lt; must be escaped in XML." Value from test: "<value-of select="normalize-space(.)"/>"
             </assert> 
         </rule>
     </pattern>
