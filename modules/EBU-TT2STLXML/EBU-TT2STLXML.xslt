@@ -831,6 +831,10 @@ limitations under the License.
                     <xsl:when test="$alignment = 'right'">
                         <xsl:value-of select="'03'"/>
                     </xsl:when>
+                    <xsl:otherwise>
+                        <!-- Fall back to "centred text" (ignoring TTML's default value "start") -->
+                        <xsl:value-of select="'02'"/>
+                    </xsl:otherwise>
                 </xsl:choose>
             </JC>
             <!--@ Create CF element, not mapped in this version -->

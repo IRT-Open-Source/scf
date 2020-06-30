@@ -112,6 +112,11 @@ converted to EBU-TT by using the SCF can be (correctly) converted back
 to EBU STL - though the source file might comply to the respective
 subtitling standards.
 
+Note that if no `tts:textAlign` value applies to a `tt:p` element, EBU
+STL's default alignment "centred text" is used - instead of assuming
+TTML's default value `start` here.
+
+
 ## EXAMPLES
 If you use the Saxon processor (version 9.7) you could perform a
 transformation as follows:
