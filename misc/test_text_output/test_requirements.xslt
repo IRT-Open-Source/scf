@@ -47,7 +47,8 @@ limitations under the License.
         <xsl:param name="empty_lines"/>
         
         <xsl:variable name="line_index" select="$empty_lines[current()/@block_offset + 1] + 1 + @line_offset"/>
-        <xsl:variable name="current_value" select="$lines[$line_index]"/>
+        <xsl:variable name="current_line" select="$lines[$line_index]"/>
+        <xsl:variable name="current_value" select="substring($current_line, (@start, 1)[1], string-length(if(@part eq 'true') then . else $current_line))"/>
         <xsl:if test=". ne $current_value">
             <fail offset="{$line_index}">Unexpected value: '<xsl:value-of select="$current_value"/>', expected: '<xsl:value-of select="."/>'</fail>
         </xsl:if>
