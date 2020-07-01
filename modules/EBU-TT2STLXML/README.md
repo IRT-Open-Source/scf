@@ -84,6 +84,9 @@ EBU-TT2STLXML.xslt has the following parameters:
     - ECD
     	 The ECD parameter can be used to specify the content of the ECD element (Editor's Contact Details) in the resulting STLXML file 
 
+    - JC
+    	 The JC parameter specifies the Justification Code to be used for each TTI block in the resulting STLXML file
+
 
 
 ## DESCRIPTION
