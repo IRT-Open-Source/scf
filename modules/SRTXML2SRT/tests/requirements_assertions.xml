@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<requirements>
+<requirements target_extension="srt">
     <requirement name="requirement-0801-001" description="subtitle mapping">
         <line block_offset="0" line_offset="0">1</line>
         <line block_offset="1" line_offset="-1"><!-- separator to preceding subtitle --></line>

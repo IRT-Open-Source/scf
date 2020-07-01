@@ -18,13 +18,16 @@ limitations under the License.
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="3.0">
     <xsl:output method="text"/>
     
+    <xsl:param name="tests_path" required="yes"/>
+    <xsl:param name="transform_xslt" required="yes"/>
+    
     <xsl:template match="/requirements">
         <xsl:apply-templates select="requirement"/>
     </xsl:template>
     
     <xsl:template match="requirement">
-        <xsl:variable name="filename_source" select="concat('files/', @name, '.xml')"/>
-        <xsl:variable name="filename_target" select="concat('files_out/', @name, '.srt')"/>
+        <xsl:variable name="filename_source" select="concat($tests_path, '/files/', @name, '.xml')"/>
+        <xsl:variable name="filename_target" select="concat($tests_path, '/files_out/', @name, '.', /requirements/@target_extension)"/>
         
         <!-- apply XSLT to file -->
         <xsl:result-document href="{$filename_target}">
@@ -32,7 +35,7 @@ limitations under the License.
                 let $xslt := transform(
                     map {
                         'source-node': doc($filename_source),
-                        'stylesheet-location': '../SRTXML2SRT.xslt'
+                        'stylesheet-location': concat($tests_path, '/', $transform_xslt)
                     }
                 )
                 return $xslt('output')
