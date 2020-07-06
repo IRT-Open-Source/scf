@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
 # download/extract BaseX
-RUN wget http://files.basex.org/releases/9.3.2/BaseX932.zip -O basex.zip \
+RUN wget https://files.basex.org/releases/9.3.3/BaseX933.zip -O basex.zip \
  && unzip basex.zip -d tools \
  && rm basex.zip
 
