@@ -100,7 +100,7 @@ limitations under the License.
                 <xsl:copy-of select="
                     $p//text()[
                         count(preceding::tt:br[
-                            count(ancestor::tt:p/preceding-sibling::*) = count($p/preceding-sibling::*)
+                            ancestor::tt:p[generate-id(.) = generate-id($p)]
                         ]) = $index
                     ]"/>
             </xsl:variable>
