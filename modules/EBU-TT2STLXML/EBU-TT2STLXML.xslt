@@ -479,6 +479,11 @@ limitations under the License.
                 </xsl:otherwise>
             </xsl:choose>            
         </ECD>
+        <!--@ Create UDA element -->
+        <UDA>
+            <!--@ Match the ebuttm:documentUserDefinedArea element if existent -->
+            <xsl:apply-templates select="ebuttm:documentUserDefinedArea"/>
+        </UDA>
     </xsl:template>    
     
     <xsl:template match="ebuttm:documentOriginalProgrammeTitle">
@@ -580,6 +585,12 @@ limitations under the License.
         <!--** Element containing information about the Editor's Contact Details. Steps: -->
         <!--@ Use value of the first 32 characters of the normalized content -->
         <xsl:value-of select="substring(normalize-space(.), 1, 32)"/>
+    </xsl:template>
+
+    <xsl:template match="ebuttm:documentUserDefinedArea">
+        <!--** Element containing User Defined Area (UDA) data. Steps: -->
+        <!--@ Use value of the first 768 characters (= 576 base64 bytes) of the normalized content -->
+        <xsl:value-of select="substring(normalize-space(.), 1, 768)"/>
     </xsl:template>
     
     <xsl:template match="tt:body">

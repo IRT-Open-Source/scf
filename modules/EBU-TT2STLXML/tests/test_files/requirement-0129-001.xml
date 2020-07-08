@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- Testing UDA with test string which is longer than 32 bytes -->
+<!-- Testing UDA with test string which is longer than 768 characters (= 576 base64 bytes) -->
 <tt:tt xmlns:tt="http://www.w3.org/ns/ttml"
     xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
     xmlns:tts="http://www.w3.org/ns/ttml#styling"
@@ -29,7 +29,7 @@ limitations under the License.
         <tt:metadata>
             <ebuttm:documentMetadata>
 				<ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
-                <ebuttm:documentUserDefinedArea>Test String which is longer than 32 bytes.</ebuttm:documentUserDefinedArea>
+                <ebuttm:documentUserDefinedArea>ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQXBhY2hlIExpY2Vuc2UKICAgICAgICAgICAgICAgICAgICAgICAgICAgVmVyc2lvbiAyLjAsIEphbnVhcnkgMjAwNAogICAgICAgICAgICAgICAgICAgICAgICBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvCgogICBURVJNUyBBTkQgQ09ORElUSU9OUyBGT1IgVVNFLCBSRVBST0RVQ1RJT04sIEFORCBESVNUUklCVVRJT04KCiAgIDEuIERlZmluaXRpb25zLgoKICAgICAgIkxpY2Vuc2UiIHNoYWxsIG1lYW4gdGhlIHRlcm1zIGFuZCBjb25kaXRpb25zIGZvciB1c2UsIHJlcHJvZHVjdGlvbiwKICAgICAgYW5kIGRpc3RyaWJ1dGlvbiBhcyBkZWZpbmVkIGJ5IFNlY3Rpb25zIDEgdGhyb3VnaCA5IG9mIHRoaXMgZG9jdW1lbnQuCgogICAgICAiTGljZW5zb3IiIHNoYWxsIG1lYW4gdGhlIGNvcHlyaWdodCBvd25lciBvciBlbnRpdHkgYXV0aG9yaXplZCBieQogICAgICB0aGUgY29weXJpZ2h0IG93bmVyIHRoYXQgaXMgZ3JhbnRpbmcgdGhlIExpY2Vuc2UuCgogICAgICAiTGVnYWwgRW50aXR5IiBzaGFsbCBtZWFuIHRoZSB1bmlvbiBvZiB0aGUgYWN0</ebuttm:documentUserDefinedArea>
             </ebuttm:documentMetadata>
         </tt:metadata>
         <tt:styling>

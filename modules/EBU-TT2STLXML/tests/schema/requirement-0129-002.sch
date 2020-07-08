@@ -27,8 +27,8 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="StlXml/HEAD/GSI/UDA">
-            <assert test=". = 'Test string'">
-                Expected value: "Test string" Value from test: "<value-of select="."/>"
+            <assert test=". = 'VGVzdAo='">
+                Expected value: "VGVzdAo=" Value from test: "<value-of select="."/>"
             </assert> 
         </rule>
     </pattern>            
