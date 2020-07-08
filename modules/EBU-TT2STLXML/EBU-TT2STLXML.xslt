@@ -70,6 +70,8 @@ limitations under the License.
     <xsl:param name="EN" select="''"/>
     <!--** The ECD parameter can be used to specify the content of the ECD element (Editor's Contact Details) in the resulting STLXML file -->
     <xsl:param name="ECD" select="''"/>
+    <!--** The JC parameter specifies the Justification Code to be used for each TTI block in the resulting STLXML file -->
+    <xsl:param name="JC" select="''"/>
     <!--** Variables to be used to convert a string to uppercase, as upper-case(string) is not supported in XSLT 1.0 -->
     <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
@@ -833,15 +835,28 @@ limitations under the License.
             </xsl:variable>
             <JC>
                 <xsl:choose>
-                    <xsl:when test="$alignment = 'left'">
-                        <xsl:value-of select="'01'"/>
+                    <!-- If the JC parameter is empty, set value according to source file -->
+                    <xsl:when test="normalize-space($JC) = ''">
+                        <xsl:choose>
+                            <xsl:when test="$alignment = 'left'">
+                                <xsl:value-of select="'01'"/>
+                            </xsl:when>
+                            <xsl:when test="$alignment = 'center'">
+                                <xsl:value-of select="'02'"/>
+                            </xsl:when>
+                            <xsl:when test="$alignment = 'right'">
+                                <xsl:value-of select="'03'"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!-- Fall back to "centred text" (ignoring TTML's default value "start") -->
+                                <xsl:value-of select="'02'"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:when>
-                    <xsl:when test="$alignment = 'center'">
-                        <xsl:value-of select="'02'"/>
-                    </xsl:when>
-                    <xsl:when test="$alignment = 'right'">
-                        <xsl:value-of select="'03'"/>
-                    </xsl:when>
+                    <!--@ If the JC parameter is not empty, set the first two characters of its normalized content -->
+                    <xsl:otherwise>
+                        <xsl:value-of select="substring(normalize-space($JC), 1, 2)"/>
+                    </xsl:otherwise>
                 </xsl:choose>
             </JC>
             <!--@ Create CF element, not mapped in this version -->

@@ -84,6 +84,9 @@ EBU-TT2STLXML.xslt has the following parameters:
     - ECD
     	 The ECD parameter can be used to specify the content of the ECD element (Editor's Contact Details) in the resulting STLXML file 
 
+    - JC
+    	 The JC parameter specifies the Justification Code to be used for each TTI block in the resulting STLXML file
+
 
 
 ## DESCRIPTION
@@ -111,6 +114,11 @@ that there is no guarantee that EBU-TT Part 1 files which were not
 converted to EBU-TT by using the SCF can be (correctly) converted back
 to EBU STL - though the source file might comply to the respective
 subtitling standards.
+
+Note that if no `tts:textAlign` value applies to a `tt:p` element, EBU
+STL's default alignment "centred text" is used - instead of assuming
+TTML's default value `start` here.
+
 
 ## EXAMPLES
 If you use the Saxon processor (version 9.7) you could perform a
