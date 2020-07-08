@@ -1,4 +1,19 @@
 -----------------------------
+Version 1.8.2
+-----------------------------
+
+EBU-TT2STLXML
+- FIXED #70: Fix missing JC fall back value
+- FIXED #71: Map UDA field
+- ADDED: Add JC parameter
+
+TTML2SRTXML
+- FIXED #73: Fix performance issues
+
+SCF REST service
+- ADDED: Add markup parameter
+
+-----------------------------
 Version 1.8.1
 -----------------------------
 
