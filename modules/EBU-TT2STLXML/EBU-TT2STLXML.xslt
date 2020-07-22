@@ -353,7 +353,7 @@ limitations under the License.
         <!--@ Create TNS element -->
         <TNS>
             <!--@ Match the ebuttm:documentTotalNumberOfSubtitles element if existent -->
-            <xsl:value-of select="count(ancestor::*[name() = 'tt:tt']/tt:body/tt:div/tt:p)"/>
+            <xsl:value-of select="count(ancestor::tt:tt/tt:body/tt:div/tt:p)"/>
         </TNS>
         <!--@ Create TNG element, mapping not supported in this version -->
         <TNG>0</TNG>
@@ -414,7 +414,7 @@ limitations under the License.
             <xsl:choose>
                 <!--@ If the TCF parameter is empty, derive TCF from first paragraph -->
                 <xsl:when test="normalize-space($TCF) = ''">
-                    <xsl:apply-templates select="ancestor::*[name() = 'tt:tt']/tt:body/tt:div[1]/tt:p[1]/@begin">
+                    <xsl:apply-templates select="ancestor::tt:tt/tt:body/tt:div[1]/tt:p[1]/@begin">
                         <xsl:with-param name="frameRate" select="$frameRate"/>
                         <xsl:with-param name="timeCodeFormat" select="$timeCodeFormat"/>
                     </xsl:apply-templates>
