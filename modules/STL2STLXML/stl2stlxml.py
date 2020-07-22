@@ -568,15 +568,11 @@ class STLXML:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('stl_file', help="path to EBU STL input file")
-    parser.add_argument('-x', '--xml_file', help="path to STL-XML output", default=None)
-    parser.add_argument('-p', '--pretty', help="if the STL-XML shall be 'prettified'",
-                        dest='pretty_xml', action='store_const', const=True, default=False)
-    parser.add_argument('-s', '--separate_tti', help="if text TTI blocks shall NOT be merged",
-                        dest='separate_tti', action='store_const', const=True, default=False)
-    parser.add_argument('-a', '--clear_uda', help="clear User-Defined Area (UDA) field",
-                        dest='clear_uda', action='store_const', const=True, default=False)
-    parser.add_argument('-u', '--discard_user_data', help="discard TTI blocks with User Data",
-                        dest='discard_user_data', action='store_const', const=True, default=False)
+    parser.add_argument('-x', '--xml_file', help="path to STL-XML output")
+    parser.add_argument('-p', '--pretty', help="if the STL-XML shall be 'prettified'", action='store_true')
+    parser.add_argument('-s', '--separate_tti', help="if text TTI blocks shall NOT be merged", action='store_true')
+    parser.add_argument('-a', '--clear_uda', help="clear User-Defined Area (UDA) field", action='store_true')
+    parser.add_argument('-u', '--discard_user_data', help="discard TTI blocks with User Data", action='store_true')
 
     args = parser.parse_args()
 
@@ -594,10 +590,10 @@ def main():
     stlXml = STLXML()
     stlXml.setStl(stl)
     if args.xml_file is None:
-        stlXml.serialize(sys.stdout.buffer, pretty=args.pretty_xml)
+        stlXml.serialize(sys.stdout.buffer, pretty=args.pretty)
     else:
         with open(args.xml_file, 'wb') as outputHandle:
-            stlXml.serialize(outputHandle, pretty=args.pretty_xml)
+            stlXml.serialize(outputHandle, pretty=args.pretty)
 
 
 if __name__ == '__main__':

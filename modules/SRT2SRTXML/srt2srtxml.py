@@ -98,11 +98,9 @@ class SRTXML:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('srt_file', help="path to SRT input file")
-    parser.add_argument('-x', '--xml_file', help="path to SRTXML output", default=None)
-    parser.add_argument('-p', '--pretty', help="if the SRTXML shall be 'prettified'",
-                        dest='pretty_xml', action='store_const', const=True, default=False)
-    parser.add_argument('-m', '--markup', help="if any markup in subtitle lines shall be processed",
-                        dest='markup', action='store_const', const=True, default=False)
+    parser.add_argument('-x', '--xml_file', help="path to SRTXML output")
+    parser.add_argument('-p', '--pretty', help="if the SRTXML shall be 'prettified'", action='store_true')
+    parser.add_argument('-m', '--markup', help="if any markup in subtitle lines shall be processed", action='store_true')
     
     args = parser.parse_args()
     
@@ -118,10 +116,10 @@ def main():
 
     # write XML output to STDOUT or file
     if args.xml_file is None:
-        srtxml.serialize(sys.stdout.buffer, pretty=args.pretty_xml)
+        srtxml.serialize(sys.stdout.buffer, pretty=args.pretty)
     else:
         with open(args.xml_file, 'wb') as outputHandle:
-            srtxml.serialize(outputHandle, pretty=args.pretty_xml)
+            srtxml.serialize(outputHandle, pretty=args.pretty)
 
 
 if __name__ == '__main__':
