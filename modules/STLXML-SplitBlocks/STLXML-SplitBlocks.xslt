@@ -56,7 +56,7 @@ limitations under the License.
     
     <xsl:template match="@*|node()">
         <!-- copy (except unimportant whitespace text nodes) -->
-        <xsl:if test="not(self::text()[normalize-space(.) eq ''] and (parent::StlXml or parent::HEAD or parent::GSI or parent::BODY or parent::TTICONTAINER or parent::TTI))">
+        <xsl:if test="not(self::text()[normalize-space(.) eq ''] and (parent::StlXml or parent::HEAD or parent::GSI or parent::BODY or parent::TTICONTAINER or parent::TTI or parent::StlSource))">
             <xsl:copy>
                 <xsl:apply-templates select="@*|node()"/>
             </xsl:copy>
