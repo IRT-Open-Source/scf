@@ -411,10 +411,10 @@ limitations under the License.
     <xsl:template match="text()">
         <xsl:param name="inheritedStyle" />
         <xsl:choose>
-            <xsl:when test="name(parent::*[1]) = 'tt:span'">
+            <xsl:when test="parent::tt:span">
                 <xsl:value-of select="."/>
             </xsl:when>
-            <xsl:when test="name(parent::*[1]) != 'tt:span' and string-length(normalize-space(.)) &gt; 0">
+            <xsl:when test="not(parent::tt:span) and string-length(normalize-space(.)) &gt; 0">
                 <xsl:variable name="refStyle">
                     <xsl:call-template name="translateHexvalue">
                         <xsl:with-param name="color">
@@ -445,7 +445,7 @@ limitations under the License.
     <xsl:template match="tt:br">
         <xsl:param name="inheritedStyle"/>
         <!--@ Only write a tt:br element if it's between spans, tt:br elements for the sake of vertical placing are not mapped -->
-        <xsl:if test="count(following-sibling::*[name() = 'tt:span']) &gt; 0">
+        <xsl:if test="following-sibling::tt:span">
             <tt:br/>
         </xsl:if>
         <xsl:apply-templates select="following-sibling::node()[1]">

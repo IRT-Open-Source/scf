@@ -788,7 +788,7 @@ limitations under the License.
         <xsl:param name="frameRate" />
         <xsl:value-of select="."/>
         <!--@ If the text-node is not contained within a tt:span element, match the following sibling node -->
-        <xsl:if test="name(parent::*[1]) != 'tt:span'">
+        <xsl:if test="not(parent::tt:span)">
             <xsl:apply-templates select="following-sibling::node()[1]">
                 <xsl:with-param name="legacyTimeBase" select="$legacyTimeBase" />
                 <xsl:with-param name="frameRate" select="$frameRate" />
