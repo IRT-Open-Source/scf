@@ -20,6 +20,7 @@ import xml.dom
 import sys
 import argparse
 import base64
+import os.path
 
 
 class iso6937(codecs.Codec):
@@ -368,6 +369,7 @@ class STL:
         self.clear_uda = clear_uda
         self.discard_user_data = discard_user_data
         self.tti = []
+        self.source_data = bytearray()
         # register all encodings that can be used for the Text Fields of the TTI blocks in STL
         codecs.register(iso6937().search)
         codecs.register(iso8859_5_stl().search)
@@ -386,11 +388,14 @@ class STL:
         self._readTTI(fileHandle)
 
     def _readGSI(self, fileHandle):
+        data = fileHandle.read(1024)
+        self.source_data += data
+
         #  Unpacks 1024 first bytes for GSI field and store it in dictionary.
         self.GSI = dict(zip(
             self.GSIfields,
             struct.unpack('3s8sc2s2s32s32s32s32s32s32s16s6s6s2s5s5s3s2s2s1s8s8s1s1s3s32s32s32s75x576s',
-                          fileHandle.read(1024))
+                          data)
         ))
 
         GSI = self.GSI
@@ -429,6 +434,7 @@ class STL:
                 if not data:
                     eofReached = True
                     break
+                self.source_data += data
 
                 TTI = dict(zip(
                     self.TTIfields,
@@ -468,7 +474,9 @@ class STLXML:
     """
     A class for the XML representation of the STL file
     """
-    def __init__(self):
+    def __init__(self, store_source_file, source_filename):
+        self.store_source_file = store_source_file
+        self.source_filename = source_filename
         self.xmlDoc = xml.dom.getDOMImplementation().createDocument(None,
                                                                     "StlXml",
                                                                     None)
@@ -479,6 +487,8 @@ class STLXML:
         """
         self._setGsi(stl)
         self._setTti(stl)
+        if self.store_source_file:
+            self._setStlSource(stl)
 
     def _xmlFromListAndDict(self, parentNode,
                             elementNames, data,
@@ -554,6 +564,21 @@ class STLXML:
             parentNode.appendChild(textNode)
         return parentNode
 
+    def _setStlSource(self, Stl):
+        xmlDocStlSource = self.xmlDoc.createElement('StlSource')
+        self.xmlDoc.documentElement.appendChild(xmlDocStlSource)
+
+        xmlDocStlSourceFilename = self.xmlDoc.createElement('Filename')
+        xmlDocStlSource.appendChild(xmlDocStlSourceFilename)
+
+        xmlDocStlSourceFilename.appendChild(self.xmlDoc.createTextNode(self.source_filename))
+
+        xmlDocStlSourceData = self.xmlDoc.createElement('Data')
+        xmlDocStlSource.appendChild(xmlDocStlSourceData)
+
+        source_data_base64 = base64.b64encode(Stl.source_data)
+        xmlDocStlSourceData.appendChild(self.xmlDoc.createTextNode(source_data_base64.decode()))
+
     def serialize(self, output, pretty=False):
         """
         Create a textual representation of the XML file.
@@ -573,6 +598,8 @@ def main():
     parser.add_argument('-s', '--separate_tti', help="if text TTI blocks shall NOT be merged", action='store_true')
     parser.add_argument('-a', '--clear_uda', help="clear User-Defined Area (UDA) field", action='store_true')
     parser.add_argument('-u', '--discard_user_data', help="discard TTI blocks with User Data", action='store_true')
+    parser.add_argument('-b', '--store_source_file', help="store source STL file for later processing", action='store_true')
+    parser.add_argument('-f', '--source_filename', help="value to overwrite the source STL file's filename")
 
     args = parser.parse_args()
 
@@ -580,14 +607,21 @@ def main():
     stl = STL(args.separate_tti, args.clear_uda, args.discard_user_data)
     # Check if a STL file path has been specified.
     # In case no STL file path is used, STDIN will be used to read/pipe the STL data.
-    if args.stl_file == "":    
+    # Also set the source filename accordingly.
+    if args.stl_file == "":
         stl.readSTL(sys.stdin.buffer)
-    else: 
+        source_filename = 'stdin'
+    else:
         with open(args.stl_file, 'rb') as inputHandle:
             stl.readSTL(inputHandle)
+        source_filename = os.path.basename(args.stl_file) 
+
+    # Overwrite the source filename, if requested
+    if not args.source_filename is None:
+        source_filename = args.source_filename
 
     # XML Out
-    stlXml = STLXML()
+    stlXml = STLXML(args.store_source_file, source_filename)
     stlXml.setStl(stl)
     if args.xml_file is None:
         stlXml.serialize(sys.stdout.buffer, pretty=args.pretty)
