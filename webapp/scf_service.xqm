@@ -53,6 +53,10 @@ declare variable $scf:subtitle_format_group :=
         'ttml': 2
     };
 
+(: conversion is done (with exceptions) forward/backward along the following paths :)
+declare variable $scf:subtitle_format_path_1 := ('stl', 'stlxml', 'ebu-tt', 'ebu-tt-d', 'ebu-tt-d-basic-de');
+declare variable $scf:subtitle_format_path_2 := ('srt', 'srtxml', 'ttml');
+
 (: parameters to show in custom conversion case - any parameters required for a specific module are optional here! :)
 declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'markup', 'templateOPT', 'language', 'indent');
 
@@ -505,6 +509,20 @@ declare function scf:convert_step($status as map(*), $format_target as xs:string
             }
 };
 
+(: determine the next format based on a conversion path, assuming that both formats are different formats, but part of the path :)
+declare function scf:next_format_by_path($format_source as xs:string, $format_target as xs:string, $path as xs:string*) as xs:string {
+    scf:next_format_by_path($format_source, $format_target, $path, true(), true())
+};
+declare function scf:next_format_by_path($format_source as xs:string, $format_target as xs:string, $path as xs:string*, $backward as xs:boolean, $forward as xs:boolean) as xs:string {
+    let $pos_source := index-of($path, $format_source)
+    let $pos_target := index-of($path, $format_target)
+    return if($pos_target lt $pos_source)
+        then (: move one step backwards, if desired :)
+            if($backward) then $path[$pos_source - 1] else ''
+        else (: move one step forwards, if desired :)
+            if($forward) then $path[$pos_source + 1] else ''
+};
+
 (: determine the next format to which the current (intermediate) result has to be converted, towards the target format :)
 declare function scf:next_format($format_source as xs:string, $format_target as xs:string) as xs:string? {
     (: no conversion available, if source/target formats part of different format groups! :)
@@ -514,35 +532,18 @@ declare function scf:next_format($format_source as xs:string, $format_target as 
         switch($format_source)
         case $format_target return
             () (: no conversion needed :)
-        case 'stl' return
-            'stlxml'
-        case 'stlxml' return
-            if($format_target eq 'stl')
-            then 'stl'
-            else 'ebu-tt'
-        case 'srt' return
-            'srtxml'
-        case 'srtxml' return
-            if($format_target eq 'srt')
-            then 'srt'
-            else 'ttml'
-        case 'ttml' return
-            'srtxml'
+        case 'stl'
+        case 'stlxml'
+        case 'ebu-tt'
+            return scf:next_format_by_path($format_source, $format_target, $scf:subtitle_format_path_1)
+        case 'ebu-tt-d'
+        case 'ebu-tt-d-basic-de'
+            (: no way back here :)
+            return scf:next_format_by_path($format_source, $format_target, $scf:subtitle_format_path_1, false(), true())
+        case 'srt'
+        case 'srtxml'
+        case 'ttml'
+            return scf:next_format_by_path($format_source, $format_target, $scf:subtitle_format_path_2)
         default return
-            (: EBU-TT based source :)
-            if($format_target = ('stl', 'stlxml'))
-            then 'stlxml'
-            else
-                (: TTML source/target :)
-                switch($format_source)
-                case 'ebu-tt' return
-                    'ebu-tt-d'
-                case 'ebu-tt-d' return
-                    if($format_target eq 'ebu-tt')
-                    then () (: no conversion needed :)
-                    else 'ebu-tt-d-basic-de'
-                case 'ebu-tt-d-basic-de'
-                    return () (: no conversion needed :)
-                default return
-                    ''
+            ''
 };
