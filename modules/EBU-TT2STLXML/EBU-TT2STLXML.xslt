@@ -355,8 +355,10 @@ limitations under the License.
             <!--@ Match the ebuttm:documentTotalNumberOfSubtitles element if existent -->
             <xsl:value-of select="count(ancestor::tt:tt/tt:body/tt:div/tt:p)"/>
         </TNS>
-        <!--@ Create TNG element, mapping not supported in this version -->
-        <TNG>0</TNG>
+        <!--@ Create TNG element -->
+        <TNG>
+            <xsl:value-of select="count(ancestor::tt:tt/tt:body/tt:div)"/>
+        </TNG>
         <!--@ Create MNC element -->
         <MNC>
             <xsl:choose>

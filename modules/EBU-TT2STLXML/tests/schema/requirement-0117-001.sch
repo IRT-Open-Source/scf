@@ -19,7 +19,7 @@ limitations under the License.
     <ns uri="http://www.w3.org/ns/ttml" prefix="tt"/>
     <ns uri="urn:ebu:tt:metadata" prefix="ebuttm"/>
     <ns uri="http://www.w3.org/ns/ttml#styling" prefix="tts"/>
-    <title>Testing TNG with value '1'</title>
+    <title>Testing TNG with value '2'</title>
     <pattern id="TNG">
         <rule context="/">
             <assert test="StlXml/HEAD/GSI/TNG">
@@ -27,8 +27,8 @@ limitations under the License.
             </assert> 
         </rule>
         <rule context="StlXml/HEAD/GSI/TNG">
-            <assert test=". = '1'">
-                Expected value: "1" Value from test: "<value-of select="."/>"
+            <assert test=". = '2'">
+                Expected value: "2" Value from test: "<value-of select="."/>"
             </assert> 
         </rule>
     </pattern>            
