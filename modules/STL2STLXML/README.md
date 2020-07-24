@@ -14,7 +14,7 @@ SOURCE-STL-FILE <i>Path to the source EBU STL file that shall be translated.</i>
 
 Note: If SOURCE-STL-FILE is an empty string (e.g. "") the EBU STL data is read from STDIN.
 
--x, --xml DESTINATION-XML-FILE <i>Output file for the XML representation of the EBU STL file. If this option is not specified the result is written to STDOUT.</i>
+-x, --xml_file DESTINATION-XML-FILE <i>Output file for the XML representation of the EBU STL file. If this option is not specified the result is written to STDOUT.</i>
 
 -p, --pretty <i>Output the XML File in pretty XML (with indention).</i>
 
