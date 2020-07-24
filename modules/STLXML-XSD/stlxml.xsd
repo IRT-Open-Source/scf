@@ -20,6 +20,7 @@ limitations under the License.
       <xs:sequence>
         <xs:element ref="HEAD"/>
         <xs:element ref="BODY"/>
+        <xs:element ref="StlSource" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -476,4 +477,14 @@ limitations under the License.
   <xs:element name="space">
     <xs:complexType/>
   </xs:element>
+  <xs:element name="StlSource">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Filename"/>
+        <xs:element ref="Data"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Filename" type="xs:string"/>
+  <xs:element name="Data" type="xs:base64Binary"/>
 </xs:schema>
