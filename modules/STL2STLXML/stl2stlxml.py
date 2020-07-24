@@ -506,8 +506,8 @@ class STLXML:
         self.xmlDocHead.appendChild(gsiElement)
 
     def _setTti(self, Stl):
-        self.xmlDocBody = self.xmlDoc.createElement('BODY')
-        self.xmlDoc.documentElement.appendChild(self.xmlDocBody)
+        xmlDocBody = self.xmlDoc.createElement('BODY')
+        self.xmlDoc.documentElement.appendChild(xmlDocBody)
 
         ttiContainerElement = self.xmlDoc.createElement('TTICONTAINER')
         # Exclude separated timecode fields (e.g. TCIh) and TF field.
@@ -526,7 +526,7 @@ class STLXML:
                                                 Stl.controlCharDict)
             ttiElement.appendChild(textElement)
             ttiContainerElement.appendChild(ttiElement)
-        self.xmlDocBody.appendChild(ttiContainerElement)
+        xmlDocBody.appendChild(ttiContainerElement)
 
     def _getTtiTextNodes(self, parentNode, unicodeString, controlDict):
         tempString = ''
