@@ -39,6 +39,10 @@ limitations under the License.
     <xsl:param name="offsetTCP" select="0"/>
     <!--** If set to 1, any manual offset (seconds or frames) will *not* be subtracted from the TCP value -->
     <xsl:param name="ignoreManualOffsetForTCP" select="0"/>
+    <!--** If set to 1, enables binary data tunnelling of the original STL source file -->
+    <xsl:param name="storeSTLSourceFile" select="0"/>
+    <!--** If set to 1, enables storage of the tunnelled binary at the document end instead of the document head -->
+    <xsl:param name="storeSTLSourceFileAtEnd" select="0"/>
     <!--** Format that shall be used for the Time Code; supported by this transformation are 'smpte' and 'media' -->
     <xsl:param name="timeBase" select="'smpte'"/>
     <!--** Provides the tt:style elements the mapped color is located in -->
@@ -155,6 +159,12 @@ limitations under the License.
         <xsl:if test="HEAD/GSI/TCS = '0'">
             <xsl:message terminate="yes">
                 Files with a TCS value set to 0 are not supported by this transformation.
+            </xsl:message>
+        </xsl:if>
+        <!--@ Interrupt if the original STL source file is necessary, but not present -->
+        <xsl:if test="$storeSTLSourceFile = '1' and not(StlSource)">
+            <xsl:message terminate="yes">
+                If binary data tunnelling is requested, the original STL source file must be present.
             </xsl:message>
         </xsl:if>
         <!--@ Set frame rate according to DFC element, interrupt if the element's value is not supported; this implementation only supports a value of '25' -->
@@ -322,6 +332,10 @@ limitations under the License.
                 <xsl:apply-templates select="ECD"/>
                 <xsl:apply-templates select="UDA"/>
             </ebuttm:documentMetadata>
+            <!--@ Insert STL source file, if desired -->
+            <xsl:if test="$storeSTLSourceFile = '1' and $storeSTLSourceFileAtEnd != '1'">
+                <xsl:apply-templates select="/StlXml/StlSource"/>
+            </xsl:if>
             <xsl:apply-templates select="CD"/>
             <xsl:apply-templates select="RD"/>
             <xsl:apply-templates select="RN"/>
@@ -627,6 +641,14 @@ limitations under the License.
             </ebuttExt:stlRevisionNumber>
         </xsl:if>
     </xsl:template>
+    
+    <xsl:template match="StlSource">
+        <!--** Structure containing the source STL file. Steps: -->
+        <!--@ Map data and filename -->
+        <ebuttm:binaryData textEncoding="BASE64" binaryDataType="EBU Tech 3264" fileName="{Filename}">
+            <xsl:value-of select="Data"/>
+        </ebuttm:binaryData>
+    </xsl:template>
 
     <xsl:template match="BODY">
         <!--** Container for the TTICONTAINER element. Steps: -->
@@ -661,6 +683,14 @@ limitations under the License.
                     <xsl:message terminate="yes">The required functions of neither EXSLT nor XSLT 2.0 are available. These are needed to retrieve the distinct TTI block SGN values.</xsl:message>
                 </xsl:otherwise>
             </xsl:choose>
+            <!--@ Insert STL source file, if desired -->
+            <xsl:if test="$storeSTLSourceFile = '1' and $storeSTLSourceFileAtEnd = '1'">
+                <tt:div>
+                    <tt:metadata>
+                        <xsl:apply-templates select="/StlXml/StlSource"/>
+                    </tt:metadata>
+                </tt:div>
+            </xsl:if>
         </tt:body>
     </xsl:template>
     
