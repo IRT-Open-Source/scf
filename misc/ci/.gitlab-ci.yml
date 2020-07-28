@@ -12,11 +12,14 @@ after_script:
   - rm ~/.ssh/id_rsa_deploy_ro
 
 
-# Test pipeline 1: STL -> STLXML -> EBU-TT -> EBU-TT-D -> EBU-TT-D-Basic-DE
-test_pipeline_1:
+.test_pipeline:
   tags:
     - docker
   stage: test
+
+# Test pipeline 1: STL -> STLXML -> EBU-TT -> EBU-TT-D -> EBU-TT-D-Basic-DE
+test_pipeline_1:
+  extends: .test_pipeline
   script:
     # STL -> STLXML
     - modules/STL2STLXML/stl2stlxml.py -p -x 2_STLXML.xml misc/ci/test_pipeline_1/1_STL.stl
@@ -33,9 +36,7 @@ test_pipeline_1:
 
 # Test pipeline 2: EBU-TT -> STLXML -> STL
 test_pipeline_2:
-  tags:
-    - docker
-  stage: test
+  extends: .test_pipeline
   script:
     # EBU-TT -> STLXML (use constant date/time to make result reproducible)
     - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_2/1_EBU-TT.xml -xsl:modules/EBU-TT2STLXML/EBU-TT2STLXML.xslt -o:2_STLXML.xml  -now:2020-05-08T00:00:00+00:00
@@ -46,9 +47,7 @@ test_pipeline_2:
 
 # Test pipeline 3: SRT -> SRTXML -> TTML (default template)
 test_pipeline_3:
-  tags:
-    - docker
-  stage: test
+  extends: .test_pipeline
   script:
     # SRT -> SRTXML
     - modules/SRT2SRTXML/srt2srtxml.py -p -x 2_SRTXML.xml misc/ci/test_pipeline_3/1_SRT.srt
@@ -59,9 +58,7 @@ test_pipeline_3:
 
 # Test pipeline 4: TTML -> SRTXML -> SRT
 test_pipeline_4:
-  tags:
-    - docker
-  stage: test
+  extends: .test_pipeline
   script:
     # TTML -> SRTXML
     - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_4/1_TTML.xml -xsl:modules/TTML2SRTXML/TTML2SRTXML.xslt -o:2_SRTXML.xml
@@ -71,11 +68,11 @@ test_pipeline_4:
     - diff misc/ci/test_pipeline_4/3_SRT.srt 3_SRT.srt
 
 
-tests_STL2STLXML:
+# Modules
+.tests:
   tags:
     - docker
   stage: test
-  script: scf_test_driver/ci/test_py2xml.sh STL2STLXML STL2STLXML stl2stlxml.py
   artifacts:
     name: "$CI_JOB_NAME"
     paths:
@@ -83,240 +80,82 @@ tests_STL2STLXML:
     - index.html
     # provide test results only on failure
     when: on_failure
+
+tests_STL2STLXML:
+  extends: .tests
+  script: scf_test_driver/ci/test_py2xml.sh STL2STLXML STL2STLXML stl2stlxml.py
 
 tests_STLXML2STL:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_stlxml2stl.sh
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_STLXML2EBU-TT:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh STLXML2EBU-TT STLXML2EBU-TT STLXML2EBU-TT.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_STLXML-SplitBlocks:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh STLXML-SplitBlocks STLXML-SplitBlocks STLXML-SplitBlocks.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_EBU-TT2STLXML:
   # to be started by hand, as module has beta status!
   when: manual
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh EBU-TT2STLXML EBU-TT2STLXML EBU-TT2STLXML.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_EBU-TT2EBU-TT-D:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh EBU-TT2EBU-TT-D EBU-TT2EBU-TT-D EBU-TT2EBU-TT-D.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_EBU-TT-D2EBU-TT-D-Basic-DE:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh EBU-TT-D2EBU-TT-D-Basic-DE EBU-TT-D2EBU-TT-D-Basic-DE EBU-TT-D2EBU-TT-D-Basic-DE.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_FlashDFXP2EBU-TT-D-Basic-DE:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh FlashDFXP2EBU-TT-D-Basic-DE FlashDFXP2EBU-TT-D-Basic-DE FlashDFXP2EBU-TT-D-Basic-DE.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_STLXML_XSD:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_schema.sh STLXML-XSD STLXML-XSD stlxml.xsd
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_SRTXML_XSD:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_schema.sh SRTXML-XSD SRTXML-XSD srtxml.xsd
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_SRT2SRTXML:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_py2xml.sh SRT2SRTXML SRT2SRTXML srt2srtxml.py
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_SRTXML2SRT:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_srtxml2srt.sh
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_SRTXML2TTML:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh SRTXML2TTML SRTXML2TTML SRTXML2TTML.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_TTML2SRTXML:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh TTML2SRTXML TTML2SRTXML TTML2SRTXML.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 # TT-Helper modules
 tests_Helper_DFXP2TTML:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh DFXP2TTML TT-Helper/DFXP2TTML DFXP2TTML.xsl
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_Helper_GetTTMLProfile:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh GetTTMLProfile TT-Helper/GetTTMLProfile GetTTMLProfile.xsl
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_Helper_TT-Edit-List:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh TT-Edit-List TT-Helper/TT-Edit-List TT-Edit-List.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_Helper_TT-Filter-Styles-No-References:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh TT-Filter-Styles-No-References TT-Helper/TT-Filter-Styles-No-References TT-Filter-Styles-No-References.xslt
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
 
 tests_Helper_TTML2DFXP:
-  tags:
-    - docker
-  stage: test
+  extends: .tests
   script: scf_test_driver/ci/test_standard.sh TTML2DFXP TT-Helper/TTML2DFXP TTML2DFXP.xsl
-  artifacts:
-    name: "$CI_JOB_NAME"
-    paths:
-    # test results
-    - index.html
-    # provide test results only on failure
-    when: on_failure
