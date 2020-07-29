@@ -24,6 +24,10 @@ Note: If SOURCE-STL-FILE is an empty string (e.g. "") the EBU STL data is read f
 
 -u, --discard_user_data <i>Discard all TTI blocks with User Data (EBN 0xFE).</i>
 
+-b, --store_source_file <i>Store the source STL file for later processing towards EBU-TT.</i>
+
+-f, --source_filename SOURCE_FILENAME <i>Value to overwrite the source STL file's filename (if the file is stored).</i>
+
 
 ## DESCRIPTION
 Decodes the EBU STL file and exports it in an XML representation that
@@ -46,7 +50,7 @@ The module can also be used as part of a conversion pipeline:
 ## AUTHORS
 Development: Michael Meier, Andreas Tai, Stefan Pöschel
 
-QC: Tilman Eberspächer, Barbara Fichte, Peter tho Pesch
+QC: Tilman Eberspächer, Barbara Fichte, Peter tho Pesch, Andreas Tai
 
 `stl2stlxml.py` is derived from the "to_srt.py" work which is developed
 and provided by Yann Coupin (see https://github.com/yanncoupin/stl2srt)
