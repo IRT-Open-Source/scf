@@ -28,10 +28,17 @@ error message.
         If set to 1, the TCP value is used as the time-offset that's used for the TCP, TCI and TCO elements (default is 0). Thus this offset will be subtracted from the mentioned element's values.
 
     - ignoreManualOffsetForTCP
-        If set to 1, any manual offset (seconds or frames) will *not* be subtracted from the TCP value.
+        If set to 1, any manual offset (seconds or frames) will *not* be subtracted from the TCP value (default is 0).
 
     - timeBase
         Either the value 'smpte' or 'media'. It sets explicitly the ttp:timeBase attribute (default is 'smpte')
+
+    - storeSTLSourceFile
+        If set to 1, enables binary data tunnelling of the original STL source file (default is 0).
+
+    - storeSTLSourceFileAtEnd
+        If set to 1, enables storage of the tunnelled binary at the document end instead of the document head (only effective together with storeSTLSourceFile; default is 0).
+        Note that according to EBU Tech 3350 v1.0, a `tt:div` element shall have at least one `tt:p` child element. Therefore this alternative location is only compliant to v1.1 or later.
 
 
 ## DESCRIPTION
@@ -43,6 +50,11 @@ Amongst others STLXML files with the following characteristics are *not* support
 * the DFC (Disc Format Code) is set to another value then "STL25.01" (25 fps)
 * the TCS of a TTI element is set to 0 (timecode that is not intended for use)
 * the STLXML does not validate against the STLXML XSD
+
+Note that the mapping from EBU STL to EBU-TT is done according to
+EBU Tech 3360 v0.9 which targets EBU Tech 3350 v1.0. Therefore the
+mapping is slightly different compared to more recent versions of the
+related specifications.
 
 ## EXAMPLES
 If you use the Saxon parser (version 9.5) you could perform a 
@@ -58,4 +70,5 @@ where `[dir]` is the directory of the Saxon jar-file.
 
 ## RESOURCES
 * [EBU STL (EBU Tech 3264)](https://tech.ebu.ch/docs/tech/tech3264.pdf)
-* [MAPPING EBU STL TO EBU-TT SUBTITLE FILES (EBU Tech 3360)](https://tech.ebu.ch/docs/tech/tech3360.pdf)
+* [MAPPING EBU STL TO EBU-TT SUBTITLE FILES (EBU Tech 3360) v0.9 (link currently refers to v1.0)](https://tech.ebu.ch/docs/tech/tech3360.pdf)
+* [EBU-TT PART 1 SUBTITLING FORMAT DEFINITION (EBU Tech 3350) v1.0](https://tech.ebu.ch/docs/tech/tech3350v1-0.pdf)
