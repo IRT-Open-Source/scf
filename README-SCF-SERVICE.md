@@ -172,6 +172,8 @@ The following request parameters are available:
 - `language`: If present, the language identifier to override the
   general language of the used template (only affects conversions which
   imply a conversion from SRTXML towards TTML).
+- `tunnel_stl_source`: If present, the EBU STL source document is stored
+  /kept (only affects conversions on the path from EBU STL to EBU-TT).
 - `indent`: If present, the output will be indented in case of a target
   format based on XML.
 

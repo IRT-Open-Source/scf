@@ -58,7 +58,7 @@ declare variable $scf:subtitle_format_path_1 := ('stl', 'stlxml', 'ebu-tt', 'ebu
 declare variable $scf:subtitle_format_path_2 := ('srt', 'srtxml', 'ttml');
 
 (: parameters to show in custom conversion case - any parameters required for a specific module are optional here! :)
-declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'markup', 'templateOPT', 'language', 'indent');
+declare variable $scf:params_all := ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'separate_tti', 'clear_uda', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'markup', 'templateOPT', 'language', 'tunnel_stl_source', 'indent');
 
 (: returns a simple HTML form for a conversion from one format to another :)
 declare function scf:form_conversion($format_source, $format_target, $params) {
@@ -87,6 +87,7 @@ declare function scf:form_conversion_fields($params) {
         {if($params = 'templateREQ') then <li><label><input type="checkbox" checked="checked" disabled="disabled"/> use template <select name="template" required="required">{scf:template_files() ! <option>{.}</option>}</select> for conversion</label></li> else () (: required :)}
         {if($params = 'templateOPT') then <li><label><input type="checkbox" onclick="this.nextElementSibling.disabled=!this.checked"/> use template <select name="template" disabled="disabled">{scf:template_files() ! <option>{.}</option>}</select> for conversion</label></li> else () (: optional :)}
         {if($params = 'language') then <li><label><input type="checkbox" onclick="this.nextElementSibling.disabled=!this.checked"/> use <input type="text" size="10" name="language" value="en" disabled="disabled"/> as general language (override template)</label></li> else ()}
+        {if($params = 'tunnel_stl_source') then <li><label><input type="checkbox" name="tunnel_stl_source" value="1"/> store/keep the EBU STL source document</label></li> else ()}
         {if($params = 'indent') then <li><label><input type="checkbox" name="indent" value="1" checked="checked"/> indented output</label></li> else () (: enabled by default :)}
     </ul>,
     <hr/>
@@ -106,7 +107,7 @@ declare
         <h1>SCF service</h1>
         
         <h2>Multi step conversions</h2>
-        {scf:form_conversion('stl', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'ignore_manual_offset_for_tcp', 'indent'))}
+        {scf:form_conversion('stl', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'ignore_manual_offset_for_tcp', 'tunnel_stl_source', 'indent'))}
         {scf:form_conversion('ebu-tt', 'stl', ())}
         {scf:form_conversion('stl', 'ebu-tt-d-basic-de', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'indent'))}
         {scf:form_conversion('srt', 'ttml', ('markup', 'templateREQ', 'language', 'indent'))}
@@ -131,9 +132,9 @@ declare
         </form>
 
         <h2>Single step conversions</h2>
-        {scf:form_conversion('stl', 'stlxml', ('separate_tti', 'clear_uda', 'discard_user_data', 'indent'))}
+        {scf:form_conversion('stl', 'stlxml', ('separate_tti', 'clear_uda', 'discard_user_data', 'tunnel_stl_source', 'indent'))}
         {scf:form_conversion('stlxml', 'stl', ())}
-        {scf:form_conversion('stlxml', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'ignore_manual_offset_for_tcp', 'indent'))}
+        {scf:form_conversion('stlxml', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'ignore_manual_offset_for_tcp', 'tunnel_stl_source', 'indent'))}
         {scf:form_conversion('ebu-tt', 'stlxml', ('indent'))}
         {scf:form_conversion('ebu-tt', 'ebu-tt-d', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'use_line_height_125', 'indent'))}
         {scf:form_conversion('ebu-tt-d', 'ebu-tt-d-basic-de', ('indent'))}
@@ -181,25 +182,32 @@ declare function scf:call_python($status as map(*), $script as xs:string, $param
         where exists($v)
         return $k
     
+    (: special case: if source is STL, provide source filename for potential STL source tunneling :)
+    let $params_tunneling := if (scf:current_format($status) eq 'stl') then ('-f', $status('input_filename')) else ()
+    
     (: transformation :)
     let $input as xs:base64Binary := $status('result')
     let $input_filename := file:create-temp-file('scf-service-', '')
     let $output_filename := concat($input_filename, '.out')
     let $write_input := file:write-binary($input_filename, $input)
-    let $result_call := proc:system('python3', (file:resolve-path(concat($scf:modules_path, $script)), $input_filename, '-x', $output_filename, $params ! concat('-', .)))
+    let $result_call := proc:system('python3', (file:resolve-path(concat($scf:modules_path, $script)), $input_filename, '-x', $output_filename, $params ! concat('-', .), $params_tunneling))
     let $result as document-node() := (# basex:non-deterministic #) {doc($output_filename)} (: prevent evaluation after deleted output file :)
     let $delete_input := file:delete($input_filename)
     let $delete_output := file:delete($output_filename)
     
+    (: special case: if source is STL and target *not* STLXML, keep the STL source tunneling parameter, as it applies to STLXML2EBU-TT, too :)
+    let $params_remove := $params[not(scf:current_format($status) eq 'stl' and $status('target') ne 'stlxml' and . eq 'b')]
+    
     (: remove consumed options + replace result :)
-    return map:merge((map:entry('result', $result), $params ! map:entry($param_option_mapping(.), ()), $status))
+    return map:merge((map:entry('result', $result), $params_remove ! map:entry($param_option_mapping(.), ()), $status))
 };
 
 declare function scf:call_stl2stlxml($status as map(*)) as map(*) {
     scf:call_python($status, 'STL2STLXML/stl2stlxml.py', map {
         's': 'option_separate_tti',
         'a': 'option_clear_uda',
-        'u': 'option_discard_user_data'
+        'u': 'option_discard_user_data',
+        'b': 'option_tunnel_stl_source'
     })
 };
 
@@ -245,7 +253,8 @@ declare function scf:call_stlxml2ebu-tt($status as map(*)) as map(*) {
         'offsetTCP': 'option_offset_start_of_programme',
         'offsetInSeconds': 'option_offset_seconds',
         'offsetInFrames': 'option_offset_frames',
-        'ignoreManualOffsetForTCP': 'option_ignore_manual_offset_for_tcp'
+        'ignoreManualOffsetForTCP': 'option_ignore_manual_offset_for_tcp',
+        'storeSTLSourceFile': 'option_tunnel_stl_source'
     }, false())
 };
 
@@ -336,6 +345,7 @@ items of the status map:
 - option_markup: if present, process markup in subtitle lines
 - option_template: if present, set the used TTML template
 - option_language: if present, override the template's general language
+- option_tunnel_stl_source: if present, store/keep the EBU STL source document
 - result: subtitle content in the indicated format
 :)
 
@@ -357,6 +367,7 @@ declare
   %rest:form-param("markup", "{$markup}")
   %rest:form-param("template", "{$template}")
   %rest:form-param("language", "{$language}")
+  %rest:form-param("tunnel_stl_source", "{$tunnel_stl_source}")
   %rest:form-param("indent", "{$indent}")
   function scf:convert(
     $input as map(*),
@@ -373,6 +384,7 @@ declare
     $markup as xs:string?,
     $template as xs:string?,
     $language as xs:string?,
+    $tunnel_stl_source as xs:string?,
     $indent as xs:string?
   ) {
     let $conversion_option_error_messages := map {
@@ -386,6 +398,7 @@ declare
         'option_discard_user_data': 'to remove STL User Data',
         'option_markup': 'to process markup in subtitle lines',
         'option_template': 'to use a TTML template',
+        'option_tunnel_stl_source': 'to store/keep the EBU STL source document',
         'option_language': 'to override the general language of the template'
     }
     
@@ -397,6 +410,7 @@ declare
     let $conversion_status_init := map {
         'steps': $format_source,
         'target': $format_target,
+        'input_filename': $input_filename,
         'option_offset_seconds': $offset_seconds,
         'option_offset_frames': $offset_frames,
         'option_offset_start_of_programme': $offset_start_of_programme,
@@ -407,6 +421,7 @@ declare
         'option_discard_user_data': $discard_user_data,
         'option_markup': $markup,
         'option_template': $template,
+        'option_tunnel_stl_source': $tunnel_stl_source,
         'option_language': $language,
         'result': $input_content
     }
