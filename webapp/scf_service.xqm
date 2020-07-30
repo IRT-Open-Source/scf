@@ -396,6 +396,7 @@ declare
     (: do conversion :)
     let $conversion_status_init := map {
         'steps': $format_source,
+        'target': $format_target,
         'option_offset_seconds': $offset_seconds,
         'option_offset_frames': $offset_frames,
         'option_offset_start_of_programme': $offset_start_of_programme,
@@ -409,7 +410,7 @@ declare
         'option_language': $language,
         'result': $input_content
     }
-    let $conversion_status := scf:convert_step($conversion_status_init, $format_target)
+    let $conversion_status := scf:convert_step($conversion_status_init)
     let $conversion_option_errors := map:keys($conversion_option_error_messages)[exists($conversion_status(.))] ! $conversion_option_error_messages(.)
     let $conversion := if (scf:is_status_error($conversion_status) or empty($conversion_option_errors)) then $conversion_status else scf:status_set_error_unsupported_option($conversion_status, $conversion_option_errors)
     
@@ -450,9 +451,9 @@ declare function scf:filename_suffix($format as xs:string) as xs:string {
 };
 
 (: execute a single conversion step :)
-declare function scf:convert_step($status as map(*), $format_target as xs:string) as map(*) {
+declare function scf:convert_step($status as map(*)) as map(*) {
     let $current_format := $status('steps')[last()]
-    let $next_format := scf:next_format($current_format, $format_target)
+    let $next_format := scf:next_format($current_format, $status('target'))
     return
         switch ($next_format)
         (: return, if no conversion needed :)
@@ -490,7 +491,7 @@ declare function scf:convert_step($status as map(*), $format_target as xs:string
                     default return
                         ()
                 let $next_status := map:put($next_step_status, 'steps', $next_steps)
-                return scf:convert_step($next_status, $format_target)
+                return scf:convert_step($next_status)
             } catch * {
                 (: abort with error :)
                 map { 'steps': $next_steps, 'result':
