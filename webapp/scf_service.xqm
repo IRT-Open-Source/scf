@@ -450,9 +450,14 @@ declare function scf:filename_suffix($format as xs:string) as xs:string {
     default return concat('_', $format, '.xml')
 };
 
+declare function scf:current_format($status as map(*)) as xs:string {
+    $status('steps')[last()]
+};
+
+
 (: execute a single conversion step :)
 declare function scf:convert_step($status as map(*)) as map(*) {
-    let $current_format := $status('steps')[last()]
+    let $current_format := scf:current_format($status)
     let $next_format := scf:next_format($current_format, $status('target'))
     return
         switch ($next_format)
