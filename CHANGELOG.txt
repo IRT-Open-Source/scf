@@ -1,4 +1,36 @@
 -----------------------------
+Version 1.9.0
+-----------------------------
+
+EBU-TT-D-Basic-DE2WebVTT
+- ADDED: Module EBU-TT-D-Basic-DE2WebVTT
+
+STLXML-XSD
+- ADDED #39: Optional elements for STL source file/filename
+
+STL2STLXML
+- ADDED #39: Store source STL file upon request
+
+STLXML2EBU-TT
+- ADDED #39: Binary data tunnelling support (source STL file)
+
+STLXML-SplitBlocks
+- ADDED #39: Remove whitespace also for source STL
+
+EBU-TT2EBU-TT-D
+- FIXED #76: Namespace prefix dependency in rare cases
+
+EBU-TT2STLXML
+- FIXED #75: Map TNG field
+- FIXED #76: Namespace prefix dependency in rare cases
+
+EBU-TT-D2EBU-TT-D-Basic-DE
+- FIXED #76: Namespace prefix dependency in rare cases
+
+SCF REST service
+- FIXED #77: Disable EBU-TT-D(-Basic-DE) to STLXML/STL
+
+-----------------------------
 Version 1.8.3
 -----------------------------
 
