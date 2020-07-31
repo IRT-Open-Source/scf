@@ -35,6 +35,7 @@ declare variable $scf:subtitle_format :=
         'ebu-tt': 'EBU-TT',
         'ebu-tt-d': 'EBU-TT-D',
         'ebu-tt-d-basic-de': 'EBU-TT-D-Basic-DE',
+        'webvtt': 'WebVTT',
         'srt': 'SRT',
         'srtxml': 'SRTXML',
         'ttml': 'TTML'
@@ -48,13 +49,14 @@ declare variable $scf:subtitle_format_group :=
         'ebu-tt': 1,
         'ebu-tt-d': 1,
         'ebu-tt-d-basic-de': 1,
+        'webvtt': 1,
         'srt': 2,
         'srtxml': 2,
         'ttml': 2
     };
 
 (: conversion is done (with exceptions) forward/backward along the following paths :)
-declare variable $scf:subtitle_format_path_1 := ('stl', 'stlxml', 'ebu-tt', 'ebu-tt-d', 'ebu-tt-d-basic-de');
+declare variable $scf:subtitle_format_path_1 := ('stl', 'stlxml', 'ebu-tt', 'ebu-tt-d', 'ebu-tt-d-basic-de', 'webvtt');
 declare variable $scf:subtitle_format_path_2 := ('srt', 'srtxml', 'ttml');
 
 (: parameters to show in custom conversion case - any parameters required for a specific module are optional here! :)
@@ -111,6 +113,7 @@ declare
         {scf:form_conversion('stl', 'ebu-tt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'ignore_manual_offset_for_tcp', 'tunnel_stl_source', 'store_stl_source_at_end', 'indent'))}
         {scf:form_conversion('ebu-tt', 'stl', ())}
         {scf:form_conversion('stl', 'ebu-tt-d-basic-de', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp', 'indent'))}
+        {scf:form_conversion('stl', 'webvtt', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'discard_user_data', 'use_line_height_125', 'ignore_manual_offset_for_tcp'))}
         {scf:form_conversion('srt', 'ttml', ('markup', 'templateREQ', 'language', 'indent'))}
         {scf:form_conversion('ttml', 'srt', ())}
 
@@ -139,6 +142,7 @@ declare
         {scf:form_conversion('ebu-tt', 'stlxml', ('indent'))}
         {scf:form_conversion('ebu-tt', 'ebu-tt-d', ('offset_seconds', 'offset_frames', 'offset_start_of_programme', 'use_line_height_125', 'indent'))}
         {scf:form_conversion('ebu-tt-d', 'ebu-tt-d-basic-de', ('indent'))}
+        {scf:form_conversion('ebu-tt-d-basic-de', 'webvtt', ())}
         {scf:form_conversion('srt', 'srtxml', ('markup', 'indent'))}
         {scf:form_conversion('srtxml', 'srt', ())}
         {scf:form_conversion('srtxml', 'ttml', ('templateREQ', 'language', 'indent'))}
@@ -277,6 +281,10 @@ declare function scf:call_ebu-tt-d2ebu-tt-d-basic-de($status as map(*)) as map(*
     scf:call_xslt($status, 'EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt', map{}, false())
 };
 
+declare function scf:call_ebu-tt-d-basic-de2webvtt($status as map(*)) as map(*) {
+    scf:call_xslt($status, 'EBU-TT-D-Basic-DE2WebVTT/EBU-TT-D-Basic-DE2WebVTT.xslt', map{}, true())
+};
+
 declare function scf:call_srtxml2ttml($status as map(*)) as map(*) {
     let $template := $status('option_template')
     return
@@ -410,7 +418,7 @@ declare
     
     let $input_filename := map:keys($input)[1]
     let $input_content_raw := $input($input_filename)
-    let $input_content := if ($format_source = ('stl', 'srt')) then $input_content_raw else parse-xml(bin:decode-string($input_content_raw, 'UTF-8'))
+    let $input_content := if ($format_source = ('stl', 'srt', 'webvtt')) then $input_content_raw else parse-xml(bin:decode-string($input_content_raw, 'UTF-8'))
 
     (: do conversion :)
     let $conversion_status_init := map {
@@ -436,7 +444,7 @@ declare
     let $conversion_option_errors := map:keys($conversion_option_error_messages)[exists($conversion_status(.))] ! $conversion_option_error_messages(.)
     let $conversion := if (scf:is_status_error($conversion_status) or empty($conversion_option_errors)) then $conversion_status else scf:status_set_error_unsupported_option($conversion_status, $conversion_option_errors)
     
-    let $rest_response_filename_without_ext := replace($input_filename, '[.]([Ss][Tt][Ll]|[Ss][Rr][Tt]|[Xx][Mm][Ll])$', '')
+    let $rest_response_filename_without_ext := replace($input_filename, '[.]([Ss][Tt][Ll]|[Ss][Rr][Tt]|[Xx][Mm][Ll]|[Vv][Tt][Tt])$', '')
     let $rest_response_filename := concat($rest_response_filename_without_ext, scf:filename_suffix($format_target))
     let $rest_response_success := not(scf:is_status_error($conversion))
    
@@ -461,6 +469,7 @@ declare
 declare function scf:media_type($format as xs:string) as xs:string {
     switch($format)
     case ('stl') return 'application/octet-stream'
+    case ('webvtt') return 'text/vtt'
     case ('srt') return 'text/plain'
     default return 'application/xml'
 };
@@ -468,6 +477,7 @@ declare function scf:media_type($format as xs:string) as xs:string {
 declare function scf:filename_suffix($format as xs:string) as xs:string {
     switch($format)
     case ('stl') return '.stl'
+    case ('webvtt') return '.vtt'
     case ('srt') return '.srt'
     default return concat('_', $format, '.xml')
 };
@@ -507,6 +517,8 @@ declare function scf:convert_step($status as map(*)) as map(*) {
                         scf:call_ebu-tt2ebu-tt-d($status)
                     case "ebu-tt-d→ebu-tt-d-basic-de" return
                         scf:call_ebu-tt-d2ebu-tt-d-basic-de($status)
+                    case "ebu-tt-d-basic-de→webvtt" return
+                        scf:call_ebu-tt-d-basic-de2webvtt($status)
                     case "srt→srtxml" return
                         scf:call_srt2srtxml($status)
                     case "srtxml→srt" return
@@ -566,6 +578,7 @@ declare function scf:next_format($format_source as xs:string, $format_target as 
             return scf:next_format_by_path($format_source, $format_target, $scf:subtitle_format_path_1)
         case 'ebu-tt-d'
         case 'ebu-tt-d-basic-de'
+        case 'webvtt'
             (: no way back here :)
             return scf:next_format_by_path($format_source, $format_target, $scf:subtitle_format_path_1, false(), true())
         case 'srt'

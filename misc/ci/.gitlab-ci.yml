@@ -17,7 +17,7 @@ after_script:
     - docker
   stage: test
 
-# Test pipeline 1: STL -> STLXML -> EBU-TT -> EBU-TT-D -> EBU-TT-D-Basic-DE
+# Test pipeline 1: STL -> STLXML -> EBU-TT -> EBU-TT-D -> EBU-TT-D-Basic-DE -> WebVTT
 test_pipeline_1:
   extends: .test_pipeline
   script:
@@ -33,6 +33,9 @@ test_pipeline_1:
     # EBU-TT-D -> EBU-TT-D-Basic-DE
     - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:4_EBU-TT-D.xml -xsl:modules/EBU-TT-D2EBU-TT-D-Basic-DE/EBU-TT-D2EBU-TT-D-Basic-DE.xslt -o:5_EBU-TT-D-Basic-DE.xml
     - diff misc/ci/test_pipeline_1/5_EBU-TT-D-Basic-DE.xml 5_EBU-TT-D-Basic-DE.xml
+    # EBU-TT-D-Basic-DE -> WebVTT
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform -s:5_EBU-TT-D-Basic-DE.xml -xsl:modules/EBU-TT-D-Basic-DE2WebVTT/EBU-TT-D-Basic-DE2WebVTT.xslt -o:6_WebVTT.vtt
+    - diff misc/ci/test_pipeline_1/6_WebVTT.vtt 6_WebVTT.vtt
 
 # Test pipeline 2: EBU-TT -> STLXML -> STL
 test_pipeline_2:
@@ -64,7 +67,7 @@ test_pipeline_4:
     - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:misc/ci/test_pipeline_4/1_TTML.xml -xsl:modules/TTML2SRTXML/TTML2SRTXML.xslt -o:2_SRTXML.xml
     - diff misc/ci/test_pipeline_4/2_SRTXML.xml 2_SRTXML.xml
     # SRTXML -> SRT
-    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform \!indent=true -s:2_SRTXML.xml -xsl:modules/SRTXML2SRT/SRTXML2SRT.xslt -o:3_SRT.srt
+    - java -cp ~/tools/SaxonEE9/saxon9ee.jar net.sf.saxon.Transform -s:2_SRTXML.xml -xsl:modules/SRTXML2SRT/SRTXML2SRT.xslt -o:3_SRT.srt
     - diff misc/ci/test_pipeline_4/3_SRT.srt 3_SRT.srt
 
 
@@ -138,6 +141,10 @@ tests_SRTXML2TTML:
 tests_TTML2SRTXML:
   extends: .tests
   script: scf_test_driver/ci/test_standard.sh TTML2SRTXML TTML2SRTXML TTML2SRTXML.xslt
+
+tests_EBU-TT-D-Basic-DE2WebVTT:
+  extends: .tests
+  script: scf_test_driver/ci/test_ebuttdbasicde2webvtt.sh
 
 # TT-Helper modules
 tests_Helper_DFXP2TTML:

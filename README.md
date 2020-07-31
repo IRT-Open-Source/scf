@@ -77,6 +77,7 @@ Currently the SCF has the following core modules:
 * SRTXML2SRT
 * SRTXML2TTML
 * TTML2SRTXML
+* EBU-TT-D-Basic-DE2WebVTT
 
 Additionally there are various helper submodules that can be found in the
 folder "TT-Helper". These modules solve smaller transformation tasks.
@@ -154,6 +155,10 @@ requirements into an XML representation of an SRT file.
 Note that the SRT format is not based on a common official standard, but
 is a community driven format.
 
+#### EBU-TT-D-Basic-DE2WebVTT
+The EBU-TT-D-Basic-DE2WebVTT XSLT converts an EBU-TT-D-Basic-DE file
+into a WebVTT file, including text colors.
+
 
 ### Tests
 The test files that are used as test input for a module are named
@@ -172,6 +177,10 @@ assertion format).
 A Schematron file that tests the output of a module that gets the test
 file `requirement-0027-001.xml` as input would be named as
 `requirement-0027-001.sch`.
+
+Some modules use a different approach for testing (e.g. as the output
+format is not based on XML). In such a case the module contains separate
+testing instructions.
 
 
 ### Documentation
@@ -201,3 +210,4 @@ QC: Stefan Pöschel, Barbara Fichte, Peter tho Pesch, Andreas Tai
 * [EBU-TT-D SUBTITLING DISTRIBUTION FORMAT (EBU Tech 3380)](https://tech.ebu.ch/docs/tech/tech3380.pdf)
 * [XML-Format for Distribution of Subtitles in the ARD Mediathek portals (EBU-TT-D-Basic-DE)](https://www.irt.de/fileadmin/media/Neue_Downloads/Publikationen/Technische_Richtlinien/EBU-TT-D-Basic-DE-Subtitle_Format_ARD_Mediathek_Portals-v1.2.pdf)
 * [SubRip (SRT), accessed on 2020-03-18](https://en.wikipedia.org/wiki/SubRip)
+* [WebVTT: The Web Video Text Tracks Format](https://www.w3.org/TR/webvtt1/)

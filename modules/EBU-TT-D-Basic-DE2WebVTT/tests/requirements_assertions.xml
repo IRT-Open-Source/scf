@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2020 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<requirements target_extension="vtt">
+    <requirement name="requirement-0900a-001" description="File signature">
+        <line block_offset="0" line_offset="0">WEBVTT</line>
+    </requirement>
+    <requirement name="requirement-0901-001" description="Internal style block">
+        <line block_offset="1" line_offset="-1"><!-- separator to preceding block --></line>
+        <line block_offset="1" line_offset="0">STYLE</line>
+        <line block_offset="1" line_offset="1">::cue {</line>
+        <line block_offset="1" line_offset="2">    font-family: Verdana, Arial, Tiresias;</line>
+        <line block_offset="1" line_offset="3">    line-height: 125%;</line>
+        <line block_offset="1" line_offset="4">}</line>
+        <line block_offset="1" line_offset="5">::cue(.white) {</line>
+        <line block_offset="1" line_offset="6">    color: #ffffff;</line>
+        <line block_offset="1" line_offset="7">}</line>
+        <line block_offset="1" line_offset="8">::cue(.lime) {</line>
+        <line block_offset="1" line_offset="9">    color: #00ff00;</line>
+        <line block_offset="1" line_offset="10">}</line>
+        <line block_offset="1" line_offset="11">::cue(.cyan) {</line>
+        <line block_offset="1" line_offset="12">    color: #00ffff;</line>
+        <line block_offset="1" line_offset="13">}</line>
+        <line block_offset="1" line_offset="14">::cue(.red) {</line>
+        <line block_offset="1" line_offset="15">    color: #ff0000;</line>
+        <line block_offset="1" line_offset="16">}</line>
+        <line block_offset="1" line_offset="17">::cue(.yellow) {</line>
+        <line block_offset="1" line_offset="18">    color: #ffff00;</line>
+        <line block_offset="1" line_offset="19">}</line>
+        <line block_offset="1" line_offset="20">::cue(.magenta) {</line>
+        <line block_offset="1" line_offset="21">    color: #ff00ff;</line>
+        <line block_offset="1" line_offset="22">}</line>
+        <line block_offset="1" line_offset="23">::cue(.blue) {</line>
+        <line block_offset="1" line_offset="24">    color: #0000ff;</line>
+        <line block_offset="1" line_offset="25">}</line>
+        <line block_offset="1" line_offset="26">::cue(.black) {</line>
+        <line block_offset="1" line_offset="27">    color: #000000;</line>
+        <line block_offset="1" line_offset="28">}</line>
+        <line block_offset="1" line_offset="29">::cue(.bg_black) {</line>
+        <line block_offset="1" line_offset="30">    background: rgba(0, 0, 0, 0.76);</line>
+        <line block_offset="1" line_offset="31">}</line>
+    </requirement>
+    <requirement name="requirement-0902-001" description="tt:p element mapping">
+        <line block_offset="2" line_offset="-1"><!-- separator to preceding block --></line>
+        <line block_offset="2" line_offset="0">sub0</line>
+        <line block_offset="3" line_offset="-1"><!-- separator to preceding block --></line>
+        <line block_offset="3" line_offset="0">sub1</line>
+    </requirement>
+    <requirement name="requirement-0903-001" description="xml:id attribute mapping">
+        <line block_offset="2" line_offset="0">sub0</line>
+        <line block_offset="3" line_offset="0">sub1</line>
+    </requirement>
+    <requirement name="requirement-0904-001" description="begin attribute mapping">
+        <line block_offset="2" line_offset="1" start="1" part="true">00:00:00.560 --></line>
+        <line block_offset="3" line_offset="1" start="1" part="true">32399:00:03.040 --></line>
+    </requirement>
+    <requirement name="requirement-0905-001" description="end attribute mapping">
+        <line block_offset="2" line_offset="1" start="14" part="true">--> 00:00:02.880</line>
+        <line block_offset="3" line_offset="1" start="17" part="true">--> 32399:00:07.440</line>
+    </requirement>
+    <requirement name="requirement-0906-001" description="text nodes mapping - text (no lines)">
+        <line block_offset="2" line_offset="2"><!-- separator to following subtitle --></line>
+    </requirement>
+    <requirement name="requirement-0906-002" description="text nodes mapping - text (single line)">
+        <line block_offset="3" line_offset="2" start="20" part="true">This is a subtitle.</line>
+        <line block_offset="3" line_offset="3"><!-- separator to following subtitle --></line>
+    </requirement>
+    <requirement name="requirement-0906-003" description="text nodes mapping - text (multiple lines)">
+        <line block_offset="4" line_offset="2" start="19" part="true">This is a test subtitle</line>
+        <line block_offset="4" line_offset="3" start="19" part="true">with </line>
+        <line block_offset="4" line_offset="3" start="45" part="true">two</line>
+        <line block_offset="4" line_offset="3" start="70" part="true"> lines of text.</line>
+        <line block_offset="4" line_offset="4"><!-- separator to following subtitle --></line>
+    </requirement>
+    <requirement name="requirement-0906-004" description="text nodes mapping - text (inner whitespacing)">
+        <line block_offset="2" line_offset="2" start="19" part="true">Test 1.0</line>
+        <line block_offset="2" line_offset="2" start="48" part="true">.</line>
+        <line block_offset="2" line_offset="3" start="19" part="true">Test 1.1</line>
+        <line block_offset="2" line_offset="3" start="48" part="true"> .</line>
+        <line block_offset="2" line_offset="4" start="19" part="true">Test 1.2</line>
+        <line block_offset="2" line_offset="4" start="31" part="true"> </line>
+        <line block_offset="2" line_offset="4" start="49" part="true">.</line>
+        <line block_offset="2" line_offset="5" start="19" part="true">Test 1.3</line>
+        <line block_offset="2" line_offset="5" start="31" part="true"> </line>
+        <line block_offset="2" line_offset="5" start="49" part="true">.</line>
+        <line block_offset="2" line_offset="6" start="19" part="true">Test 1.4 </line>
+        <line block_offset="2" line_offset="6" start="49" part="true">.</line>
+        <line block_offset="2" line_offset="7" start="19" part="true">Test 1.5 </line>
+        <line block_offset="2" line_offset="7" start="49" part="true">.</line>
+        <line block_offset="2" line_offset="8" start="19" part="true">Test 1.6 </line>
+        <line block_offset="2" line_offset="8" start="49" part="true">.</line>
+        <line block_offset="2" line_offset="9" start="19" part="true">Test 1.7 </line>
+        <line block_offset="2" line_offset="9" start="49" part="true">.</line>
+        <line block_offset="2" line_offset="10" start="19" part="true">Test X</line>
+        <line block_offset="2" line_offset="10" start="47" part="true">.</line>
+    </requirement>
+    <requirement name="requirement-0906-005" description="text nodes mapping - text (outer whitespacing)">
+        <line block_offset="2" line_offset="2" start="19" part="true">Test 2.0.</line>
+        <line block_offset="2" line_offset="3" start="19" part="true">Test 2.1.</line>
+    </requirement>
+    <requirement name="requirement-0907-001" description="text nodes mapping - line breaks">
+        <line block_offset="2" line_offset="-1"><!-- separator to preceding block --></line>
+        <line block_offset="3" line_offset="-1"><!-- separator to preceding block --></line>
+        <line block_offset="4" line_offset="-1"><!-- separator to preceding block --></line>
+    </requirement>
+    <requirement name="requirement-0908-001" description="text nodes mapping - text color (default styles)">
+        <line block_offset="3" line_offset="2" start="1" part="true">&lt;c.yellow.</line>
+        <line block_offset="3" line_offset="2" start="39">&lt;/c></line>
+        <line block_offset="4" line_offset="2" start="1" part="true">&lt;c.white.</line>
+        <line block_offset="4" line_offset="2" start="42">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="1" part="true">&lt;c.white.</line>
+        <line block_offset="4" line_offset="3" start="24" part="true">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="28" part="true">&lt;c.lime.</line>
+        <line block_offset="4" line_offset="3" start="48" part="true">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="52" part="true">&lt;c.white.</line>
+        <line block_offset="4" line_offset="3" start="85">&lt;/c></line>
+    </requirement>
+    <requirement name="requirement-0908-002" description="text nodes mapping - text color (custom styles)">
+        <line block_offset="3" line_offset="2" start="1" part="true">&lt;c.lime.</line>
+        <line block_offset="3" line_offset="2" start="37">&lt;/c></line>
+        <line block_offset="4" line_offset="2" start="1" part="true">&lt;c.red.</line>
+        <line block_offset="4" line_offset="2" start="40">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="1" part="true">&lt;c.red.</line>
+        <line block_offset="4" line_offset="3" start="40">&lt;/c></line>
+    </requirement>
+    <requirement name="requirement-0909-001" description="text nodes mapping - background color (default styles)">
+        <line block_offset="3" line_offset="2" start="10" part="true">.bg_black></line>
+        <line block_offset="3" line_offset="2" start="39">&lt;/c></line>
+        <line block_offset="4" line_offset="2" start="9" part="true">.bg_black></line>
+        <line block_offset="4" line_offset="2" start="42">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="9" part="true">.bg_black></line>
+        <line block_offset="4" line_offset="3" start="24" part="true">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="35" part="true">.bg_black></line>
+        <line block_offset="4" line_offset="3" start="48" part="true">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="60" part="true">.bg_black></line>
+        <line block_offset="4" line_offset="3" start="85">&lt;/c></line>
+    </requirement>
+    <requirement name="requirement-0909-002" description="text nodes mapping - background color (custom styles)">
+        <line block_offset="3" line_offset="2" start="8" part="true">.bg_black></line>
+        <line block_offset="3" line_offset="2" start="37">&lt;/c></line>
+        <line block_offset="4" line_offset="2" start="7" part="true">.bg_black></line>
+        <line block_offset="4" line_offset="2" start="40">&lt;/c></line>
+        <line block_offset="4" line_offset="3" start="7" part="true">.bg_black></line>
+        <line block_offset="4" line_offset="3" start="40">&lt;/c></line>
+    </requirement>
+    <requirement name="requirement-0910-001" description="text nodes mapping - vertical position (no lines)">
+        <line block_offset="2" line_offset="1" start="30"><!-- no settings --></line>
+    </requirement>
+    <requirement name="requirement-0910-002" description="text nodes mapping - vertical position (single line)">
+        <line block_offset="3" line_offset="1" start="30"> line:-3</line>
+    </requirement>
+    <requirement name="requirement-0910-003" description="text nodes mapping - vertical position (multiple lines)">
+        <line block_offset="4" line_offset="1" start="30"> line:-4</line>
+    </requirement>
+</requirements>

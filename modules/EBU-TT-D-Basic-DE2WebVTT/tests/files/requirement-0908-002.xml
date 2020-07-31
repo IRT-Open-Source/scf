@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Profile: EBU-TT-D-Basic-DE-->
+<tt:tt xmlns:tt="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ebuttm="urn:ebu:tt:metadata" ttp:timeBase="media" ttp:cellResolution="50 30" xml:lang="en">
+  <tt:head>
+    <tt:metadata>
+      <ebuttm:documentMetadata>
+        <ebuttm:documentEbuttVersion>v1.0</ebuttm:documentEbuttVersion>
+      </ebuttm:documentMetadata>
+    </tt:metadata>
+    <tt:styling>
+      <tt:style xml:id="defaultStyle" tts:fontFamily="Verdana, Arial, Tiresias" tts:fontSize="160%" tts:lineHeight="125%"/>
+      <tt:style xml:id="textLeft" tts:textAlign="left"/>
+      <tt:style xml:id="textCenter" tts:textAlign="center"/>
+      <tt:style xml:id="textRight" tts:textAlign="right"/>
+      <tt:style xml:id="customGreenOnBlack" tts:color="#00ff00" tts:backgroundColor="#000000c2"/>
+      <tt:style xml:id="customRedOnBlue" tts:color="#ff0000" tts:backgroundColor="#0000ff"/>
+    </tt:styling>
+    <tt:layout>
+      <tt:region xml:id="bottom" tts:displayAlign="after" tts:origin="10% 10%" tts:extent="80% 80%"/>
+      <tt:region xml:id="top" tts:displayAlign="before" tts:origin="10% 10%" tts:extent="80% 80%"/>
+    </tt:layout>
+  </tt:head>
+  <tt:body>
+    <tt:div style="defaultStyle">
+      <tt:p xml:id="sub0" style="textCenter" region="bottom" begin="00:00:00.560" end="00:00:02.880"/>
+      <tt:p xml:id="sub1" style="textCenter" region="bottom" begin="00:00:03.040" end="00:00:07.440">
+        <tt:span style="customGreenOnBlack">This is a subtitle.</tt:span>
+      </tt:p>
+      <tt:p xml:id="sub2" style="textCenter" region="bottom" begin="00:01:03.040" end="00:01:07.440">
+        <tt:span style="customRedOnBlue">This is a test subtitle</tt:span>
+        <tt:br/>
+        <tt:span style="customRedOnBlue">with two lines of text.</tt:span>
+      </tt:p>
+    </tt:div>
+  </tt:body>
+</tt:tt>
