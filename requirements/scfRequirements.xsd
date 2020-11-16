@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2020 Institut für Rundfunktechnik GmbH, Munich, Germany
+
+Licensed under the Apache License, Version 2.0 (the "License"); 
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License 
+
+at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, the subject work
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- W3C XML Schema for the structure of the SCF requirements -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="requirements">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="requirement" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="title" minOccurs="0"/>
+                            <xs:element name="description"/>
+                            <xs:element name="areas">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="area" maxOccurs="unbounded">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                  <xs:enumeration value="General"/>
+                                                  <xs:enumeration value="Integration"/>
+                                                  <xs:enumeration value="QC"/>
+                                                  <xs:enumeration value="UserInterface"/>
+                                                  <xs:enumeration value="STL2STLXML"/>
+                                                  <xs:enumeration value="STLXML2EBU-TT"/>
+                                                  <xs:enumeration value="STLXML-SplitBlocks"/>
+                                                  <xs:enumeration value="STLXML2STL"/>
+                                                  <xs:enumeration value="STLXML2WEBVTT"/>
+                                                  <xs:enumeration value="EBU-TT2STLXML"/>
+                                                  <xs:enumeration value="EBU-TT2EBU-TT-D"/>
+                                                  <xs:enumeration value="EBU-TT2EBU-TT-D-Basic-DE"/>
+                                                  <xs:enumeration value="EBU-TT2WEBVTT"/>
+                                                  <xs:enumeration value="EBU-TT-D2EBU-TT-D-Basic-DE"/>
+                                                  <xs:enumeration value="EBU-TT-D-Basic-DE2STLXML"/>
+                                                  <xs:enumeration value="EBU-TT-D-Basic-DE2WEBVTT"/>
+                                                  <xs:enumeration value="WEBVTT2STLXML"/>
+                                                  <xs:enumeration value="WEBVTT2EBU-TT-D-Basic-DE"/>
+                                                  <xs:enumeration value="SRT2SRTXML"/>
+                                                  <xs:enumeration value="SRTXML2TTML"/>
+                                                  <xs:enumeration value="TTML2SRTXML"/>
+                                                  <xs:enumeration value="SRTXML2SRT"/>
+                                                  <xs:enumeration value="EBU-TT-D-Basic-DE2WebVTT"/>
+                                                  <xs:enumeration value="StlXml-XSD"/>
+                                                  <xs:enumeration value="WebVtt-XSD"/>
+                                                  <xs:enumeration value="SRTXML-XSD"/>
+                                                  <xs:enumeration value="EBU-TT-Filter"/>
+                                                  <xs:enumeration value="Generic"/>
+                                                  <xs:enumeration value="DFXP2TTML"/>
+                                                  <xs:enumeration value="TTML2DFXP"/>
+                                                  <xs:enumeration value="GetTTMLProfile"/>
+                                                  <xs:enumeration
+                                                  value="TT-Filter-Styles-No-References"/>
+                                                  <xs:enumeration
+                                                  value="FlashDFXP2EBU-TT-D-Basic-DE"/>
+                                                  <xs:enumeration value="TT-Edit-List"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="additionalInfos" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="additionalInfo" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="created" type="xs:date"/>
+                            <xs:element name="lastEdit" type="xs:date" minOccurs="0"/>
+                            <xs:element name="status">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="open"/>
+                                        <xs:enumeration value="inDiscussion"/>
+                                        <xs:enumeration value="accepted"/>
+                                        <xs:enumeration value="workingOn"/>
+                                        <xs:enumeration value="resolved"/>
+                                        <xs:enumeration value="feedback"/>
+                                        <xs:enumeration value="clarificationNeeded"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="prio">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="m"/>
+                                        <xs:enumeration value="s"/>
+                                        <xs:enumeration value="c"/>
+                                        <xs:enumeration value="w"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="implementationStatus" minOccurs="0">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="outstanding"/>
+                                        <xs:enumeration value="waitingReview"/>
+                                        <xs:enumeration value="underReview"/>
+                                        <xs:enumeration value="reviewed"/>
+                                        <xs:enumeration value="accepted"/>
+                                        <xs:enumeration value="rejected"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="ID" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
